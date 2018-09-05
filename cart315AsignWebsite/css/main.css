@@ -1,0 +1,29 @@
+body{
+	background-image: url('images/water.gif');
+	background-size: cover;
+}
+h2{
+  	text-align: center;
+  	color: #0e1111;
+	font-family: Lucida Grande;
+	font-weight: Regular;
+	font-size: 20px;
+}
+h3{
+ 	text-align: center;
+ 	color: #0e1111;
+  	font-family: Lucida Grande;
+	font-weight: Regular;
+}
+p {
+	color: #3b444b ;
+	font-family: Source Sans Pro;
+	font-weight: Regular;
+	font-size: 14px;
+}
+li {
+	color: #0e1111 ;
+	font-family: Source Sans Pro;
+	font-weight: Light;
+	font-size: 14px;
+}
