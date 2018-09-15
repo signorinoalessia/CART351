@@ -1,26 +1,62 @@
-/* References: W3schools.com */
+/* References: W3schools.com for layout of side menu navigation */
 
+/* Style the side navigation */
+.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    opacity: 0.65;
+    overflow-x: hidden;
+}
+
+/* Side navigation links */
+.sidenav a {
+    color: white;
+    padding: 26px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color on hover */
+.sidenav a:hover {
+    background-color: #8B008B;
+   /*  #ddd; */
+    color: black;
+}
+
+/* Style the content */
+.content {
+    margin-left: 200px;
+    padding-left: 20px;
+}
+/*Background gif cover*/
 body{
 	background-image: url('images/ride_sm.gif');
 	background-size: cover;
 }
 h2{
-  	text-align: center;
-  	color: white;
-	font-family: Lucida Grande;
-	font-weight: Regular;
-/* 	font-size: 20px; */
+   	color: white;
+	font-family: Avenir;
+	font-weight: Light;
+	font-size: 34px;
+	padding-bottom: 12px;
 }
 h3{
- 	text-align: center;
  	color: white;
   	font-family: Lucida Grande;
 	font-weight: Regular;
+	font-size: 13px;
 }
 h4{
-	color: white;
+ 	color: white;
   	font-family: Lucida Grande;
 	font-weight: Regular;
+	font-size: 13px;
+	padding-bottom: 18px;
 }
 p {
 	color: white ;
