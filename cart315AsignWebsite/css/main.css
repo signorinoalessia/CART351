@@ -1,3 +1,5 @@
+/* References: W3schools.com */
+
 body{
 	background-image: url('images/ride_sm.gif');
 	background-size: cover;
@@ -7,7 +9,7 @@ h2{
   	color: white;
 	font-family: Lucida Grande;
 	font-weight: Regular;
-	font-size: 20px;
+/* 	font-size: 20px; */
 }
 h3{
  	text-align: center;
