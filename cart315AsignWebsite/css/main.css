@@ -35,7 +35,7 @@
 }
 /*Background gif cover*/
 body{
-	background-image: url('images/ride_sm.gif');
+	background-image: url('images/ride_comp.gif');
 	background-size: cover;
 }
 h2{
