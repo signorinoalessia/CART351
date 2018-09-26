@@ -1,0 +1,146 @@
+<html>
+<head>
+  <title> Exercise 2 AS </title>
+  <style>
+  body{
+    margin:0;
+    padding:0;
+  }
+  canvas{
+    background:black;
+    margin:0;
+    padding:0;
+  }
+  </style>
+  <script>
+
+//run once window has loaded
+  window.onload = function(){
+
+//get canvas element and set to 2d
+  let canvas = document.getElementById('myCanvas');
+  let canvasContext = canvas.getContext('2d');
+
+  // setting square objects in array
+  const MAX_SQUARES = 15;
+  let numberSquares = 0;
+  let mySquares = [];
+  let colors = ["#ffd041","#41ff9a","#41d5ff","#ff4141", "#ffbb41"];
+
+  //timer
+  let timer = setInterval(putInNewSquare,1000);
+
+  // Callback function: check if a square, if yes, make Sound (DEFINE SOUND FREQ BELOW BY Y.POS)**
+  let handleClick = function (event) {
+    // smthg
+  }
+
+  // squares come in at intervals
+  function putInNewSquare() {
+    if(numberSquares<MAX_SQUARES) {
+      mySquares.push(new movingSquare(numberSquares,numberSquares,10,colors[numberSquares%colors.length], (numberSquares%5)+1, (numberSquares%6)+2));
+      numberSquares++;
+    }
+    else {
+      clearInterval(timer);
+    }
+  } // end of putInNewSquare
+
+// animation recursive loop, call function before and after
+// <!> update and render are defined below <!>
+  requestAnimationFrame(runAni);
+
+  function runAni() {
+    //clear canvas
+    canvasContext.clearRect(0,0,canvas.width, canvas.height);
+    // animate only for every object that exists
+    for (let i=0; i<MAX_SQUARES; i++){
+      mySquares[i].update();
+      mySquares[i].render();
+    }
+    requestAnimationFrame(runAni);
+  }
+
+  function movingSquare(x,y,w,h,xSpeed,ySpeed){
+    //constructor
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.xSpeed = xSpeed;
+    this.ySpeed = ySpeed;
+    this.freqVal = 220; //+ (x/canvasHeight); ?**
+    this.note = new Sound(audioContext)
+
+    //drawing (will be run in runAni)
+    this.render = function() {
+      //fill with changing colors
+      canvasContext.fillStyle = this.squareColor;
+      cavasContext.fill();
+      canvasContext.fillRect(this.x,thix.y,this.w,this.h);
+    }
+
+    //updating (will be run in runAni)
+    this.update = function() {
+      if(this.x<0 || this.x>canvas.width-this.width){
+        this.xSpeed*=-1;
+      }
+      if(this.y<0 || this.y>canvas.height-this.height/2){
+        this.ySpeed*=-1;
+      }
+    this.x+=speedX;
+    this.y+=speedY;
+    } //end update
+
+  } //end movingSquare
+
+    /*** class for sound  inspired and copy-lefted from::
+    https://css-tricks.com/introduction-web-audio-api/*/
+  function Sound (context) {
+    this.context = context;
+    this.offsetDuration =0;
+
+
+  this.init =function () {
+    this.oscillator = this.context.createOscillator();
+    //for volume
+    this.gainNode = this.context.createGain();
+
+    this.oscillator.connect(this.gainNode);
+    this.gainNode.connect(this.context.destination);
+    this.oscillator.type = 'sine';
+  }
+
+  this.play = function (value, time) {
+    this.init();
+
+    this.oscillator.frequency.value = value;
+    //set gain
+    this.gainNode.gain.setValueAtTime(1, this.context.currentTime);
+
+    this.oscillator.start(time);
+    // How LONG should duration of note be?
+    this.stop(time+this.offsetDuration);
+
+  }
+
+
+    this.stop = function(time) {
+    // gradual change in value
+    this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
+    this.oscillator.stop(time + 0);
+    }
+
+  }//end Sound object
+
+  } //end window onload
+
+  </script>
+</head>
+<body>
+<!--canvas element is here -->
+<canvas id="myCanvas" width="500" height="800">
+</canvas>
+
+</body>
+</html>

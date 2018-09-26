@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> EXERCISE 1 </title>
+  <style>
+  #c {
+      background-color: #3e181b;
+      border: 3px solid #db1d2d;}
+
+  #d {
+      background-color: #422018;
+      border: 3px solid #f0421c;}
+
+  #e {
+      background-color: #45391b;
+      border: 3px solid #fec02d;}
+
+  body{
+        background:black;}
+  .para {color:white;font-size:22pt; background:purple;margin-left: 1%;margin-top: 1%; padding:1%;}
+      .box {
+      width: 10vw; /*(1/10th) viewport width */
+      height: 10vw;
+      margin-left: 1%;
+      margin-top: 1%;
+      display:inline-block;
+    }
+  .wrapper{
+    margin-left:30%;
+    margin-top:15%;
+  }
+  </style>
+  <script>
+
+  window.onload = function(){
+
+    //1. callback function: check if it's a paragraph> change text to inv> else if it's a box> reset text to visible
+    let handleClick = function (event) {
+      if(this.id === "displayText") {
+        this.style.display = "none";
+      } else {
+      console.log(this.id+" box was clicked");
+      document.getElementById("displayText").innerHTML = "This is the text for box "+this.id;
+      document.getElementById("displayText").style.display = "inline-block";
+      }
+    };
+
+    //2. event listener for each box (which calls handleClick)
+    let clickedBoxes = document.getElementsByClassName("box");
+    for (let i=0; i<clickedBoxes.length; i++) {
+        clickedBoxes[i].addEventListener('click', handleClick);
+    }
+
+    //event listener if paragraph has been clicked on
+    let clickedParagraph = document.getElementById("displayText");
+    clickedParagraph.addEventListener('click', handleClick);
+
+
+
+  //TO ADD: mouseOver, mouseOff,callback x2 ...
+
+  //1A) callback function for mouseOn
+  let handleMouseOn = function(event) {
+    //opacity of this.id box becomes 50%
+  }
+
+  //1B)callback function for mouseOff
+  let handleMouseOff = function(event) {
+    //opacity of this.id box goes back to 100%
+  }
+
+  //2) event listener for each box, mouseOn && mouseOff
+  let hoverBoxes = document.getElementsByClassName("box");
+  // if(this.id === "box") {
+    for (let i=0; i<hoverBoxes.length; i++) {
+      hoverBoxes[i].addEventListener('mouseOn', handleMouseOn);
+    //  console.log("I am hovering on a box!");
+    // }
+   }
+  
+}
+
+
+  // //B2) event listener for each box, mouseOff
+  // let hoverBoxes = document.getElementsById("box");
+  // for (let i=0; i<hoverBoxes.length; i++) {
+  //   hoverBoxes[i].addEventListener('mouseOff', handleMouseOff);
+  // }
+
+
+  </script>
+</head>
+<body>
+  <div class = "wrapper">
+  <div id = "c" class = "box"></div>
+  <div id = "d" class = "box"></div>
+  <div id = "e" class = "box"></div>
+  <br />
+  <p style = "display:inline-block;" id = "displayText" class = "para"></p>
+</div>
+
+</body>
+</html>
