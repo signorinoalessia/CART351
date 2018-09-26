@@ -1,0 +1,95 @@
+
+<html>
+<head>
+  <title> Canvas Tutorial </title>
+  <style>
+  body{
+    margin:0;
+    padding:0;
+  }
+  canvas{
+    background:black;
+    margin:0;
+    padding:0;
+  }
+  </style>
+  <script>
+
+  window.onload = function(){
+
+    // step 1 access the canvas element && the graphics context....
+    let canvas = document.getElementById('testCanvas');
+    let canvasContext = canvas.getContext('2d');
+    let letterList = [];
+    // lets add a key ...
+    window.addEventListener("keypress",(event)=>{
+    //  console.log(event.keyCode);
+      //ASCII
+     if(event.keyCode ===32 )
+     letter ="SPACE";
+     else
+      letter = event.key;
+      //using math library for random placement
+      let randomValX = Math.floor((Math.random() * 400) + 1);
+      letterList.push(new myLetter(letter,randomValX,-10));
+    });
+
+    requestAnimationFrame(runAni);
+
+    function runAni(){
+      //need to reset the background :)
+      // clear the canvas ...
+      canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+
+
+      for (let i =0; i< letterList.length;i++){
+      letterList[i].renderLetter();
+      letterList[i].updateLetter();
+
+      }
+
+        // recursive call ...
+      requestAnimationFrame(runAni);
+  }
+
+      function myLetter(letter,x,y){
+        this.fontString = "40px Arial";
+        this.letterTyped = letter;
+        this.xPos = x;
+        this.yPos = y;
+
+        this.renderLetter = function(){
+        canvasContext.globalAlpha = 1.0;
+        canvasContext.font = this.fontString;
+        canvasContext.fillStyle = "#FF0000";
+        canvasContext.fillText(this.letterTyped,this.xPos,this.yPos);
+      }
+
+      this.updateLetter =function(input){
+        this.yPos+=1;
+        if(this.yPos>canvas.height){
+          // find letter in the array and remove
+          for( let i = 0; i < letterList.length; i++)
+          {
+            if (letterList[i].letterTyped === this.letterTyped) {
+                  //remove from the array
+                  letterList.splice(i, 1);
+                  console.log("found");
+                  break;
+             }
+          }
+          console.log(letterList.length);
+        }//end if
+      }//end function
+    } //end letter object
+  //end on windowload
+}
+
+</script>
+</head>
+<body>
+<canvas id="testCanvas" width="800" height="800">
+
+</canvas>
+</body>
+</html>
