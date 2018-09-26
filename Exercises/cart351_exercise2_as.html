@@ -20,6 +20,7 @@
 //get canvas element and set to 2d
   let canvas = document.getElementById('myCanvas');
   let canvasContext = canvas.getContext('2d');
+  let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
   // setting square objects in array
   const MAX_SQUARES = 20;
@@ -30,21 +31,23 @@
   //timer
   let timer = setInterval(putInNewSquare,1000);
 
-  // Callback function: check if a square, if yes, make Sound (DEFINE SOUND FREQ BELOW BY Y.POS)**
-  let handleClick = function (event) {
-    // smthg
-  }
-
   // squares come in at intervals
   function putInNewSquare() {
     if(numberSquares<MAX_SQUARES) {
-      mySquares.push(new movingSquare(numberSquares*50+50,0,20,20,colors[numberSquares%colors.length],(numberSquares%6)+2));
+      mySquares.push(new movingSquare(numberSquares*50+50,0,25,25,colors[numberSquares%colors.length],(numberSquares%6)+2,numberSquares));
       numberSquares++;
     }
     else {
       clearInterval(timer);
     }
   } // end of putInNewSquare
+
+  // Event listener for canvas, will find square through client (mouse)
+  canvas.addEventListener("mousemove", function(event){
+    for(let i=0;i<numberSquares;i++) {
+      mySquares[i].handleHover(event);
+    }
+  });
 
 // animation recursive loop, call function before and after
 // <!> update and render are defined below <!>
@@ -61,19 +64,19 @@
     requestAnimationFrame(runAni);
   }
 
-  function movingSquare(x,y,w,h,c,ySpeed){
+  function movingSquare(x,y,w,h,c,ySpeed,eid){
     //constructor
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
     this.squareColor = c;
-
     this.ySpeed = ySpeed;
-    this.isPressed = false;
+    this.isOver = false;
+    this.eID = eid;
+    this.note = new Sound(audioContext);
+    this.freqVal =  220+(eid*128);
 
-    // this.freqVal = 220; //+ (x/canvasHeight); ?**
-    // this.note = new Sound(audioContext)
 
     //drawing (will be run in runAni)
     this.render = function() {
@@ -85,24 +88,36 @@
 
     //updating (will be run in runAni)
     this.update = function() {
-      if(this.y<0 || this.y>canvas.height-this.height/2){
+      if(this.y<0 || this.y>(canvas.height-this.h)){
         this.ySpeed*=-1;
       }
     this.y+=this.ySpeed;
     } //end update
 
-    this.hitTest = function() {
+    // Callback function: check if a square, if yes, make Sound (DEFINE SOUND FREQ BELOW BY Y.POS)**
+    this.handleHover = function (event) {
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w/2){
-        console.log("Rect was Pressed::: "+this.eID);
-        this.isPressed = !this.isPressed; //so its the opposite of true or false, whichever it is
+        // console.log("Rect Over::: "+this.eID);
+        console.log("Over a rectangle");
+        this.isOver = true;
+      }
+
+      // Sound will happen if mouse is over
+      if(this.isOver === true){
+        let now = audioContext.currentTime;
+        this.note.offsetDuration = 2;
+        this.freqVal = this.freqVal+(this.ySpeed*2);
+        this.note.play(this.freqVal, now);
       }
     }
+
+
 
   } //end movingSquare
 
     /*** class for sound  inspired and copy-lefted from::
     https://css-tricks.com/introduction-web-audio-api/*/
-/*  function Sound (context) {
+  function Sound (context) {
     this.context = context;
     this.offsetDuration =0;
 
@@ -136,8 +151,7 @@
     this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
     this.oscillator.stop(time + 0);
     }
-
-  }  */ //end Sound object
+  }   //end Sound object
 
   } //end window onload
 
