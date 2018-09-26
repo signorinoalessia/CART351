@@ -22,17 +22,30 @@ let canvas = document.getElementById("testCanvas");
 let context = canvas.getContext("2d");
 
 let shapeList = [];
-const NUM_SHAPES = 1;
+const NUM_SHAPES = 5;
+
+canvas.addEventListener("mousedown",function(event){ //we can add an event listener only to canvas, event occurs for mouse coords
+  // console.log("canvas mouse clicked");
+  for(let i=0;i<NUM_SHAPES;i++) {
+    shapeList[i].hitTest(event);
+  }
+});
+
+canvas.addEventListener("mousemove", function(event){
+  for(let i=0;i<NUM_SHAPES;i++) {
+    shapeList[i].hitTestOver(event);
+  }
+});
 
 for(i=0; i<NUM_SHAPES; i++) {
   let r = Math.floor((Math.random()*255)+1);
   let g = Math.floor((Math.random()*255)+1);
   let b = Math.floor((Math.random()*255)+1);
-  shapeList.push(new CustomShape(canvas.width/2,canvas.height/2,50,50,r,g,b,1.0,(i%5)+1,(i%6)+2)); //min xSpeed will be 1 & ySpeed will be 2
+  shapeList.push(new CustomShape(i*60+100,canvas.height/2,50,50,r,g,b,1.0,(i%5)+1,(i%6)+2,i)); //min xSpeed will be 1 & ySpeed will be 2
 }
 
-let myShape = new CustomShape(canvas.width/2,canvas.height/2,50,50,255,0,0,1.0);
-myShape.display();
+// let myShape = new CustomShape(canvas.width/2,canvas.height/2,50,50,255,0,0,1.0); //comment out because we<re using shapelist
+// myShape.display();
 
 requestAnimationFrame(run);
 
@@ -47,7 +60,7 @@ function run(){
   requestAnimationFrame(run);
 }
 
-function CustomShape(x,y,w,h,r,g,b,a,speedX,speedY) {
+function CustomShape(x,y,w,h,r,g,b,a,speedX,speedY,eid) {
   //binding phase, constructor
   this.x = x;
   this.y = y;
@@ -62,6 +75,10 @@ function CustomShape(x,y,w,h,r,g,b,a,speedX,speedY) {
 
   this.speedX = speedX;
   this.speedY = speedY;
+  this.theta = 0; //angle in RADIANS
+  this.eID = eid;
+  this.isPressed = false; //each square has its own boolean
+  this.isOver = false;
 
   this.innerX = this.x+this.innerW/2;
   this.innerY = this.y+this.innerH/2;
@@ -69,23 +86,53 @@ function CustomShape(x,y,w,h,r,g,b,a,speedX,speedY) {
 //variable called display, is also a function
   this.display = function(){
     // console.log(this.h);
-    this.col = "rgba("+r+","+g+","+b+","+a+")";
+    this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
     context.fillStyle = this.col;
-    context.fillRect(this.x, this.y, this.w, this.h);
-    context.clearRect(this.innerX,this.innerY,this.innerW,this.innerH); //cuts out whatever at certain coords, offsets
+
+    //move coords system to square corner, rotate, and move back to corner of canvas
+    context.save(); //where current 0,0 is
+    context.translate(this.x,this.y); //to where box is
+    context.rotate(this.theta);
+    if(this.isPressed === true) {
+      this.theta+=0.02; //radians (2*pi = full rotation)
+    }
+    if(this.isOver === true){
+      this.a -= 0.01;
+    }
+
+
+    context.fillRect(-this.w/2, -this.h/2, this.w, this.h); //we changed this.x into negative this.w/2 to put origin in center
+    context.clearRect(-this.w/2+this.innerW/2,-this.h/2+this.innerH/2,this.innerW,this.innerH); //cut outs (origin @center as well)
+    context.restore(); //restore coords for next time
   }
 
-  this.update = function(){
-    if(this.x>canvas.width-this.w || this.x<0) {
-      this.speedX*=-1;
-    }
-    if(this.y>canvas.width-this.h || this.y<0) {
-      this.speedY*=-1;
-    }
+  // this.update = function(){
+  //   if(this.x>canvas.width-this.w || this.x<0) {
+  //     this.speedX*=-1;
+  //   }
+  //   if(this.y>canvas.width-this.h || this.y<0) {
+  //     this.speedY*=-1;
+  //   }
+  //   this.x+=this.speedX;
+  //   this.y +=this.speedY;
+  // }
 
-    this.x+=this.speedX;
-    this.y +=this.speedY;
-
+  this.hitTest = function() {
+    // distance formula between x a y of shape and x and y of mouse, if distance less than width, we are colliding
+    // event.clientX means mouse coord x
+    if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w/2){
+      console.log("Rect was Pressed::: "+this.eID);
+      this.isPressed = !this.isPressed; //so its the opposite of true or false, whichever it is
+    }
+  }
+  this.hitTestOver = function() {
+    if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w/2){
+      console.log("Rect Over::: "+this.eID);
+      this.isOver = true; //fade out
+    }
+    else {
+      this.isOver = false;
+    }
   }
 
 } //end of CustomShape
