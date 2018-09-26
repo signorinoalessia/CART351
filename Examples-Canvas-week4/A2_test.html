@@ -18,13 +18,123 @@
 
 // get the canvas
 let canvas = document.getElementById("testCanvas");
-
-//get the context
+//get the contexts
 let context = canvas.getContext("2d");
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
+// making ellipses to fill the screen *replace with flowers*
+const MAX_ELLIPSES = 8;
+let myEllipses = [];
+let colors = ["#808080","#A9A9A9","#C0C0C0","#DCDCDC"];
 
-
+for (let i=0;i<MAX_ELLIPSES;i++){
+  myEllipses.push(new musicEllipse())
 }
+
+// event listener of canvas, for as many ellipses there are
+canvas.addEventListener("mouseover",(event){
+  for(let i = 0;i<myEllises.length;i++){
+    myEllises[i].mouseOver(event);
+  }
+});
+
+// recursive requestAnimationFrame
+requestAnimationFrame(runAni);
+
+function runAni(){
+  canvasContext.clearRect(0,0,canvas.width,canvas.height);
+
+  for(let i=0;i<myEllipses.length;i++){
+    myEllipses[i].update();
+    myEllipses[i].render();
+  }
+  requestAnimationFrame(runAni);
+}
+
+// musicEllipse class to replace with flowers
+function musicEllipse(x,y,r,c,xSpeed,ySpeed,id){
+  //constructor
+  this.xPos = x;
+  this.yPos = y;
+  this.radius = r;
+  this.color = c;
+  this.xSpeed = xSpeed;
+  this.ySpeed = ySpeed;
+  this.id = id;
+  this.isOver = false;
+
+  // appearance
+  this.render = function(){
+    canvasContext.fillStyle = this.color;
+    canvasContext.beginPath();
+    canvasContext.arc(this.xPos,this.yPos,this.radius,0, Math.PI * 2, true);
+    canvasContext.fill();
+    canvasContext.closePath();
+  }
+
+  // move only when mouse is over
+  this.update = function(){
+    if(this.isOver ===true){
+    if(this.xPos<0 || this.xPos>canvas.width){
+      this.xSpeed*=-1;
+    }
+    if(this.yPos<0 || this.yPos>canvas.height){
+      this.ySpeed*=-1;
+    }
+    this.xPos+=this.xSpeed;
+    this.yPos+=this.ySpeed;
+    }
+  }
+
+  // mouseOver function
+  this.mouseOver = function(event){
+    if(Math.sqrt(Math.pow((event.clientX-this.xPos),2) + Math.pow((event.clientY - this.yPos),2))< this.radius){
+      console.log("ellipse "+ this.id +" was pressed");
+      this.isOver = !this.isOver;
+    }
+  }
+
+
+} // end of musicEllipse
+
+  /*** class for sound inspired and copy-lefted from::
+  https://css-tricks.com/introduction-web-audio-api/*/
+  function Sound (context) {
+  this.context = context;
+  this.offsetDuration =0;
+
+  this.init =function () {
+    this.oscillator = this.context.createOscillator();
+    //for volume
+    this.gainNode = this.context.createGain();
+
+    this.oscillator.connect(this.gainNode);
+    this.gainNode.connect(this.context.destination);
+    this.oscillator.type = 'sine';
+  }
+
+  this.play = function (value, time) {
+    this.init();
+
+    this.oscillator.frequency.value = value;
+    //set gain
+    this.gainNode.gain.setValueAtTime(1, this.context.currentTime);
+
+    this.oscillator.start(time);
+    // How LONG should duration of note be?
+    this.stop(time+this.offsetDuration);
+
+  }
+
+
+  this.stop = function(time) {
+    // gradual change in value
+    this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
+    this.oscillator.stop(time + 0);
+    }
+  }   //end Sound object
+
+} //end of window load
   </script>
 </head>
 <body>
