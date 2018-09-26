@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Examples </title>
+  <style>
+  body{
+    margin:0;
+    padding:0;
+  }
+  canvas{
+    background:black;
+}
+  </style>
+
+  <script>
+  window.onload = function(){
+
+// get the canvas
+let canvas = document.getElementById("testCanvas");
+
+//get the context
+let context = canvas.getContext("2d");
+
+let shapeList = [];
+const NUM_SHAPES = 1;
+
+for(i=0; i<NUM_SHAPES; i++) {
+  let r = Math.floor((Math.random()*255)+1);
+  let g = Math.floor((Math.random()*255)+1);
+  let b = Math.floor((Math.random()*255)+1);
+  shapeList.push(new CustomShape(canvas.width/2,canvas.height/2,50,50,r,g,b,1.0,(i%5)+1,(i%6)+2)); //min xSpeed will be 1 & ySpeed will be 2
+}
+
+let myShape = new CustomShape(canvas.width/2,canvas.height/2,50,50,255,0,0,1.0);
+myShape.display();
+
+requestAnimationFrame(run);
+
+function run(){
+  context.clearRect(0,0,canvas.width,canvas.height); //* so that it clears the "trace" of animation
+  // myShape.display();
+  // myShape.update();
+  for (let i=0;i<NUM_SHAPES;i++) {
+    shapeList[i].display();
+    //shapeList[i].update();
+  }
+  requestAnimationFrame(run);
+}
+
+function CustomShape(x,y,w,h,r,g,b,a,speedX,speedY) {
+  //binding phase, constructor
+  this.x = x;
+  this.y = y;
+  this.w = w;
+  this.h = h;
+  this.r = r;
+  this.g = g;
+  this.b = b;
+  this.a = a;
+  this.innerH = this.h/2;
+  this.innerW = this.w/2;
+
+  this.speedX = speedX;
+  this.speedY = speedY;
+
+  this.innerX = this.x+this.innerW/2;
+  this.innerY = this.y+this.innerH/2;
+
+//variable called display, is also a function
+  this.display = function(){
+    // console.log(this.h);
+    this.col = "rgba("+r+","+g+","+b+","+a+")";
+    context.fillStyle = this.col;
+    context.fillRect(this.x, this.y, this.w, this.h);
+    context.clearRect(this.innerX,this.innerY,this.innerW,this.innerH); //cuts out whatever at certain coords, offsets
+  }
+
+  this.update = function(){
+    if(this.x>canvas.width-this.w || this.x<0) {
+      this.speedX*=-1;
+    }
+    if(this.y>canvas.width-this.h || this.y<0) {
+      this.speedY*=-1;
+    }
+
+    this.x+=this.speedX;
+    this.y +=this.speedY;
+
+  }
+
+} //end of CustomShape
+} //End of window.onload
+  </script>
+</head>
+<body>
+  <canvas id = "testCanvas" width = 500 height =500></canvas>
+</body>
+</html>
