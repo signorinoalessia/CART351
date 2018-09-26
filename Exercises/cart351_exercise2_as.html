@@ -22,10 +22,10 @@
   let canvasContext = canvas.getContext('2d');
 
   // setting square objects in array
-  const MAX_SQUARES = 15;
+  const MAX_SQUARES = 20;
   let numberSquares = 0;
   let mySquares = [];
-  let colors = ["#ffd041","#41ff9a","#41d5ff","#ff4141", "#ffbb41"];
+  let colors = ["#e0ccff","#bb99ff","#9966ff","#944dff","#ccb3ff","#4400cc","#8000ff"];
 
   //timer
   let timer = setInterval(putInNewSquare,1000);
@@ -38,7 +38,7 @@
   // squares come in at intervals
   function putInNewSquare() {
     if(numberSquares<MAX_SQUARES) {
-      mySquares.push(new movingSquare(numberSquares,numberSquares,10,colors[numberSquares%colors.length], (numberSquares%5)+1, (numberSquares%6)+2));
+      mySquares.push(new movingSquare(numberSquares*50+50,0,20,20,colors[numberSquares%colors.length],(numberSquares%6)+2));
       numberSquares++;
     }
     else {
@@ -54,49 +54,55 @@
     //clear canvas
     canvasContext.clearRect(0,0,canvas.width, canvas.height);
     // animate only for every object that exists
-    for (let i=0; i<MAX_SQUARES; i++){
+    for (let i=0; i<numberSquares; i++){
       mySquares[i].update();
       mySquares[i].render();
     }
     requestAnimationFrame(runAni);
   }
 
-  function movingSquare(x,y,w,h,xSpeed,ySpeed){
+  function movingSquare(x,y,w,h,c,ySpeed){
     //constructor
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
-    this.xSpeed = xSpeed;
+    this.squareColor = c;
+
     this.ySpeed = ySpeed;
-    this.freqVal = 220; //+ (x/canvasHeight); ?**
-    this.note = new Sound(audioContext)
+    this.isPressed = false;
+
+    // this.freqVal = 220; //+ (x/canvasHeight); ?**
+    // this.note = new Sound(audioContext)
 
     //drawing (will be run in runAni)
     this.render = function() {
       //fill with changing colors
       canvasContext.fillStyle = this.squareColor;
-      cavasContext.fill();
-      canvasContext.fillRect(this.x,thix.y,this.w,this.h);
+      canvasContext.fill();
+      canvasContext.fillRect(this.x,this.y,this.w,this.h);
     }
 
     //updating (will be run in runAni)
     this.update = function() {
-      if(this.x<0 || this.x>canvas.width-this.width){
-        this.xSpeed*=-1;
-      }
       if(this.y<0 || this.y>canvas.height-this.height/2){
         this.ySpeed*=-1;
       }
-    this.x+=speedX;
-    this.y+=speedY;
+    this.y+=this.ySpeed;
     } //end update
+
+    this.hitTest = function() {
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w/2){
+        console.log("Rect was Pressed::: "+this.eID);
+        this.isPressed = !this.isPressed; //so its the opposite of true or false, whichever it is
+      }
+    }
 
   } //end movingSquare
 
     /*** class for sound  inspired and copy-lefted from::
     https://css-tricks.com/introduction-web-audio-api/*/
-  function Sound (context) {
+/*  function Sound (context) {
     this.context = context;
     this.offsetDuration =0;
 
@@ -131,7 +137,7 @@
     this.oscillator.stop(time + 0);
     }
 
-  }//end Sound object
+  }  */ //end Sound object
 
   } //end window onload
 
