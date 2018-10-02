@@ -1,7 +1,9 @@
+<!-- ASSIGNMENT 2 BY MASHA KROTKYKH & ALESSIA SIGNORINO -->
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title> Examples </title>
+  <title> ASSIGNMENT 2 </title>
   <style>
   body{
     margin:0;
@@ -13,12 +15,12 @@
   </style>
 
   <script>
+
+  //run once window loads
   window.onload = function(){
 
-
-// get the canvas
+// get the canvas and contexts (2D and sound)
 let canvas = document.getElementById("testCanvas");
-//get the contexts
 let context = canvas.getContext("2d");
 let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -125,7 +127,6 @@ function musicEllipse(x,y,r,c,xSpeed,ySpeed,id){
     this.stop(time+this.offsetDuration);
 
   }
-
 
   this.stop = function(time) {
     // gradual change in value
