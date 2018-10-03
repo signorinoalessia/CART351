@@ -1,4 +1,6 @@
 <!-- ASSIGNMENT 2 BY MASHA KROTKYKH & ALESSIA SIGNORINO -->
+<!-- References: Sabine Rosenberg's examples and https://developer.mozilla.org/en-US/docs/Web/API/ -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +20,9 @@
     let context = canvas.getContext("2d");
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-//Empty array of crosses
+    // let distortion = audioCtx.createWaveShaper(); commented out for now
+
+    //Empty array of crosses
     let shapeList = [];
     const NUM_SHAPES = 2500;
 
@@ -67,7 +71,6 @@
       requestAnimationFrame(run);
 
     }
-
     // Cross Object
     function CustomShape(x,y,xx,yy,w,h,r,g,b,a,eid,rSpeed){
         //constructor
@@ -83,18 +86,37 @@
         this.a = a;
 
         this.eID = eid;
-        this.isOver = false;
-        this.isPressed = false;
+        this.isOver = false; // freqVal
+        this.isPressed = false; //
         this.cChange = 10;
         this.cFade = 1;
 
         this.theta = 0;
-        this.rSpeed = 0;
+        this.rSpeed = 0; // use this to change freq
         this.maxrSpeed = .4;
 
         this.note = new Sound(audioContext);
         this.freqVal =  220+(eid*128);
         console.log(this.freqVal);
+
+        // clamp value to a range // should a function that returns a value inside an object?
+        function clamp(this.eid, min, max) {
+          min = -22050;
+          max = 22050;
+
+          return this.eid <= min ? min : this.eid >= max ? max : eid;
+        }
+
+        function ifClamp(min,mid,max){
+  if (min < mid && mid < max) {
+    return mid
+  } else if (mid < min) {
+    return min
+  } else if (max < mid) {
+    return max
+  }
+}
+
 
         // display
         this.display = function(){
@@ -206,17 +228,15 @@
       }
     } // end of hitTestOver callback
 
-
-
   } // end of custom object
 
   /*** class for sound inspired and copy-lefted from::
   https://css-tricks.com/introduction-web-audio-api/*/
   function Sound (context) {
-  this.context = context;
-  this.offsetDuration =0;
+    this.context = context;
+    this.offsetDuration =0;
 
-  this.init =function () {
+    this.init =function () {
     this.oscillator = this.context.createOscillator();
     //for volume
     this.gainNode = this.context.createGain();
@@ -228,7 +248,7 @@
 
   this.play = function (value, time) {
     this.init();
-    console.log(value);
+    // console.log(value);
     this.oscillator.frequency.value = value;
     //set gain
     this.gainNode.gain.setValueAtTime(1, this.context.currentTime);
