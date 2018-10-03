@@ -4,7 +4,78 @@
 <head>
   <title> Jquery and more </title>
   <script src = "jquery/jquery-3.3.1.min.js"></script>
-   <link rel="stylesheet" type="text/css" href="css/main.css">
+  <script>
+    $(document).ready(function() {
+      // do stuff when DOM is ready
+      $("#c").on("click", clickHandler);
+
+      function clickHandler(){
+        console.log($(this));
+        //use the css "action" (attribute + value)
+        // remember the "this?"
+        $(this).css("background-color", "purple");
+      }
+
+      $("#d").on("click", clickHandlerD);
+      function clickHandlerD(){
+         // use jQuery action hide() -> to hide
+         $("#e").hide();
+         // use jQuery action show() -> to show
+         $("#f").show();
+       }
+
+       $("#a").on("mouseover", clickHandlerE);
+       function clickHandlerE(){
+           // use jQuery action to show/hide
+         $("#g").toggle();
+       }
+
+       $("#b").on("mouseout",whatsInPars);
+       function whatsInPars(){
+         // get all elements that are within p tags
+        let pars = $("p");
+        for( i=0; i<pars.length; i++ ){
+            console.log("Found paragraph: " + $(pars[i]).html());
+          }
+       }
+
+       // id clickable, callback,children,selector span
+       $("#clickable").on('mouseup',paraAtts);
+       function paraAtts(){
+         //let pAtts = $("#clickable span").attr("title");
+         let pChildren= $(this).children('span');
+         for(let i =0; i<pChildren.length; i++){
+           let pAtts= $(pChildren[i]).attr("title"); // !attr!
+           console.log(i+"::"+pChildren[i]);
+           console.log(pAtts);
+         }
+       }
+
+       // SETTING ATTRIBUTE VALUES:
+       $("#clickable").on('mouseover',paraAttsOver);
+       function paraAttsOver(){
+         //let pAtts = $("#clickable span").attr("title");
+         let pChildren= $(this).children('span');
+         for(let i =0; i<pChildren.length; i++){
+           $(pChildren[i]).attr("title",i+" new title");
+         }
+     }
+
+     $("#clickable").on('mouseout',paraAttsOut);
+     function paraAttsOut(){
+       //let pAtts = $("#clickable span").attr("title");
+       let pChildren= $(this).children('span');
+       for(let i =0; i<pChildren.length; i++){
+         $(pChildren[i]).attr("title",i+" old title");
+       }
+      }
+
+
+
+
+    });
+</script>
+<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 
 <body>
