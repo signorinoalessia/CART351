@@ -1,0 +1,212 @@
+
+!DOCTYPE html>
+<html>
+<head>
+<title>EXERCISE 02</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  canvas {
+    background: white;
+  }
+</style>
+<script>
+  window.onload = function(){
+    let canvas = document.getElementById("testCanvas");
+    let context = canvas.getContext("2d");
+    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+//Empty array of shapes
+    let shapeList = [];
+    const NUM_SHAPES = 500;
+
+   // Event listeners for click & hover
+    canvas.addEventListener("mousedown", function(event){
+    	console.log("canvas mouse clicked");
+        for(let i=0; i<NUM_SHAPES; i++){
+          shapeList[i].hitTest(event);
+        }
+    });
+
+    canvas.addEventListener("mousemove", function(event){
+        console.log("canvas mouse over");
+    //Collision detection function
+        for(let i=0; i<NUM_SHAPES; i++){
+          shapeList[i].hitTestOver(event);
+        }
+    });
+
+    // generate shapes (push into array)
+    for(let i=0; i<NUM_SHAPES; i++){
+      let r = 0;
+      let g = 0;
+      let b = 0;
+      let a = 1.0;
+      let rSpeed = 2;
+	    let rad = Math.floor((Math.random()*50)+1);
+      let x = Math.floor((Math.random()*canvas.width));
+      let y = Math.floor((Math.random()*canvas.height));
+      let xx = x + rad;
+      let yy = y - rad;
+
+      shapeList.push(new CustomShape(x,y,xx,yy,rad,r,g,b,a,i));
+    }
+
+    // recursive animation function
+    requestAnimationFrame(run);
+
+    function run(){
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      for(let i=0; i<NUM_SHAPES; i++){
+        shapeList[i].display();
+      }
+      requestAnimationFrame(run);
+
+    }
+
+// Circle Object
+    function CustomShape(x,y,xx,yy,rad,r,g,b,a,eid,rSpeed){
+      //constructor
+        this.x = x;
+        this.y = y;
+        this.xx = xx;
+        this.yy = yy;
+		    this.rad = rad;
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+
+        this.eID = eid;
+        this.isOver = false;
+        this.isPressed = false;
+        this.cChange = 10;
+        this.cFade = 1;
+
+        this.theta = 0;
+        this.rSpeed = 0;
+        this.maxrSpeed = .8;
+
+        // display
+        this.display = function(){
+
+          if(this.isPressed === true) {
+
+          	if(this.r <= 0) {
+          		this.r +=this.cChange;
+          	}
+          	else if(this.r >= 250) {
+          		this.r -=this.cChange;
+          	}
+          	else if(this.r > 0 && this.r < 250) {
+          		this.r -= Math.floor((Math.random()*6)-3);
+          	}
+
+          	if(this.g <= 0) {
+          		this.g +=this.cChange;
+          	}
+          	else if(this.g >= 250) {
+          		this.g -=this.cChange;
+          	}
+          	else if(this.g > 0 && this.g < 250) {
+          		this.g -= Math.floor((Math.random()*6)-3);
+          	}
+
+          	if(this.b <= 0) {
+          		this.b +=this.cChange;
+          	}
+          	else if(this.b >= 250) {
+          		this.b -=this.cChange;
+          	}
+          	else if(this.b > 0 && this.b < 250) {
+          		this.b -= Math.floor((Math.random()*6)-3);
+          	}
+
+          }
+
+          else if(this.isPressed ===false) {
+          	if(this.r > 0) {
+          		this.r -= this.cFade;
+          	}
+          	if(this.g > 0) {
+          		this.g -= this.cFade;
+          	}
+          	if(this.b > 0) {
+          		this.b -= this.cFade;
+          	}
+          }
+
+      // Color
+		  this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+      context.stroke();
+      context.strokeStyle = this.col;
+
+      // Rotation
+      context.save();
+      context.translate(this.x, this.y);
+      context.rotate(this.theta);
+
+      // Speed dependant on hover
+      if(this.isOver ===true && this.rSpeed <= this.maxrSpeed) {
+        if(this.rSpeed < .1) {
+        	this.rSpeed = .1;
+        }
+        else {
+        	this.rSpeed += 0.001;
+        }
+      }
+
+      else if(this.isOver ===false && this.rSpeed > 0){
+        this.rSpeed-=0.001;
+      }
+
+			this.theta += this.rSpeed;
+
+      // draw circle
+		  context.beginPath();
+		  context.arc(0,0,this.rad,0*Math.PI,1.5*Math.PI);
+		  context.lineWidth = this.rad/10;
+		  context.stroke();
+      context.strokeStyle = this.col;
+      context.restore();
+
+    } //end of display
+
+    // callback functions
+    this.hitTest = function(){
+
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.rad*2){
+        console.log("rect pressed::: "+this.eID);
+        this.isPressed = !this.isPressed;
+      }
+    }
+
+    this.hitTestOver = function(){
+
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.rad*4){
+        console.log("rect over::: "+this.eID);
+        this.isOver = true;
+
+      }
+      else{
+        this.isOver = !this.isOver;
+      }
+    }
+
+
+
+  } // end of custom object
+
+
+
+} // end of window load
+</script>
+
+</head>
+<body>
+  <canvas id="testCanvas" width="1000" height="800"></canvas>
+</body>
+</html>

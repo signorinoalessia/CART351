@@ -76,13 +76,127 @@ $("#buttonLocation").click(getWeatherByLoc);
 /**** get weather by user location **/
 function getWeatherByLoc(){
 console.log("get loc");
+
+// this is built-in in html5!
+// navigator, in-built object with geoloc, if user allows it, uses callback function
+if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(usePosition);
+    } else {
+        console.log( "Geolocation is not supported by this browser.");
+    }
+
+    function usePosition(position) {
+    console.log("Latitude: " + position.coords.latitude +
+    "Longitude: " + position.coords.longitude);
+
+    //ONCE position is valid
+    $("#ResWeather").empty();
+    //api.openweathermap.org/data/2.5/weather?lat=35&lon=139
+
+    let urlLoc = "api.openweathermap.org/data/2.5/weather?lat="+position.coords.latitude+"&lon="+ position.coords.longitude;
+    let urlToSend = "https:"+urlLoc +"&APPID="+myKey;
+    // url and callback
+    $.getJSON(urlToSend,function(results){displayResults(results,results.name);})
+
+       //fail
+       .fail(function() {
+         console.log( "error" );
+       });
+       // getJSON
+
+}//function usePosition
+
 }
 
 
 /**** get weather by city input **/
 function getWeatherByCity(){
 console.log("get city");
+
+$("#ResWeather").empty();
+let searchCity= $("#citySearch").val();
+console.log(searchCity);
+//query using city vlue from search
+let urlCity = "api.openweathermap.org/data/2.5/weather?q="+searchCity; //url that I need to send to
+let urlToSend = "https:"+urlCity +"&APPID="+myKey;
+
+// url and callback
+    $.getJSON(urlToSend,function(results){displayResults(results,searchCity);})
+       //fail
+       .fail(function() {
+         console.log( "error" );
+       });
+       // getJSON
 } //getWeather
+
+function displayResults(results,searchCity){
+         console.log(results);
+         let sampleH = $('<h2>');
+         $(sampleH).text("results for:: "+ searchCity)
+
+         let weatherProp  = results.weather; //PART OF THE JSON OBJECT
+         //IS AN ARRAY...
+
+         let container = $('<div>').addClass("container");
+         let pContainer = $('<div>').addClass("pContainer");
+         $(sampleH).appendTo(container);
+
+         // go through the array (is an array of objects)
+         for(let i=0; i<weatherProp.length; i++){
+           //get the object
+           let weatherObj = weatherProp[i];
+           // iterate through the key-value pairs for this object
+           //property -> key:
+           //weatherObj[property] is the value
+
+           for (let property in weatherObj) {
+             //if it is the icon property-> get the image
+             if(property === "icon"){
+               let iconUrl = "http://openweathermap.org/img/w/" + weatherObj[property] + ".png"; //icons
+               let imageIcon = $('<img>');
+               $(imageIcon).attr("src", iconUrl);
+               $(imageIcon).appendTo(container);
+
+             }
+             //not icon - so get the text
+             else{
+                let sampleP = $('<p>').addClass("pRes");
+                $(sampleP).text(property+":: "+ weatherObj[property]);
+                $(sampleP).appendTo(pContainer);
+              }
+           }//for
+         } //iterate over array
+
+          $(pContainer).appendTo(container);
+           $(container).appendTo('#ResWeather');
+
+           let sampleList= $("<ul>");
+           // go through the results.main obj -> part of the JSON object
+           // iterate through the key-value pairs for this object
+           //property -> key:
+           //results.main[property] is the value
+           for (let property in results.main) {
+             let listItem = $('<li>');
+             $(listItem).text(property+":: "+ results.main[property]);
+             $(listItem).appendTo(sampleList);
+           }
+
+          // get the coordinates object:
+          // go through the results.coord obj -> part of the JSON object
+          // iterate through the key-value pairs for this object
+          //property -> key:
+          //results.coord[property] is the value
+           for (let property in results.coord) {
+             let listItem = $('<li>');
+             $(listItem).text(property+":: "+ results.coord[property]);
+             $(listItem).appendTo(sampleList);
+           }
+
+
+           $(sampleList).appendTo('#ResWeather');
+
+       }//end of display results function
+
 
 });
 </script>
