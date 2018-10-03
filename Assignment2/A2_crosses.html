@@ -11,7 +11,7 @@
     padding: 0;
   }
   canvas {
-    background: white;
+    background: #fff3db;
   }
 </style>
 <script>
@@ -20,13 +20,17 @@
     let context = canvas.getContext("2d");
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-    // let distortion = audioCtx.createWaveShaper(); commented out for now
+    // let distortion = audioCtx.createWaveShaper(); commented out for now (will use speed to change value)
 
     //Empty array of crosses
     let shapeList = [];
-    const NUM_SHAPES = 2500;
+    const NUM_SHAPES = 200;
 
-   // Event listeners for click & hover
+    //Max and Min values for valClamp
+    let min = -22205;
+    let max = 22205;
+
+   //Event listeners for click & hover
     canvas.addEventListener("mousedown", function(event){
     	console.log("canvas mouse clicked");
         for(let i=0; i<NUM_SHAPES; i++){
@@ -34,7 +38,7 @@
         }
     });
 
-    canvas.addEventListener("mousemove", function(event){
+    canvas.addEventListener("mouseover", function(event){
         console.log("canvas mouse over");
     //Collision detection function
         for(let i=0; i<NUM_SHAPES; i++){
@@ -48,7 +52,7 @@
       let g = 0;
       let b = 0;
       let a = 1.0;
-      let rSpeed = 2;
+      let rSpeed = 2; //will vary
       let h = Math.floor((Math.random()*10)+1);
       let w = h*10;
       let x = Math.floor((Math.random()*canvas.width));
@@ -56,7 +60,7 @@
       let xx = x + w/2 - h/2;
       let yy = y - w/2 + h/2;
 
-      shapeList.push(new CustomShape(x,y,xx,yy,w,h,r,g,b,a,i));
+      shapeList.push(new CustomShape(x,y,xx,yy,w,h,r,g,b,a,i,(i%6)+2));
     }
 
     // recursive animation function
@@ -69,8 +73,8 @@
         shapeList[i].display();
       }
       requestAnimationFrame(run);
-
     }
+
     // Cross Object
     function CustomShape(x,y,xx,yy,w,h,r,g,b,a,eid,rSpeed){
         //constructor
@@ -96,26 +100,12 @@
         this.maxrSpeed = .4;
 
         this.note = new Sound(audioContext);
-        this.freqVal =  220+(eid*128);
+        // this.freqVal =  220*rSpeed; //in this case freq changes on rSpeed
+        let freqOffset  = event.clientX;
+        this.freqVal = 220 + freqOffset;
+        console.log("eid :::"+this.eid);
         console.log(this.freqVal);
 
-        // clamp value to a range // should a function that returns a value inside an object?
-        function clamp(this.eid, min, max) {
-          min = -22050;
-          max = 22050;
-
-          return this.eid <= min ? min : this.eid >= max ? max : eid;
-        }
-
-        function ifClamp(min,mid,max){
-  if (min < mid && mid < max) {
-    return mid
-  } else if (mid < min) {
-    return min
-  } else if (max < mid) {
-    return max
-  }
-}
 
 
         // display
@@ -176,7 +166,7 @@
       context.translate(this.x, this.y);
       context.rotate(this.theta);
 
-      // Speed dependant on hover
+      // Speed dependent on hover
       if(this.isOver ===true && this.rSpeed <= this.maxrSpeed) {
         if(this.rSpeed < .1) {
           this.rSpeed = .1;
@@ -212,9 +202,6 @@
         console.log("rect over::: "+this.eID);
         this.isOver = true;
       }
-      else if(Math.sqrt(Math.pow((event.clientX),2)+Math.pow((event.clientY),2))>canvas.width){
-      	this.isOver = false;
-      }
       else{
         this.isOver = false;
       }
@@ -222,9 +209,11 @@
       // Sound will happen if mouse is over
       if(this.isOver === true){
         let now = audioContext.currentTime;
-        this.note.offsetDuration = 2;
-        this.freqVal = this.freqVal+(this.rSpeed*2);
-        this.note.play(this.freqVal, now);
+        this.note.offsetDuration = 5;
+        this.freqVal = this.freqVal+(event.clientX/100);
+        clampedVal = valClamp(this.freqVal);
+        this.note.play(clampedVal, now);
+        console.log("clampedVal:::"+clampedVal);
       }
     } // end of hitTestOver callback
 
@@ -265,6 +254,12 @@
     this.oscillator.stop(time + 0);
     }
   }   //end Sound object
+
+  // Clamp value to a range // should a function that returns a value inside an object?
+  // if this.eid is larger than eidMin / smaller than eidMax, then return this.eid, else return min/max
+  function valClamp(value) {
+     return value <= min ? min : value >= max ? max : value;
+  }
 
 } // end of window load
 </script>
