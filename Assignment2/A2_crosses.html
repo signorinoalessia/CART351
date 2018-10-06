@@ -27,8 +27,8 @@
     const NUM_SHAPES = 200;
 
     //Max and Min values for valClamp
-    let min = -22205;
-    let max = 22205;
+    let min = -22050;
+    let max = 22050;
 
    //Event listeners for click & hover
     canvas.addEventListener("mousedown", function(event){
@@ -96,17 +96,14 @@
         this.cFade = 1;
 
         this.theta = 0;
-        this.rSpeed = 0; // use this to change freq
+        this.rSpeed = 0; // use this to change distortion
         this.maxrSpeed = .4;
 
         this.note = new Sound(audioContext);
+        this.freqVal = 220 + (eid*128);
         // this.freqVal =  220*rSpeed; //in this case freq changes on rSpeed
-        let freqOffset  = event.clientX;
-        this.freqVal = 220 + freqOffset;
-        console.log("eid :::"+this.eid);
-        console.log(this.freqVal);
-
-
+        // console.log("eid :::"+this.eid); //undefined???
+        console.log("freqVal is:::"+this.freqVal); //not a number???
 
         // display
         this.display = function(){
@@ -191,15 +188,16 @@
     this.hitTest = function(){
 
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w){
-        console.log("rect pressed::: "+this.eID);
+        // console.log("rect pressed::: "+this.eID);
         this.isPressed = !this.isPressed;
       }
     }
 
     this.hitTestOver = function(){
+      let freqOffsetX  = event.clientX;
 
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
-        console.log("rect over::: "+this.eID);
+        // console.log("rect over::: "+this.eID);
         this.isOver = true;
       }
       else{
@@ -218,6 +216,12 @@
     } // end of hitTestOver callback
 
   } // end of custom object
+
+  // Clamp value to a range (freqVal)
+  // if value is larger than min / smaller than max, then return value, else return min/max
+  function valClamp(value) {
+     return value <= min ? min : value >= max ? max : value;
+  }
 
   /*** class for sound inspired and copy-lefted from::
   https://css-tricks.com/introduction-web-audio-api/*/
@@ -254,12 +258,6 @@
     this.oscillator.stop(time + 0);
     }
   }   //end Sound object
-
-  // Clamp value to a range // should a function that returns a value inside an object?
-  // if this.eid is larger than eidMin / smaller than eidMax, then return this.eid, else return min/max
-  function valClamp(value) {
-     return value <= min ? min : value >= max ? max : value;
-  }
 
 } // end of window load
 </script>
