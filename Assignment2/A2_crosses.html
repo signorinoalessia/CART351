@@ -16,19 +16,23 @@
 </style>
 <script>
   window.onload = function(){
+
+    // get canvas context, make it browser window size, get audio context
     let canvas = document.getElementById("testCanvas");
     let context = canvas.getContext("2d");
+    context.canvas.width  = window.innerWidth;
+    context.canvas.height = window.innerHeight;
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     // let distortion = audioCtx.createWaveShaper(); commented out for now (will use speed to change value)
 
     //Empty array of crosses
     let shapeList = [];
-    const NUM_SHAPES = 200;
+    const NUM_SHAPES = 40;
 
     //Max and Min values for valClamp
-    let min = -22050;
-    let max = 22050;
+    let min = -21050;
+    let max = 21050;
 
    //Event listeners for click & hover
     canvas.addEventListener("mousedown", function(event){
@@ -90,8 +94,8 @@
         this.a = a;
 
         this.eID = eid;
-        this.isOver = false; // freqVal
-        this.isPressed = false; //
+        this.isOver = false; // for freqVal
+        this.isPressed = false; // for distortion
         this.cChange = 10;
         this.cFade = 1;
 
@@ -102,7 +106,7 @@
         this.note = new Sound(audioContext);
         this.freqVal = 220 + (eid*128);
         // this.freqVal =  220*rSpeed; //in this case freq changes on rSpeed
-        // console.log("eid :::"+this.eid); //undefined???
+        console.log("eid :::"+this.eid); //undefined???
         console.log("freqVal is:::"+this.freqVal); //not a number???
 
         // display
