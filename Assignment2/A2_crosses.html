@@ -28,9 +28,8 @@
 
     //Empty array of crosses
     let shapeList = [];
-    const NUM_SHAPES = 40;
+    const NUM_SHAPES = 120;
     let colors = ["#2988BC","2F496E","ED8C72"]; // to dlt later
-    let noteList = [];
 
     //Max and Min values for valClamp
     let min = -21050;
@@ -43,12 +42,19 @@
           shapeList[i].hitTest(event);
         }
     });
-
-    canvas.addEventListener("mousemove", function(event){
+    canvas.addEventListener("mouseover", function(event){
         console.log("canvas mouse over");
     //Collision detection function
         for(let i=0; i<NUM_SHAPES; i++){
           shapeList[i].hitTestOver(event);
+        }
+    });
+    // added SABINE -> if was over and now mouse moves ensure that is still over
+    canvas.addEventListener("mousemove", function(event){
+        console.log("canvas mouse over");
+    //Collision detection function
+        for(let i=0; i<NUM_SHAPES; i++){
+          shapeList[i].hitTestMove(event);
         }
     });
 
@@ -78,6 +84,8 @@
 
       for(let i=0; i<NUM_SHAPES; i++){
         shapeList[i].display();
+        //if the isOver boolean is true -> play the sound...
+        shapeList[i].playSoundIfOver();
       }
       requestAnimationFrame(run);
     }
@@ -95,7 +103,7 @@
         this.g = g;
         this.b = b;
         this.a = a;
-        // this.c = c; // to delete later
+        this.c = c; // to delete later
 
         this.eID = eid;
         this.isOver = false; // for freqVal
@@ -110,8 +118,7 @@
         this.note = new Sound(audioContext);
         this.freqVal = 220 + (eid*128);
         // this.freqVal =  220*rSpeed; //in this case freq changes on rSpeed
-        // console.log("eid :::"+this.eid); //undefined???
-        console.log("freqVal is:::"+this.freqVal); //not a number???
+        console.log("freqVal is:::"+this.freqVal);
 
         // display (press affects RGB)
         this.display = function(){
@@ -192,38 +199,44 @@
 
     } // end of display function
 
-    // callback functions (for click and hover)
-    this.hitTest = function(){
-
-      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w){
-        // console.log("rect pressed::: "+this.eID);
-        this.isPressed = !this.isPressed;
-      }
-    }
-
-    this.hitTestOver = function(){
-      // let freqOffsetX  = event.clientX;
-
-      // if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
-      // if(event.clientX => this.x - this.w && event.clientX <= this.x + this.w && event.clientY => this.y - this.w && event.clientY <= this.y + this.w) {
-      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w/2){
-        console.log("EID, rect over::: "+this.eID);
-        this.isOver = true;
-      }
-      else{
-        this.isOver = false;
-      }
-
+    this.playSoundIfOver = function(){
       // Sound will happen if mouse is over
       if(this.isOver === true){
         let now = audioContext.currentTime;
         this.note.offsetDuration = 3;
-        this.freqVal = this.freqVal+(event.clientX/100);
         clampedVal = valClamp(this.freqVal);
         this.note.play(clampedVal, now);
         console.log("clampedVal:::"+clampedVal);
       }
-    } // end of hitTestOver callback
+
+    }
+
+    // callback functions for mouse click, over and move
+    this.hitTest = function(event){
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w){
+        console.log("rect pressed::: "+this.eID);
+        this.isPressed = !this.isPressed;
+      }
+    } // end of hitTest
+    this.hitTestOver = function(event){
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
+        console.log("EID, rect over::: "+this.eID);
+        this.isOver = true;
+        //update the freq val
+        this.freqVal = this.freqVal+(event.clientX/100);
+      }
+    } // end of hitTestOver
+    //SABINE:: ADDED
+    this.hitTestMove = function(event){
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
+        console.log("EID, rect over::: "+this.eID);
+        this.isOver = true;
+        //update the freq val
+        this.freqVal = this.freqVal+(event.clientX/100);
+      } else {
+          this.isOver = false;
+      }
+    } // end of hitTestMove callback
 
   } // end of custom object
 
