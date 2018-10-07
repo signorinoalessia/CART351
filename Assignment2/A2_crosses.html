@@ -11,7 +11,7 @@
     padding: 0;
   }
   canvas {
-    background: #fff3db;
+    background: #F4EADE;
   }
 </style>
 <script>
@@ -29,6 +29,7 @@
     //Empty array of crosses
     let shapeList = [];
     const NUM_SHAPES = 40;
+    let colors = ["#2988BC","2F496E","ED8C72"]; // to dlt later
 
     //Max and Min values for valClamp
     let min = -21050;
@@ -65,6 +66,7 @@
       let yy = y - w/2 + h/2;
 
       shapeList.push(new CustomShape(x,y,xx,yy,w,h,r,g,b,a,i,(i%6)+2));
+      // shapeList.push(new CustomShape(x,y,xx,yy,w,h,r,g,b,a,colors[NUM_SHAPES%colors.length],i,(i%6)+2));
     }
 
     // recursive animation function
@@ -80,7 +82,7 @@
     }
 
     // Cross Object
-    function CustomShape(x,y,xx,yy,w,h,r,g,b,a,eid,rSpeed){
+    function CustomShape(x,y,xx,yy,w,h,r,g,b,a,c,eid,rSpeed){
         //constructor
         this.x = x;
         this.y = y;
@@ -92,6 +94,7 @@
         this.g = g;
         this.b = b;
         this.a = a;
+        this.c = c; // to delete later
 
         this.eID = eid;
         this.isOver = false; // for freqVal
@@ -200,8 +203,10 @@
     this.hitTestOver = function(){
       // let freqOffsetX  = event.clientX;
 
-      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
-        console.log("rect over::: "+this.eID);
+      // if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
+      // if(event.clientX => this.x - this.w && event.clientX <= this.x + this.w && event.clientY => this.y - this.w && event.clientY <= this.y + this.w) {
+      if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w/2){
+        console.log("EID, rect over::: "+this.eID);
         this.isOver = true;
       }
       else{
@@ -211,7 +216,7 @@
       // Sound will happen if mouse is over
       if(this.isOver === true){
         let now = audioContext.currentTime;
-        this.note.offsetDuration = 5;
+        this.note.offsetDuration = 3;
         this.freqVal = this.freqVal+(event.clientX/100);
         clampedVal = valClamp(this.freqVal);
         this.note.play(clampedVal, now);
