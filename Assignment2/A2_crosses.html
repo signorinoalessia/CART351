@@ -101,15 +101,15 @@
 
         this.theta = 0;
         this.rSpeed = 0; // use this to change distortion
-        this.maxrSpeed = .4;
+        this.maxrSpeed = .5;
 
         this.note = new Sound(audioContext);
         this.freqVal = 220 + (eid*128);
         // this.freqVal =  220*rSpeed; //in this case freq changes on rSpeed
-        console.log("eid :::"+this.eid); //undefined???
+        // console.log("eid :::"+this.eid); //undefined???
         console.log("freqVal is:::"+this.freqVal); //not a number???
 
-        // display
+        // display (press affects RGB)
         this.display = function(){
 
           if(this.isPressed === true) {
@@ -198,10 +198,10 @@
     }
 
     this.hitTestOver = function(){
-      let freqOffsetX  = event.clientX;
+      // let freqOffsetX  = event.clientX;
 
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
-        // console.log("rect over::: "+this.eID);
+        console.log("rect over::: "+this.eID);
         this.isOver = true;
       }
       else{
