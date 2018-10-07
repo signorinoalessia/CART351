@@ -23,13 +23,12 @@
     context.canvas.width  = window.innerWidth;
     context.canvas.height = window.innerHeight;
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-    // let distortion = audioCtx.createWaveShaper(); commented out for now (will use speed to change value)
+    let distortion = audioCtx.createWaveShaper(); // (will use press to change value)
 
     //Empty array of crosses
     let shapeList = [];
-    const NUM_SHAPES = 120;
-    let colors = ["#2988BC","2F496E","ED8C72"]; // to dlt later
+    const NUM_SHAPES = 40;
+    let colors = ["#2988BC","2F496E","ED8C72"]; //to try add diff colors or dlt later
 
     //Max and Min values for valClamp
     let min = -21050;
