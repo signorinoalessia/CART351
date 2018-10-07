@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>EXERCISE 02</title>
+<title>ASSIGNMENT 2 - MASHA/ALESSIA</title>
 <style>
   body {
     margin: 0;
@@ -30,6 +30,7 @@
     let shapeList = [];
     const NUM_SHAPES = 40;
     let colors = ["#2988BC","2F496E","ED8C72"]; // to dlt later
+    let noteList = [];
 
     //Max and Min values for valClamp
     let min = -21050;
@@ -43,7 +44,7 @@
         }
     });
 
-    canvas.addEventListener("mouseover", function(event){
+    canvas.addEventListener("mousemove", function(event){
         console.log("canvas mouse over");
     //Collision detection function
         for(let i=0; i<NUM_SHAPES; i++){
@@ -94,7 +95,7 @@
         this.g = g;
         this.b = b;
         this.a = a;
-        this.c = c; // to delete later
+        // this.c = c; // to delete later
 
         this.eID = eid;
         this.isOver = false; // for freqVal
