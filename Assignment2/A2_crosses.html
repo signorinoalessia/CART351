@@ -26,7 +26,7 @@
 
     //Empty array of crosses
     let shapeList = [];
-    const NUM_SHAPES = 30;
+    const NUM_SHAPES = 10;
     let colors = ["#2988BC","2F496E","ED8C72"]; //to try add diff colors or dlt later
 
     //Max and Min values for valClamp
@@ -212,9 +212,11 @@
     this.playDistortionIfPressed = function(){
       if(this.isPressed === true){
         let now = audioContext.currentTime;
+        this.note.offsetDuration = 3;
         console.log("inside playDistortionIfPressed");
-        this.note.distPlay(400, now);
-        console.log("playDistortionIfPressed! freqVal is:"+this.freqVal);
+        this.note.filter(clampedVal,now);
+        console.log("FILTERED clampedVal :::: "+clampedVal);
+        // console.log("freqVal is:"+this.freqVal);
       }
     }
 
@@ -264,27 +266,26 @@
 
       // setting up the various audio nodes that will be used
       this.oscillator = this.context.createOscillator();
-      this.distortion = this.context.createWaveShaper();
+      // this.distortion = this.context.createWaveShaper();
       // this.analyser = this.context.createAnalyser();
-      // this.biquadFilter = this.context.createBiquadFilter();
+      this.biquadFilter = this.context.createBiquadFilter();
 
        //for volume
       this.gainNode = this.context.createGain();
-      this.distortionGainNode = this.context.createGain();
+      // this.distortionGainNode = this.context.createGain();
 
+      this.oscillator.connect(this.biquadFilter);
       //connecting oscillator and distortion to gainNode to speakers
       this.oscillator.connect(this.gainNode);
+      this.biquadFilter.connect(this.gainNode);
       this.gainNode.connect(this.context.destination);
-      this.distortion.connect(this.distortionGainNode);
-      this.distortionGainNode.connect(this.context.destination);
+      // this.distortion.connect(this.distortionGainNode);
+      // this.distortionGainNode.connect(this.context.destination);
       // this.analyser.connect(this.analyser);
 
       this.oscillator.type = 'sawtooth';
+      this.biquadFilter.type = 'lowpass';
 
-      // affect biquad filter
-      // this.biquadFilter.type = "lowshelf";
-      // this.biquadFilter.frequency.setValueAtTime(1000, this.context.currentTime);
-      // this.biquadFilter.gain.setValueAtTime(25, this.context.currentTime);
     }
 
     this.play = function (value, time) {
@@ -294,10 +295,17 @@
       //set gain
       this.gainNode.gain.setValueAtTime(1, this.context.currentTime);
       this.oscillator.start(time);
-
       // How LONG should duration of note be?
       this.stop(time+this.offsetDuration);
     } // end of play
+
+    this.filter = function (value,time) {
+      this.init();
+      this.biquadFilter.frequency.value = value;
+      this.biquadFilter.frequency.setValueAtTime(1000, this.context.currentTime);
+      this.biquadFilter.gain.setValueAtTime(25, this.context.currentTime);
+      console.log("FILTER method");
+    }
 
 //to delete
     // this.distPlay = function(value, time) {
@@ -319,6 +327,7 @@
 //       this.distortion.stop(time + 0);
 //     }
 
+    // Kevin Ennis http://stackoverflow.com/questions/22312841/waveshaper-node-in-webaudio-how-to-emulate-distortion
     // distortion, d is type of amount, if amount is a number, give amount, else put 50
     this.makeDistortionCurve = function (amount) {
       console.log("inside makeDistortionCurve");
