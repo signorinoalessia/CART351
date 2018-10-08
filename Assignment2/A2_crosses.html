@@ -211,9 +211,9 @@
 
     this.playDistortionIfPressed = function(){
       if(this.isPressed === true){
+        let now = audioContext.currentTime;
         console.log("inside playDistortionIfPressed");
-        this.distortion.curve = makeDistortionCurve(400);
-        this.distortion.oversample = '4x';
+        this.note.distPlay(400, now);
         console.log("playDistortionIfPressed! freqVal is:"+this.freqVal);
       }
     }
@@ -254,52 +254,37 @@
      return value <= min ? min : value >= max ? max : value;
   }
 
-  // // distortion, d is type of amount, if amount is a number, give amount, else put 50
-  // function makeDistortionCurve(amount) {
-  //   console.log("inside makeDistortionCurve");
-  //   let d = typeof amount === 'number' ? amount : 50,
-  //   n_samples = 44100,
-  //   curve = new Float32Array(n_samples),
-  //   deg = Math.PI/180,
-  //   i=0,
-  //   x;
-  //   for (;i<n_samples;++i) {
-  //     x=i*2/n_samples-1;
-  //     curve[i] = (3+d)*x*20*deg/(Math.PI+d*Math.abs(x));
-  //   }
-  //   return curve;
-  // };
-
   /*** class for sound inspired and copy-lefted from::
   https://css-tricks.com/introduction-web-audio-api/*/
   function Sound (context) {
     this.context = context;
-    this.offsetDuration =0;
+    this.offsetDuration =2;
 
     this.init =function () {
 
       // setting up the various audio nodes that will be used
       this.oscillator = this.context.createOscillator();
-      // this.analyser = this.context.createAnalyser();
       this.distortion = this.context.createWaveShaper();
-      this.biquadFilter = this.context.createBiquadFilter();
+      // this.analyser = this.context.createAnalyser();
+      // this.biquadFilter = this.context.createBiquadFilter();
 
        //for volume
       this.gainNode = this.context.createGain();
       this.distortionGainNode = this.context.createGain();
 
-      //connecting oscillator to gainNode to speakers
+      //connecting oscillator and distortion to gainNode to speakers
       this.oscillator.connect(this.gainNode);
-      // this.analyser.connect(this.analyser);
-      this.distortionGainNode.connect(this.distortion);
       this.gainNode.connect(this.context.destination);
+      this.distortion.connect(this.distortionGainNode);
+      this.distortionGainNode.connect(this.context.destination);
+      // this.analyser.connect(this.analyser);
 
       this.oscillator.type = 'sawtooth';
 
       // affect biquad filter
-      this.biquadFilter.type = "lowshelf";
-      this.biquadFilter.frequency.setValueAtTime(1000, this.context.currentTime);
-      this.biquadFilter.gain.setValueAtTime(25, this.context.currentTime);
+      // this.biquadFilter.type = "lowshelf";
+      // this.biquadFilter.frequency.setValueAtTime(1000, this.context.currentTime);
+      // this.biquadFilter.gain.setValueAtTime(25, this.context.currentTime);
     }
 
     this.play = function (value, time) {
@@ -309,15 +294,30 @@
       //set gain
       this.gainNode.gain.setValueAtTime(1, this.context.currentTime);
       this.oscillator.start(time);
+
       // How LONG should duration of note be?
       this.stop(time+this.offsetDuration);
-    }
+    } // end of play
+
+//to delete
+    // this.distPlay = function(value, time) {
+    //   console.log("inside distPlay");
+    //   this.distortion.curve = makeDistortionCurve(400);
+    //   this.distortion.oversample = '4x';
+    //   this.stop(time+this.offsetDuration);
+    // }
 
     this.stop = function(time) {
       // gradual change in value
       this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
       this.oscillator.stop(time + 0);
     }
+
+// // to delete
+//     this.distStop = function(time) {
+//       this.distortionGainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
+//       this.distortion.stop(time + 0);
+//     }
 
     // distortion, d is type of amount, if amount is a number, give amount, else put 50
     this.makeDistortionCurve = function (amount) {
