@@ -214,6 +214,7 @@
         let now = audioContext.currentTime;
         this.note.offsetDuration = 3;
         console.log("inside playDistortionIfPressed");
+        clampedVal = valClamp(this.freqVal);
         this.note.filter(clampedVal,now);
         console.log("FILTERED clampedVal :::: "+clampedVal);
         // console.log("freqVal is:"+this.freqVal);
@@ -302,8 +303,8 @@
     this.filter = function (value,time) {
       this.init();
       this.biquadFilter.frequency.value = value;
-      this.biquadFilter.frequency.setValueAtTime(1000, this.context.currentTime);
-      this.biquadFilter.gain.setValueAtTime(25, this.context.currentTime);
+      this.biquadFilter.frequency.setValueAtTime(100, this.context.currentTime);
+      // this.biquadFilter.gain.setValueAtTime(25, this.context.currentTime);
       console.log("FILTER method");
     }
 
