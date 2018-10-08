@@ -24,7 +24,6 @@
     context.canvas.height = window.innerHeight;
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-
     //Empty array of crosses
     let shapeList = [];
     const NUM_SHAPES = 30;
@@ -36,7 +35,7 @@
 
    //Event listeners for click & hover
     canvas.addEventListener("mousedown", function(event){
-    	console.log("canvas mouse clicked");
+    	// console.log("canvas mouse clicked");
         for(let i=0; i<NUM_SHAPES; i++){
           shapeList[i].hitTest(event);
         }
@@ -118,7 +117,7 @@
         this.note = new Sound(audioContext);
         this.freqVal = 220 + (eid*128);
         // this.freqVal =  220*rSpeed; //in this case freq changes on rSpeed
-        console.log("freqVal is:::"+this.freqVal);
+        // console.log("freqVal is:::"+this.freqVal);
 
         // display (press affects RGB)
         this.display = function(){
@@ -212,9 +211,10 @@
 
     this.playDistortionIfPressed = function(){
       if(this.isPressed === true){
+        console.log("inside playDistortionIfPressed");
         this.distortion.curve = makeDistortionCurve(400);
         this.distortion.oversample = '4x';
-        console.log("DISTORTED! freqVal is:"+this.freqVal);
+        console.log("playDistortionIfPressed! freqVal is:"+this.freqVal);
       }
     }
 
@@ -254,20 +254,21 @@
      return value <= min ? min : value >= max ? max : value;
   }
 
-  // distortion, d is type of amount, if amount is a number, give amount, else put 50
-  function makeDistortionCurve(amount) {
-    let d = typeof amount === 'number' ? amount : 50,
-    n_samples = 44100,
-    curve = new Float32Array(n_samples),
-    deg = Math.PI/180,
-    i=0,
-    x;
-    for (;i<n_samples;++i) {
-      x=i*2/n_samples-1;
-      curve[i] = (3+d)*x*20*deg/(Math.PI+d*Math.abs(x));
-    }
-    return curve;
-  };
+  // // distortion, d is type of amount, if amount is a number, give amount, else put 50
+  // function makeDistortionCurve(amount) {
+  //   console.log("inside makeDistortionCurve");
+  //   let d = typeof amount === 'number' ? amount : 50,
+  //   n_samples = 44100,
+  //   curve = new Float32Array(n_samples),
+  //   deg = Math.PI/180,
+  //   i=0,
+  //   x;
+  //   for (;i<n_samples;++i) {
+  //     x=i*2/n_samples-1;
+  //     curve[i] = (3+d)*x*20*deg/(Math.PI+d*Math.abs(x));
+  //   }
+  //   return curve;
+  // };
 
   /*** class for sound inspired and copy-lefted from::
   https://css-tricks.com/introduction-web-audio-api/*/
@@ -317,6 +318,22 @@
       this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
       this.oscillator.stop(time + 0);
     }
+
+    // distortion, d is type of amount, if amount is a number, give amount, else put 50
+    this.makeDistortionCurve = function (amount) {
+      console.log("inside makeDistortionCurve");
+      let d = typeof amount === 'number' ? amount : 50,
+      n_samples = 44100,
+      curve = new Float32Array(n_samples),
+      deg = Math.PI/180,
+      i=0,
+      x;
+      for (;i<this.n_samples;++i) {
+        x=i*2/this.n_samples-1;
+        this.curve[i] = (3+d)*x*20*deg/(Math.PI+d*Math.abs(x));
+      }
+      return this.curve;
+    };
 
   }   //end Sound object
 
