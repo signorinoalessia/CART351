@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ASSIGNMENT 2 - MASHA/ALESSIA</title>
+<title>ASSIGNMENT 2 - MARIA/ALESSIA</title>
 <style>
   body {
     margin: 0;
@@ -23,11 +23,11 @@
     context.canvas.width  = window.innerWidth;
     context.canvas.height = window.innerHeight;
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    let distortion = audioContext.createWaveShaper(); // (will use press to change value)
+
 
     //Empty array of crosses
     let shapeList = [];
-    const NUM_SHAPES = 40;
+    const NUM_SHAPES = 30;
     let colors = ["#2988BC","2F496E","ED8C72"]; //to try add diff colors or dlt later
 
     //Max and Min values for valClamp
@@ -212,8 +212,8 @@
 
     this.playDistortionIfPressed = function(){
       if(this.isPressed === true){
-        distortion.curve = makeDistortionCurve(400);
-        distortion.oversample = '4x';
+        this.distortion.curve = makeDistortionCurve(400);
+        this.distortion.oversample = '4x';
         console.log("DISTORTED! freqVal is:"+this.freqVal);
       }
     }
@@ -254,8 +254,9 @@
      return value <= min ? min : value >= max ? max : value;
   }
 
+  // distortion, k is type of amount, if amount is a number, give amount, else put 50
   function makeDistortionCurve(amount) {
-    let k = typeof amount === 'number' ? amount : 50,
+    let d = typeof amount === 'number' ? amount : 50,
     n_samples = 44100,
     curve = new Float32Array(n_samples),
     deg = Math.PI/180,
@@ -263,7 +264,7 @@
     x;
     for (;i<n_samples;++i) {
       x=i*2/n_samples-1;
-      curve[i] = (3+k)*x*20*deg/(Math.PI+k*Math.abs(x));
+      curve[i] = (3+d)*x*20*deg/(Math.PI+d*Math.abs(x));
     }
     return curve;
   };
@@ -275,13 +276,26 @@
     this.offsetDuration =0;
 
     this.init =function () {
-    this.oscillator = this.context.createOscillator();
-    //for volume
-    this.gainNode = this.context.createGain();
 
-    this.oscillator.connect(this.gainNode);
+    // setting up the various audio nodes that will be used
+    this.oscillator = this.context.createOscillator();
+    this.analyser = this.context.createAnalyser();
+    this.distortion = this.context.createWaveShaper();
+    this.biquadFilter = this.context.createBiquadFilter();
+    this.gainNode = this.context.createGain(); //for volume
+
+    //connecting oscillator to gainNode to speakers
+    this.oscillator.connect(this.distortion);
+    this.analyser.connect(this.analyser);
+    this.distortion.connect(this.gainNode);
     this.gainNode.connect(this.context.destination);
-    this.oscillator.type = 'sine';
+
+    this.oscillator.type = 'sawtooth';
+
+    // affect biquad filter
+    this.biquadFilter.type = "lowshelf";
+    this.biquadFilter.frequency.setValueAtTime(1000, this.context.currentTime);
+    this.biquadFilter.gain.setValueAtTime(25, this.context.currentTime);
   }
 
   this.play = function (value, time) {
@@ -290,11 +304,9 @@
     this.oscillator.frequency.value = value;
     //set gain
     this.gainNode.gain.setValueAtTime(1, this.context.currentTime);
-
     this.oscillator.start(time);
     // How LONG should duration of note be?
     this.stop(time+this.offsetDuration);
-
   }
 
   this.stop = function(time) {
@@ -302,6 +314,7 @@
     this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
     this.oscillator.stop(time + 0);
     }
+
   }   //end Sound object
 
 } // end of window load
@@ -309,6 +322,6 @@
 
 </head>
 <body>
-  <canvas id="testCanvas" width="1000" height="800"></canvas>
+  <canvas id="testCanvas"></canvas>
 </body>
 </html>
