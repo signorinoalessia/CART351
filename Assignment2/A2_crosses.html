@@ -245,7 +245,7 @@
           this.rSpeed += 0.001;
         }
       }
-      else if(this.isOver ===false && this.rSpeed > 0){
+      else if((this.isOver ===false || zoneOut === true) && this.rSpeed > 0){
         this.rSpeed-=0.001;
       }
 			this.theta += this.rSpeed;
@@ -508,7 +508,7 @@
       	square = true;
       }
     } else {
-        this.color = color;	
+        this.color = color;
     }
   } // end hitTestdown for button
 } //end pushyButton
