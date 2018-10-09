@@ -47,7 +47,7 @@
         }
     });
 
-// When cursor is outside canvas, rotation stops
+// When cursor is outside canvas, rotation stops //TO ADD!!!! *****
     canvas.onmouseout = function() {
         console.log("Ooopsey");
         zoneOut = true;
@@ -215,6 +215,7 @@
           context.translate(this.x, this.y);
           context.rotate(this.theta);
 
+// ***** ALESSIA: havent added zoneOut yet *****
           if(zoneOut === false && this.isOver ===true && this.rSpeed <= this.maxrSpeed) {
           	if(this.rSpeed < .1) {
           		this.rSpeed = .1;
