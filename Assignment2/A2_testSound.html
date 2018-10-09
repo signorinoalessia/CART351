@@ -22,34 +22,40 @@
     context.canvas.width  = window.innerWidth;
     context.canvas.height = window.innerHeight;
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
     //Empty array of crosses
     let shapeList = [];
-    const NUM_SHAPES = 30;
+    const NUM_SHAPES = 4;
     let colors = ["#2988BC","2F496E","ED8C72"]; //to try add diff colors or dlt later
+
     //Max and Min values for valClamp
-    let min = -21050;
-    let max = 21050;
+    let min = -1500; //-21050
+    let max = 1500; //21050
+
    //Event listeners for click & hover
     canvas.addEventListener("mousedown", function(event){
     	// console.log("canvas mouse clicked");
-        for(let i=0; i<NUM_SHAPES; i++){
-          shapeList[i].hitTest(event);
-        }
+      for(let i=0; i<NUM_SHAPES; i++){
+        shapeList[i].hitTest(event);
+      }
+    });
+    canvas.addEventListener("mouseup", function(event) {
+      for(let i=0; i<NUM_SHAPES; i++){
+        shapeList[i].hitTest(event);
+      }
     });
     canvas.addEventListener("mouseover", function(event){
-        // console.log("canvas mouse over");
-    //Collision detection function
-        for(let i=0; i<NUM_SHAPES; i++){
-          shapeList[i].hitTestOver(event);
-        }
+      // console.log("canvas mouse over");
+      for(let i=0; i<NUM_SHAPES; i++){
+        shapeList[i].hitTestOver(event);
+      }
     });
     // added SABINE -> if was over and now mouse moves ensure that is still over
     canvas.addEventListener("mousemove", function(event){
-        // console.log("canvas mouse over");
-    //Collision detection function
-        for(let i=0; i<NUM_SHAPES; i++){
-          shapeList[i].hitTestMove(event);
-        }
+      // console.log("canvas mouse over");
+      for(let i=0; i<NUM_SHAPES; i++){
+        shapeList[i].hitTestMove(event);
+      }
     });
     // generate shapes (push into array)
     for(let i=0; i<NUM_SHAPES; i++){
@@ -103,6 +109,7 @@
         this.maxrSpeed = .5;
         this.note = new Sound(audioContext);
         this.freqVal = 220 + (eid*128);
+        this.clampedVal =0;
         // this.freqVal =  220*rSpeed; //in this case freq changes on rSpeed
         // console.log("freqVal is:::"+this.freqVal);
         // display (press affects RGB)
@@ -177,19 +184,20 @@
       if(this.isOver === true){
         let now = audioContext.currentTime;
         this.note.offsetDuration = 3;
-        clampedVal = valClamp(this.freqVal);
-        this.note.play(clampedVal, now);
-        // console.log("clampedVal:::"+clampedVal);
+        this.clampedVal = valClamp(this.freqVal);
+        this.note.play(this.clampedVal, now);
+
+        // console.log("playing");
+        console.log("freqVal"+this.clampedVal);
       }
     }
     this.playDistortionIfPressed = function(){
       if(this.isPressed === true){
-        console.log("inside playDistortionIfPressed");
-        this.distortion.curve = makeDistortionCurve(400);
-        this.distortion.oversample = '4x';
-        clampedVal = (valClamp(this.freqVal)*this.distortion.curve);
-        console.log("playDistortionIfPressed! freqVal is:"+this.freqVal);
-        this.note.play(clampedVal,now);
+        let now = audioContext.currentTime;
+        // console.log("inside playDistortionIfPressed");
+        this.clampedVal = valClamp(this.freqVal);
+        this.note.filterPlay(this.clampedVal,now); // biquad filter
+        console.log("FILTERED freqVal "+this.clampedVal);
       }
     }
     // callback functions for mouse click, over and move
@@ -197,7 +205,9 @@
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w){
         // console.log("rect pressed::: "+this.eID);
         console.log("PRESSED!")
-        this.isPressed = !this.isPressed;
+        // store freqVal before pressdown
+        this.freqVal = this.freqVal+(event.clientX/100);
+        this.isPressed = true;
       }
     } // end of hitTest
     this.hitTestOver = function(event){
@@ -220,26 +230,12 @@
       }
     } // end of hitTestMove callback
   } // end of custom object
-  // Clamp value to a range (freqVal)
-  // if value is larger than min / smaller than max, then return value, else return min/max
+
+  // Clamp value to a range (freqVal) ternary operator
   function valClamp(value) {
      return value <= min ? min : value >= max ? max : value;
   }
-  // // distortion, d is type of amount, if amount is a number, give amount, else put 50
-  // function makeDistortionCurve(amount) {
-  //   console.log("inside makeDistortionCurve");
-  //   let d = typeof amount === 'number' ? amount : 50,
-  //   n_samples = 44100,
-  //   curve = new Float32Array(n_samples),
-  //   deg = Math.PI/180,
-  //   i=0,
-  //   x;
-  //   for (;i<n_samples;++i) {
-  //     x=i*2/n_samples-1;
-  //     curve[i] = (3+d)*x*20*deg/(Math.PI+d*Math.abs(x));
-  //   }
-  //   return curve;
-  // };
+
   /*** class for sound inspired and copy-lefted from::
   https://css-tricks.com/introduction-web-audio-api/*/
   function Sound (context) {
@@ -248,27 +244,26 @@
     this.init =function () {
       // setting up the various audio nodes that will be used
       this.oscillator = this.context.createOscillator();
-      this.distortion = this.context.createWaveShaper();
-      this.biquadFilter = this.context.createBiquadFilter();
        //for volume
       this.gainNode = this.context.createGain();
       //connecting oscillator to gainNode to speakers
       this.oscillator.connect(this.gainNode);
       this.gainNode.connect(this.context.destination);
       this.oscillator.type = 'sawtooth';
+    }
 
-      // distortion
-      this.distortionGainNode = this.context.createGain();
-      this.distortion.connect(this.distortionGainNode);
-      this.distortionGainNode.connect(this.context.destination);
-
+    this.filterInit = function() {
+      // setting up the various audio nodes that will be used
+    //  this.oscillator = this.context.createOscillator();
       // biQuad filter
+      this.biquadFilter = this.context.createBiquadFilter();
       this.oscillator.connect(this.biquadFilter);
       this.biquadFilter.connect(this.gainNode);
       this.biquadFilter.type = 'lowpass';
       this.biquadFilter.frequency.setValueAtTime(1000, this.context.currentTime);
       this.biquadFilter.gain.setValueAtTime(25, this.context.currentTime);
     }
+
     this.play = function (value, time) {
       this.init();
       // console.log(value);
@@ -279,45 +274,28 @@
       // How LONG should duration of note be?
       this.stop(time+this.offsetDuration);
     }
+
     this.stop = function(time) {
       // gradual change in value
       this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
+      // this.biquadFilter.stop(time+0);
       this.oscillator.stop(time + 0);
     }
     // biQuad filter
-    this.filter = function (value,time) {
-      this.init();
+    this.filterPlay = function (value,time) {
+      // console.log("inside filterPlay");
+      this.filterInit();
       this.biquadFilter.frequency.value = value;
-      this.biquadFilter.frequency.setValueAtTime(100, this.context.currentTime);
-      // this.biquadFilter.gain.setValueAtTime(25, this.context.currentTime);
-      console.log("FILTER method");
-    }
-    // ** distortion with waveShaper **
-    this.distPlay = function(value, time) {
-      console.log("inside distPlay");
-      this.distortion.curve = makeDistortionCurve(400);
-      this.distortion.oversample = '4x';
+      this.biquadFilter.frequency.setValueAtTime(50, this.context.currentTime);
+      console.log("SABINE:: "+this.biquadFilter.frequency.value);
       this.stop(time+this.offsetDuration);
     }
-    this.distStop = function(time) {
-      this.distortionGainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
-      this.distortion.stop(time + 0);
-    }
-    // distortion, d is type of amount, if amount is a number, give amount, else put 50
-    this.makeDistortionCurve = function (amount) {
-      console.log("inside makeDistortionCurve");
-      let d = typeof amount === 'number' ? amount : 50,
-      n_samples = 44100,
-      curve = new Float32Array(n_samples),
-      deg = Math.PI/180,
-      i=0,
-      x;
-      for (;i<this.n_samples;++i) {
-        x=i*2/this.n_samples-1;
-        this.curve[i] = (3+d)*x*20*deg/(Math.PI+d*Math.abs(x));
-      }
-      return this.curve;
-    };
+    // this.filterStop = function(time) {
+    //   // console.log("inside filterStop");
+    //   this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
+    //   this.biquadFilter.filterStop(time + 0);
+    // }
+
   }   //end Sound object
 } // end of window load
 </script>
