@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ASSIGNMENT 2 - MARIA/ALESSIA</title>
+<title>ASSIGNMENT 2 - MASHA/ALESSIA</title>
 <style>
   body {
     margin: 0;
@@ -25,7 +25,7 @@
 
     //Empty array of crosses
     let shapeList = [];
-    const NUM_SHAPES = 4;
+    const NUM_SHAPES = 30;
     let colors = ["#2988BC","2F496E","ED8C72"]; //to try add diff colors or dlt later
 
     //Max and Min values for valClamp
@@ -41,7 +41,7 @@
     });
     canvas.addEventListener("mouseup", function(event) {
       for(let i=0; i<NUM_SHAPES; i++){
-        shapeList[i].hitTest(event);
+        shapeList[i].hitTestUp(event);
       }
     });
     canvas.addEventListener("mouseover", function(event){
@@ -71,7 +71,6 @@
       let xx = x + w/2 - h/2;
       let yy = y - w/2 + h/2;
       shapeList.push(new CustomShape(x,y,xx,yy,w,h,r,g,b,a,i,(i%6)+2));
-      // shapeList.push(new CustomShape(x,y,xx,yy,w,h,r,g,b,a,colors[NUM_SHAPES%colors.length],i,(i%6)+2));
     }
     // recursive animation function
     requestAnimationFrame(run);
@@ -109,9 +108,9 @@
         this.maxrSpeed = .5;
         this.note = new Sound(audioContext);
         this.freqVal = 220 + (eid*128);
-        this.clampedVal =0;
-        // this.freqVal =  220*rSpeed; //in this case freq changes on rSpeed
-        // console.log("freqVal is:::"+this.freqVal);
+        this.clampedVal = 0;
+        this.tempFreqVal = 0;
+
         // display (press affects RGB)
         this.display = function(){
           if(this.isPressed === true) {
@@ -181,7 +180,7 @@
     } // end of display function
     this.playSoundIfOver = function(){
       // Sound will happen if mouse is over
-      if(this.isOver === true){
+      if(this.isOver === true && this.isPressed === false){
         let now = audioContext.currentTime;
         this.note.offsetDuration = 3;
         this.clampedVal = valClamp(this.freqVal);
@@ -194,6 +193,9 @@
     this.playDistortionIfPressed = function(){
       if(this.isPressed === true){
         let now = audioContext.currentTime;
+        // c=a,a=b,b=c:
+        //store old freqVal,
+        this.freqVal = this.tempFreqVal;
         // console.log("inside playDistortionIfPressed");
         this.clampedVal = valClamp(this.freqVal);
         this.note.filterPlay(this.clampedVal,now); // biquad filter
@@ -206,25 +208,32 @@
         // console.log("rect pressed::: "+this.eID);
         console.log("PRESSED!")
         // store freqVal before pressdown
+        this.tempFreqVal =this.freqVal;
         this.freqVal = this.freqVal+(event.clientX/100);
         this.isPressed = true;
       }
     } // end of hitTest
+    this.hitTestUp = function(event){
+        console.log("mouse up");
+        this.isPressed = false;
+        // put back old tempFreqVal
+        this.freqVal = this.tempFreqVal;
+
+    }
     this.hitTestOver = function(event){
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
         // console.log("EID, rect over::: "+this.eID);
         this.isOver = true;
         //update the freq val
-        this.freqVal = this.freqVal+(event.clientX/100);
+        this.freqVal = this.freqVal+(event.clientX/146.8); //D3,
       }
     } // end of hitTestOver
     //SABINE:: ADDED
     this.hitTestMove = function(event){
       if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.w*2){
-        // console.log("EID, rect over::: "+this.eID);
         this.isOver = true;
         //update the freq val
-        this.freqVal = this.freqVal+(event.clientX/100);
+        this.freqVal = this.freqVal+(event.clientX/146.8); //C4, aka middle C
       } else {
           this.isOver = false;
       }
@@ -236,26 +245,30 @@
      return value <= min ? min : value >= max ? max : value;
   }
 
+  // c=a,a=b,b=c:
+  function setPreviousValue(tempValue){
+    previous = tempValue;
+  }
+
   /*** class for sound inspired and copy-lefted from::
   https://css-tricks.com/introduction-web-audio-api/*/
   function Sound (context) {
     this.context = context;
     this.offsetDuration =0;
+
+    // init oscillator
     this.init =function () {
-      // setting up the various audio nodes that will be used
       this.oscillator = this.context.createOscillator();
-       //for volume
-      this.gainNode = this.context.createGain();
       //connecting oscillator to gainNode to speakers
+      this.gainNode = this.context.createGain();
       this.oscillator.connect(this.gainNode);
       this.gainNode.connect(this.context.destination);
       this.oscillator.type = 'sawtooth';
     }
 
+    // initialize properties for biquad filter
     this.filterInit = function() {
-      // setting up the various audio nodes that will be used
     //  this.oscillator = this.context.createOscillator();
-      // biQuad filter
       this.biquadFilter = this.context.createBiquadFilter();
       this.oscillator.connect(this.biquadFilter);
       this.biquadFilter.connect(this.gainNode);
@@ -281,20 +294,15 @@
       // this.biquadFilter.stop(time+0);
       this.oscillator.stop(time + 0);
     }
-    // biQuad filter
+
     this.filterPlay = function (value,time) {
       // console.log("inside filterPlay");
       this.filterInit();
       this.biquadFilter.frequency.value = value;
-      this.biquadFilter.frequency.setValueAtTime(50, this.context.currentTime);
+      this.biquadFilter.frequency.setValueAtTime(1, this.context.currentTime);
       console.log("SABINE:: "+this.biquadFilter.frequency.value);
       this.stop(time+this.offsetDuration);
     }
-    // this.filterStop = function(time) {
-    //   // console.log("inside filterStop");
-    //   this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
-    //   this.biquadFilter.filterStop(time + 0);
-    // }
 
   }   //end Sound object
 } // end of window load
