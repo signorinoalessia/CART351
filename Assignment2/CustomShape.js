@@ -1,8 +1,9 @@
-// Cross Object
-// function CustomShape(x,y,xx,yy,w,h,r,g,b,a,c,eid,rSpeed){
+// Custom Object for Assignment 2
+// ASSIGNMENT 2 BY MASHA KROTKYKH & ALESSIA SIGNORINO
 
+// linking context from main program
 canvas = document.getElementById("testCanvas");
- context = canvas.getContext("2d");
+context = canvas.getContext("2d");
 audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 function CustomShape(x,y,size,size,r,g,b,a,c,eid,rSpeed){
@@ -27,12 +28,10 @@ function CustomShape(x,y,size,size,r,g,b,a,c,eid,rSpeed){
     this.rSpeed = 0;
     this.maxrSpeed = .5;
 
-
     this.note = new Sound(this.audioContext);
     this.freqVal = 220 + (eid*128);
     this.clampedVal = 0;
     this.tempFreqVal = 0;
-
 
     // display (press affects RGB)
     this.display = function(){
@@ -79,16 +78,15 @@ function CustomShape(x,y,size,size,r,g,b,a,c,eid,rSpeed){
       }
 
   // Fill color and stroke
-//  this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
  this.col = "rgba("+(250-this.r)+","+(250-this.g)+","+(250-this.b)+","+this.a+")";
-context.fillStyle = this.col;
-  this.stroke = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
-  context.strokeStyle = this.stroke;
+ context.fillStyle = this.col;
+ this.stroke = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+ context.strokeStyle = this.stroke;
 
   // Rotation
-    context.save();
-    context.translate(this.x, this.y);
-    context.rotate(this.theta);
+  context.save();
+  context.translate(this.x, this.y);
+  context.rotate(this.theta);
 
   // Speed dependent on hover
   if(this.isOver ===true && this.rSpeed <= this.maxrSpeed) {
@@ -109,18 +107,18 @@ context.fillStyle = this.col;
     square = false;
     circle = false;
 
-      context.beginPath();
-      context.moveTo(-this.size*3, 0);
-      context.lineTo(this.size*3, 0);
-      context.lineWidth = this.size/20;
-      context.stroke();
-      context.closePath();
+    context.beginPath();
+    context.moveTo(-this.size*3, 0);
+    context.lineTo(this.size*3, 0);
+    context.lineWidth = this.size/10;
+    context.stroke();
+    context.closePath();
 
-      context.beginPath();
-      context.moveTo(0, -this.size*3);
-      context.lineTo(0, this.size*3);
+    context.beginPath();
+    context.moveTo(0, -this.size*3);
+    context.lineTo(0, this.size*3);
 
-      context.lineWidth = this.size/20;
+    context.lineWidth = this.size/10;
     context.stroke();
   } // end of CROSSES
 
@@ -128,41 +126,40 @@ context.fillStyle = this.col;
   else if(circle === true) {
     square = false;
     cross = false;
-      context.beginPath();
-      context.arc(this.size/3,this.size/3,this.size/2,0,2*Math.PI);
-      context.lineWidth = this.size/20;
-      context.stroke();
+    context.beginPath();
+    context.arc(this.size/3,this.size/3,this.size/2,0,2*Math.PI);
+    context.lineWidth = this.size/20;
+    context.stroke();
   } // end of CIRCLES
 
   // If "3" is pressed, generate SQUARES
   else if(square === true) {
-     cross = false;
-     circle = false;
-     let step = this.size/7;
-       context.fillRect(-this.size/2-step, -this.size/2-step, this.size+step*2, this.size+step*2);
+    cross = false;
+    circle = false;
+    let step = this.size/7;
+    context.fillRect(-this.size/2-step, -this.size/2-step, this.size+step*2, this.size+step*2);
 
     //draw spiral inside squares
-      context.beginPath();
+    context.beginPath();
     context.moveTo(-this.size/2, -this.size/2);
-      context.lineTo(this.size/2, -this.size/2);
-      context.lineTo(this.size/2, this.size/2);
-      context.lineTo(-this.size/2, this.size/2);
-      context.lineTo(-this.size/2, -this.size/2+step);
-      context.lineTo(this.size/2 - step, -this.size/2+step);
-      context.lineTo(this.size/2 - step, this.size/2-step);
-      context.lineTo(-this.size/2 + step, this.size/2-step);
-      context.lineTo(-this.size/2 + step, -this.size/2+step*2);
-      context.lineTo(this.size/2 - step*2, -this.size/2+step*2);
-      context.lineTo(this.size/2 - step*2, this.size/2-step*2);
+    context.lineTo(this.size/2, -this.size/2);
+    context.lineTo(this.size/2, this.size/2);
+    context.lineTo(-this.size/2, this.size/2);
+    context.lineTo(-this.size/2, -this.size/2+step);
+    context.lineTo(this.size/2 - step, -this.size/2+step);
+    context.lineTo(this.size/2 - step, this.size/2-step);
+    context.lineTo(-this.size/2 + step, this.size/2-step);
+    context.lineTo(-this.size/2 + step, -this.size/2+step*2);
+    context.lineTo(this.size/2 - step*2, -this.size/2+step*2);
+    context.lineTo(this.size/2 - step*2, this.size/2-step*2);
     context.lineTo(-this.size/2 + step*2, this.size/2-step*2);
-      context.lineTo(-this.size/2 + step*2, -this.size/2+step*3);
-      context.lineTo(this.size/2 - step*3, -this.size/2+step*3);
-      context.lineTo(this.size/2 - step*3, this.size/2-step*3);
-      context.lineTo(-this.size/2 + step*3, this.size/2-step*3);
-      context.lineTo(-this.size/2 + step*3, -this.size/2+step*4);
-      context.lineWidth = this.size/40;
-      context.stroke();
-
+    context.lineTo(-this.size/2 + step*2, -this.size/2+step*3);
+    context.lineTo(this.size/2 - step*3, -this.size/2+step*3);
+    context.lineTo(this.size/2 - step*3, this.size/2-step*3);
+    context.lineTo(-this.size/2 + step*3, this.size/2-step*3);
+    context.lineTo(-this.size/2 + step*3, -this.size/2+step*4);
+    context.lineWidth = this.size/40;
+    context.stroke();
   } // end of SQUARES
 
     context.restore();
@@ -176,41 +173,38 @@ this.playSoundIfOver = function(){
     this.note.offsetDuration = 3;
     this.clampedVal = valClamp(this.freqVal);
     this.note.play(this.clampedVal, now);
-
-    // console.log("playing");
     console.log("freqVal"+this.clampedVal);
   }
 }
+
 this.playDistortionIfPressed = function(){
   if(this.isPressed === true){
     let now =  audioContext.currentTime;
-    // c=a,a=b,b=c:
     //store old freqVal,
     this.freqVal = this.tempFreqVal;
-    // console.log("inside playDistortionIfPressed");
     this.clampedVal = valClamp(this.freqVal);
     this.note.filterPlay(this.clampedVal,now); // biquad filter
     console.log("FILTERED freqVal "+this.clampedVal);
   }
 }
+
 // callback functions for mouse click, over and move
 this.hitTest = function(event){
   if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size){
-    // console.log("rect pressed::: "+this.eID);
-    console.log("PRESSED!")
     // store freqVal before pressdown
     this.tempFreqVal =this.freqVal;
     this.freqVal = this.freqVal+(event.clientX/100);
     this.isPressed = true;
   }
 } // end of hitTest
+
 this.hitTestUp = function(event){
     console.log("mouse up");
     this.isPressed = false;
     // put back old tempFreqVal
     this.freqVal = this.tempFreqVal;
-
 }
+
 this.hitTestOver = function(event){
   if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size*2){
     // console.log("EID, rect over::: "+this.eID);
@@ -219,6 +213,7 @@ this.hitTestOver = function(event){
     this.freqVal = this.freqVal+(event.clientX/146.8); //D3,
   }
 } // end of hitTestOver
+
 //SABINE:: ADDED
 this.hitTestMove = function(event){
   if(Math.sqrt(Math.pow((event.clientX-this.x),2)+Math.pow((event.clientY-this.y),2))<this.size*2){

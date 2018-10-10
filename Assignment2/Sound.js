@@ -1,5 +1,10 @@
+// Sound Object for Assignment 2
+// ASSIGNMENT 2 BY MASHA KROTKYKH & ALESSIA SIGNORINO
+
 /*** class for sound inspired and copy-lefted from::
 https://css-tricks.com/introduction-web-audio-api/*/
+
+// linking context from main program
 canvas = document.getElementById("testCanvas");
 context = canvas.getContext("2d");
 audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -20,7 +25,6 @@ function Sound () {
 
   // initialize properties for biquad filter
   this.filterInit = function() {
-  //  this.oscillator = this.context.createOscillator();
     this.biquadFilter = this.context.createBiquadFilter();
     this.oscillator.connect(this.biquadFilter);
     this.biquadFilter.connect(this.gainNode);
@@ -31,28 +35,24 @@ function Sound () {
 
   this.play = function (value, time) {
     this.init();
-    // console.log(value);
     this.oscillator.frequency.value = value;
-    //set gain
+    //Set gain
     this.gainNode.gain.setValueAtTime(1, this.context.currentTime);
     this.oscillator.start(time);
-    // How LONG should duration of note be?
+    // Duration of note
     this.stop(time+this.offsetDuration);
   }
 
   this.stop = function(time) {
     // gradual change in value
     this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + 1);
-    // this.biquadFilter.stop(time+0);
     this.oscillator.stop(time + 0);
   }
 
   this.filterPlay = function (value,time) {
-    // console.log("inside filterPlay");
     this.filterInit();
     this.biquadFilter.frequency.value = value;
     this.biquadFilter.frequency.setValueAtTime(1, this.context.currentTime);
-    console.log("SABINE:: "+this.biquadFilter.frequency.value);
     this.stop(time+this.offsetDuration);
   }
 
