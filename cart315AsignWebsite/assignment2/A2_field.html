@@ -1,0 +1,195 @@
+<!-- ASSIGNMENT 2 BY MASHA KROTKYKH & ALESSIA SIGNORINO -->
+<!-- References: Sabine Rosenberg's examples and https://developer.mozilla.org/en-US/docs/Web/API/ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>ASSIGNMENT 2 - MASHA/ALESSIA</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  canvas {
+    background: #F4EADE;
+  }
+</style>
+</head>
+<body>
+  <canvas id="testCanvas"></canvas>
+<script>
+  // get canvas context, make it browser window size, get audio context
+  var canvas = document.getElementById("testCanvas");
+  var context = canvas.getContext("2d");
+  context.canvas.width  = window.innerWidth;
+  context.canvas.height = window.innerHeight;
+  let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+</script>
+
+<script src = "Sound.js"></script>
+<script src = "CustomShape.js"></script>
+
+<script>
+  //Empty array of crosses
+  console.log(context);
+  let shapeList = [];
+  const NUM_SHAPES = 40;
+
+  //Max and Min values for valClamp
+  let min = -1500; //-21050
+  let max = 1500; //21050
+
+  //Buttons for menu
+  let myButtons = [];
+  const MAX_BUTTONS = 3;
+
+  //Event listeners for mouse
+  canvas.addEventListener("mousedown", function(event){
+    for(let i=0; i<NUM_SHAPES; i++){
+      shapeList[i].hitTest(event);
+    }
+    for(let j=0;j<myButtons.length;j++){
+      myButtons[j].hitTestDown(event);
+    }
+  });
+  canvas.addEventListener("mouseup", function(event) {
+    for(let i=0; i<NUM_SHAPES; i++){
+      shapeList[i].hitTestUp(event);
+    }
+  });
+  canvas.addEventListener("mouseover", function(event){
+    // console.log("canvas mouse over");
+    for(let i=0; i<NUM_SHAPES; i++){
+      shapeList[i].hitTestOver(event);
+    }
+  });
+  // added SABINE -> if was over and now mouse moves ensure that is still over
+  canvas.addEventListener("mousemove", function(event){
+    // console.log("canvas mouse over");
+    for(let i=0; i<NUM_SHAPES; i++){
+      shapeList[i].hitTestMove(event);
+    }
+  });
+
+  //switch between 3 options on keyboard, 1-2-3
+  document.onkeypress = function(){
+    shapeshift();
+  };
+
+  // generate shapes with these parameters (push into array)
+  for(let i=0; i<NUM_SHAPES; i++){
+    let r = 0;
+    let g = 0;
+    let b = 0;
+    let a = 1.0;
+    let rSpeed = 2; //will vary
+    let x = Math.floor((Math.random()*canvas.width));
+    let y = Math.floor((Math.random()*canvas.height));
+    let size = Math.floor((Math.random()*canvas.width/10)+10);
+    shapeList.push(new CustomShape(x,y,size,size,r,g,b,a,i,(i%6)+2));
+
+    //booleans
+    var zoneOut = false;
+    var cross = true;
+    var circle = false;
+    var square = false;
+  }
+
+  // generate menu buttons
+  for (let j=0;j<MAX_BUTTONS;j++){
+    let objW = canvas.width/40;
+    let offset = 10;
+    let color = "#808096";
+    myButtons.push(new myPushyButton(objW,objW+((objW+offset)*j),objW/2,j,color));
+  }
+
+  // recursive animation function
+  requestAnimationFrame(run);
+  function run(){
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    for(let i=0; i<NUM_SHAPES; i++){
+      shapeList[i].display();
+      //if the isOver boolean is true -> play the sound...
+      shapeList[i].playSoundIfOver();
+      shapeList[i].playDistortionIfPressed();
+    }
+    for(let i=0; i< myButtons.length;i++){
+      myButtons[i].render();
+    }
+    requestAnimationFrame(run);
+  }
+
+  // menu options
+  function shapeshift(button) {
+    if(event.keyCode === 49|| button === 0) {
+    	cross = true;
+    	circle = false;
+    	square = false;
+    }
+    else if(event.keyCode === 50 || button === 1) {
+    	cross = false;
+    	circle = true;
+    	square = false;
+    }
+    else if(event.keyCode === 51 || button === 2) {
+    	cross = false;
+    	circle = false;
+    	square = true;
+    }
+  }
+
+  // Clamp value to a range (freqVal) ternary operator
+  function valClamp(value) {
+     return value <= min ? min : value >= max ? max : value;
+  }
+
+  // Menu button object
+  function myPushyButton(x,y,r,tempId,color){
+  	this.xPos = x;
+  	this.yPos = y;
+  	this.radius = r;
+    this.ellipseID = tempId;
+  	this.isPressed =false;
+  	this.color = color;
+
+    // Display buttons
+   	this.render =function(){
+    	context.fillStyle = this.color;
+     	context.beginPath();
+     	context.arc(this.xPos,this.yPos,this.radius,0, Math.PI * 2, true);
+  		context.fill();
+     	context.closePath();
+    }
+
+    // Callback function
+    this.hitTestDown =function(){
+      if(Math.sqrt(Math.pow((event.clientX-this.xPos),2) + Math.pow((event.clientY - this.yPos),2))< this.radius){
+      // When the button is pressed, it changes colour
+      this.color = "#505050";
+
+      if(this.ellipseID === 0){
+        cross = true;
+      	circle = false;
+      	square = false;
+      }
+      else if(this.ellipseID === 1){
+      	cross = false;
+      	circle = true;
+      	square = false;
+      }
+      else if(this.ellipseID === 2){
+        cross = false;
+      	circle = false;
+      	square = true;
+      }
+    }
+    // When another button is pressed, all previously pressed buttons change their colours back to initial state
+    else {
+      this.color = color;
+    }
+  } //end hitTestDown
+
+} //end pushyButton object
+</script>
+</body>
+</html>
