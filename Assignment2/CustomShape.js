@@ -21,6 +21,7 @@ function CustomShape(x,y,size,size,r,g,b,a,c,eid,rSpeed){
     this.eID = eid;
     this.isOver = false; // for freqVal
     this.isPressed = false; // for distortion
+    this.isChanging = false;
     this.cChange = 10;
     this.cFade = 1;
 
@@ -35,7 +36,7 @@ function CustomShape(x,y,size,size,r,g,b,a,c,eid,rSpeed){
 
     // display (press affects RGB)
     this.display = function(){
-      if(this.isPressed === true) {
+      if(this.isChanging === true) {
 
         if(this.r <= 0) {
           this.r +=this.cChange;
@@ -65,7 +66,7 @@ function CustomShape(x,y,size,size,r,g,b,a,c,eid,rSpeed){
           this.b -= Math.floor((Math.random()*5)-3);
         }
       }
-      else if(this.isPressed ===false) {
+      else if(this.isChanging ===false) {
         if(this.r > 0) {
           this.r -= this.cFade;
         }
@@ -195,6 +196,7 @@ this.hitTest = function(event){
     this.tempFreqVal =this.freqVal;
     this.freqVal = this.freqVal+(event.clientX/100);
     this.isPressed = true;
+    this.isChanging = true;
   }
 } // end of hitTest
 

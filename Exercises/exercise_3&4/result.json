@@ -1,0 +1,32 @@
+[{
+"how many times": "3",
+"type of drink": "string array index",
+"type of container": "string array index",
+"quantity in glasses (250ml/8oz)": "null",
+"quantity in water bottles (750ml/25oz)": "3",
+"at what time": "value",
+},
+{
+"how many times": "4",
+"type of drink": "string array index",
+"type of container": "string array index",
+"quantity in glasses (250ml/8oz)": "value",
+"quantity in water bottles (750ml/25oz)": "value",
+"at what time": "value",
+},
+{
+"how many times": "4",
+"type of drink": "string array index",
+"type of container": "string array index",
+"quantity in glasses (250ml/8oz)": "value",
+"quantity in water bottles (750ml/25oz)": "value",
+"at what time": "value",
+},
+{
+"how many times": "4",
+"type of drink": "string array index",
+"type of container": "string array index",
+"quantity in glasses (250ml/8oz)": "value",
+"quantity in water bottles (750ml/25oz)": "value",
+"at what time": "value",
+}]

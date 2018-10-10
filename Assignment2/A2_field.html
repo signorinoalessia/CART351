@@ -71,6 +71,11 @@
     }
   });
 
+  // When cursor is outside canvas, rotation stops
+      canvas.onmouseout = function() {
+          console.log("Ooopsey");
+          zoneOut = true;
+      };
   //switch between 3 options on keyboard, 1-2-3
   document.onkeypress = function(){
     shapeshift();
