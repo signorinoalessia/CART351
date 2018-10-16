@@ -37,42 +37,40 @@
       //call back function displayResults
       function displayResults(result){
         console.log("inside displayResults");
-        let days = result['Days']; // days assigned to day index in json array
+          let days = result['Days']; // days assigned to day index in json array
         let section3Article = $('<article>');
 
         for(var i=0; i<days.length; i++) {
 
           console.log("displaying results for each");
 
-          // $('<section>').attr("id","container"+i).appendTo("#s3");
-          // $("#container"+i).addClass("aCell");
-          // $("<section>").html(item.title+item.description).addClass("itemClass").appendTo("#container"+i);
+          //filter with searchItem
+          let searchItem = $("#searchText").val();
+          if (days[i].Day.includes(searchItem)) {
+            console.log("assigning style");
+            let line0 = $("<h1>");
+            let line1 = $("<p>");
+            let line2 = $("<p>");
+            let line3 = $("<p>");
+            let line4 = $("<p>");
 
-          //filter here ? searchItem as a filter (tagmode),
-          // let searchItem = $("#searchText").val();
+            console.log("linking to each component");
+            $(line0).text(days[i].Day);
+            $(line1).text(days[i].Times);
+            $(line2).text(days[i].ContainerQty);
+            $(line3).text(days[i].Container);
+            $(line4).text(days[i].Location);
 
-          console.log("assigning style");
-          let line0 = $("<h1>");
-          let line1 = $("<p>");
-          let line2 = $("<p>");
-          let line3 = $("<p>");
-          let line4 = $("<p>");
+            console.log("appending to article of section 3");
+            $(line0).appendTo(section3Article);
+            $(line1).appendTo(section3Article);
+            $(line2).appendTo(section3Article);
+            $(line3).appendTo(section3Article);
+            $(line4).appendTo(section3Article);
 
-          console.log("linking to each component");
-          $(line0).text(result[i].Day);
-          $(line1).text(result[i].Times);
-          $(line2).text(result[i].ContainerQty);
-          $(line3).text(result[i].Container);
-          $(line4).text(result[i].Location);
+            $(section).append(section3Article);
 
-          console.log("appending to article of section 3");
-          $(line0).appendTo(section3Article);
-          $(line1).appendTo(section3Article);
-          $(line2).appendTo(section3Article);
-          $(line3).appendTo(section3Article);
-          $(line4).appendTo(section3Article);
-
-          $(section).append(section3Article);
+          }
 
         } //for
       } //displayResults
