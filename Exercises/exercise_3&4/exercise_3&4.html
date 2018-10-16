@@ -3,11 +3,12 @@
 <head>
   <title> Exercise for Week 5+6 - Alessia Signorino</title>
   <link href="css/style.css" rel="stylesheet" type="text/css">
+  <script src = "jquery/jquery-3.3.1.min.js"></script>
   <script>
 
   $(document).ready(function() {
 
-    // let section3 = $('#s3');
+    let section = $('#s3');
     let loaded=false;
 
     //assign call back to click event
@@ -17,11 +18,10 @@
     function getWaterData() {
       $("#s3").empty();
       if(loaded ===false){
-        // success, get json data, searchItem as a filter (tagmode), callback displayResults
-        let searchItem = $("#searchText").val();
-        $.getJSON('result.json',{tags:searchItem, tagmode:"any", format:"json"}, displayResults {
-          console.log(searchItem);
-          // displayResults(data);
+        // success, get json data, callback displayResults
+        $.getJSON('result.json', function(result) {
+          console.log(result);
+          displayResults(result);
           loaded=true;
         })
         //fail
@@ -34,38 +34,45 @@
       } // if loaded
     } //getWaterData
 
-      //call bac function display results
+      //call back function displayResults
       function displayResults(result){
+        console.log("inside displayResults");
+        let days = result['Days']; // days assigned to day index in json array
+        let section3Article = $('<article>');
 
-        console.log(result);
-        let days = results['Days']; // days assigned to day index in json array
+        for(var i=0; i<days.length; i++) {
 
-        for(var i=0; i<result.length; i++) {
+          console.log("displaying results for each");
 
-          let line1 = result[i].Times;
-          let line2 = result[i].ContainerQty;
-          let line3 = result[i].Container;
-          let line4 = result[i].Location;
+          // $('<section>').attr("id","container"+i).appendTo("#s3");
+          // $("#container"+i).addClass("aCell");
+          // $("<section>").html(item.title+item.description).addClass("itemClass").appendTo("#container"+i);
 
-          $('<section>').attr("id","container"+i).appendTo("#s3");
-          $("#container"+i).addClass("aCell");
-          $("<section>").html(item.title+item.description).addClass("itemClass").appendTo("#container"+i);
+          //filter here ? searchItem as a filter (tagmode),
+          // let searchItem = $("#searchText").val();
 
-          // let s3 = $('<#s3>');
-          // let line1 = $("<p>");
-          // let line2 = $("<p>");
-          // let line3 = $("<p>");
-          // let line4 = $("<p>");
+          console.log("assigning style");
+          let line0 = $("<h1>");
+          let line1 = $("<p>");
+          let line2 = $("<p>");
+          let line3 = $("<p>");
+          let line4 = $("<p>");
 
-          // $(line1).text(result[i].Times);
-          // $(line2).text(result[i].ContainerQty);
-          // $(line3).text(result[i].Container);
-          // $(line4).text(result[i].Location);
+          console.log("linking to each component");
+          $(line0).text(result[i].Day);
+          $(line1).text(result[i].Times);
+          $(line2).text(result[i].ContainerQty);
+          $(line3).text(result[i].Container);
+          $(line4).text(result[i].Location);
 
-          // $(line1).appendTo("#s3");
-          // $(line2).appendTo("#s3");
-          // $(line3).appendTo("#s3");
-          // $(line4).appendTo("#s3");
+          console.log("appending to article of section 3");
+          $(line0).appendTo(section3Article);
+          $(line1).appendTo(section3Article);
+          $(line2).appendTo(section3Article);
+          $(line3).appendTo(section3Article);
+          $(line4).appendTo(section3Article);
+
+          $(section).append(section3Article);
 
         } //for
       } //displayResults
@@ -86,15 +93,15 @@
 
   <section id="s2">
     <article>
-      <h1>Enter a day number (1-4) to track your water intake</h2>
+      <h1>Enter a day (1-4) to track your water intake</h2>
       <p>Type in a search keyword:</p>
-      <input type="text" id="searchText" value="search Item" />
-      <input type="button" value="Search!" id="searchButton" />
+      <input type="text" id="searchText" value="enter Day" />
+      <input type="button"id="searchButton" value="Load!" />
       </p>
     </article>
   </section>
 
-  <section id="s3"><!--results--></section>
+  <section id="s3"><!--results go here--></section>
 
 </body>
 </html>

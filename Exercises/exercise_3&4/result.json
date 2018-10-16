@@ -1,27 +1,31 @@
 {
   "Days":
   [{
+  "Day": "Day 1 - Wednesday",
   "Times": "3 times",
   "ContainerQty": "Used 1 container",
   "Container": "A plastic bottle",
-  "Location":"School",
+  "Location":"School"
   },
   {
+  "Day": "Day 2 - Thursday",
   "Times": "5 times",
   "ContainerQty": "Used 2 containers",
   "Container": "A ceramic cup and a plastic bottle",
-  "Location":"School and home",
+  "Location":"School and home"
   },
   {
+  "Day": "Day 3 - Friday",
   "Times": "4 times",
   "ContainerQty": "Used 1 container",
   "TContainer": "A plastic bottle",
-  "Location":"Work and School",
+  "Location":"Work and School"
   },
   {
+  "Day": "Day 4 - Saturday",
   "Times": "5 times",
   "ContainerQty": "Used 1 container",
   "Container": "A 250ml glass",
-  "Location":"Home",
+  "Location":"Home"
   }]
 }
