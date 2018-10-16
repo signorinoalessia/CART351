@@ -1,32 +1,27 @@
-[{
-"how many times": "3",
-"how many containers": "1",
-"type of container": "plastic bottle",
-"how many locations":"1",
-"where":"school",
-},
 {
-"how many times": "5",
-"how many containers": "2",
-"type of container": "ceramic cup",
-"type of container": "plastic bottle",
-"how many locations":"2",
-"where":"school",
-"where":"home",
-},
-{
-"how many times": "4",
-"how many containers": "1",
-"type of container": "plastic bottle",
-"how many locations":"2",
-"where":"work",
-"where":"school",
-},
-{
-"how many times": "5",
-"how many containers": "1",
-"type of container": "250ml glass",
-"how many locations":"1",
-"where":"home",
-
-}]
+  "Days":
+  [{
+  "Times": "3 times",
+  "ContainerQty": "Used 1 container",
+  "Container": "A plastic bottle",
+  "Location":"School",
+  },
+  {
+  "Times": "5 times",
+  "ContainerQty": "Used 2 containers",
+  "Container": "A ceramic cup and a plastic bottle",
+  "Location":"School and home",
+  },
+  {
+  "Times": "4 times",
+  "ContainerQty": "Used 1 container",
+  "TContainer": "A plastic bottle",
+  "Location":"Work and School",
+  },
+  {
+  "Times": "5 times",
+  "ContainerQty": "Used 1 container",
+  "Container": "A 250ml glass",
+  "Location":"Home",
+  }]
+}

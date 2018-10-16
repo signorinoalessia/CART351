@@ -4,21 +4,74 @@
   <title> Exercise for Week 5+6 - Alessia Signorino</title>
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <script>
+
   $(document).ready(function() {
+
+    // let section3 = $('#s3');
+    let loaded=false;
 
     //assign call back to click event
     $("#searchButton").click(getWaterData);
 
     //callback function for click
     function getWaterData() {
-      let searchItem = $("#searchText").val();
-      console.log(searchItem);
+      $("#s3").empty();
+      if(loaded ===false){
+        // success, get json data, searchItem as a filter (tagmode), callback displayResults
+        let searchItem = $("#searchText").val();
+        $.getJSON('result.json',{tags:searchItem, tagmode:"any", format:"json"}, displayResults {
+          console.log(searchItem);
+          // displayResults(data);
+          loaded=true;
+        })
+        //fail
+        .fail(function() {
+          console.log( "error" );
+        });
 
-      //get json data,
-
+      } else {
+        console.log("data was loaded");
+      } // if loaded
     } //getWaterData
 
+      //call bac function display results
+      function displayResults(result){
+
+        console.log(result);
+        let days = results['Days']; // days assigned to day index in json array
+
+        for(var i=0; i<result.length; i++) {
+
+          let line1 = result[i].Times;
+          let line2 = result[i].ContainerQty;
+          let line3 = result[i].Container;
+          let line4 = result[i].Location;
+
+          $('<section>').attr("id","container"+i).appendTo("#s3");
+          $("#container"+i).addClass("aCell");
+          $("<section>").html(item.title+item.description).addClass("itemClass").appendTo("#container"+i);
+
+          // let s3 = $('<#s3>');
+          // let line1 = $("<p>");
+          // let line2 = $("<p>");
+          // let line3 = $("<p>");
+          // let line4 = $("<p>");
+
+          // $(line1).text(result[i].Times);
+          // $(line2).text(result[i].ContainerQty);
+          // $(line3).text(result[i].Container);
+          // $(line4).text(result[i].Location);
+
+          // $(line1).appendTo("#s3");
+          // $(line2).appendTo("#s3");
+          // $(line3).appendTo("#s3");
+          // $(line4).appendTo("#s3");
+
+        } //for
+      } //displayResults
+
   }); //document.ready
+
   </script>
 </head>
 
@@ -33,7 +86,7 @@
 
   <section id="s2">
     <article>
-      <h1>Enter number of day (1-4) to track your water intake</h2>
+      <h1>Enter a day number (1-4) to track your water intake</h2>
       <p>Type in a search keyword:</p>
       <input type="text" id="searchText" value="search Item" />
       <input type="button" value="Search!" id="searchButton" />
@@ -41,9 +94,7 @@
     </article>
   </section>
 
-  <section id="s3">
-		<!-- results go here -->
-	</section>
+  <section id="s3"><!--results--></section>
 
 </body>
 </html>

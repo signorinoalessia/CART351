@@ -29,8 +29,8 @@ html,body{
 }
 
 #s2 {
-	background:C4EEFF;
-  min-height:30%;
+	background:#f1f8ff;
+  min-height:20%;
 	height:auto;
 	padding:40px;
 }
@@ -67,6 +67,13 @@ html,body{
 	line-height:30px;
 }
 
+/* #s3 {
+	background:#bedfff;
+  min-height:40%;
+	height:auto;
+	padding:40px;
+} */
+
 p{
   font-family:'Roboto', sans-serif;
 	font-weight:100;
@@ -74,21 +81,26 @@ p{
   line-height:40px;
 }
 
+#searchButton {
+  background:#bedfff;
+}
+
 .aCell {
   overflow: hidden;
-    background:#9e66b4;
+    background:#bedfff;
     max-width:450px;
     margin-top:5%;
     margin-bottom:5%;
     margin-left:25%;
-
 }
 
 .itemClass{
   color:white;
-  background:#cdb2d7;
+  background:#f1f8ff;
   margin-left:25px;
   padding:5%;
   width:400px;
+  font-family:'Roboto', sans-serif;
+  font-weight:100;
   font-size:1em;
 }
