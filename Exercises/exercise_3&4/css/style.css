@@ -1,0 +1,94 @@
+/* CSS RESET */
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,600,900');
+
+* {
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+}
+
+html,body{
+  height:100%;
+}
+
+#s1 {
+	width:100%;
+	height:30%;
+	background:url(../images/bg.jpg) no-repeat fixed center center;
+	background-size:cover;
+}
+
+#s1 hgroup {
+	background:C4EEFF;
+	padding:20px;
+	width:20%;
+	position:absolute;
+	top:40px;
+	right:40px;
+	min-width:360px;
+}
+
+#s2 {
+	background:C4EEFF;
+  min-height:30%;
+	height:auto;
+	padding:40px;
+}
+
+#s1 hgroup {
+	background:white;
+	padding:20px;
+	width:30%;
+	position:absolute;
+	top:40px;
+	right:40px;
+	min-width:372px;
+}
+
+#s1 h2 {
+	font-family:'Roboto', sans-serif;
+	font-weight:100;
+	font-size:2vmin;
+}
+
+#s1 h1 {
+	font-family:'Roboto', sans-serif;
+	font-weight:900;
+/*	font-size:72px; use instead something that will scale up&down*/
+	font-size:6vmax;
+	line-height:62px;
+}
+
+#s2 h1 {
+	font-family:'Roboto', sans-serif;
+	font-weight:600;
+/*	font-size:72px; use instead something that will scale up&down*/
+	font-size:2vmax;
+	line-height:30px;
+}
+
+p{
+  font-family:'Roboto', sans-serif;
+	font-weight:100;
+	font-size:2vmin;
+  line-height:40px;
+}
+
+.aCell {
+  overflow: hidden;
+    background:#9e66b4;
+    max-width:450px;
+    margin-top:5%;
+    margin-bottom:5%;
+    margin-left:25%;
+
+}
+
+.itemClass{
+  color:white;
+  background:#cdb2d7;
+  margin-left:25px;
+  padding:5%;
+  width:400px;
+  font-size:1em;
+}

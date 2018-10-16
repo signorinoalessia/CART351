@@ -1,14 +1,49 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title> Exercise for Week 5+6 - Alessia Signorino</style>
+  <title> Exercise for Week 5+6 - Alessia Signorino</title>
+  <link href="css/style.css" rel="stylesheet" type="text/css">
   <script>
-  //
+  $(document).ready(function() {
 
+    //assign call back to click event
+    $("#searchButton").click(getWaterData);
 
+    //callback function for click
+    function getWaterData() {
+      let searchItem = $("#searchText").val();
+      console.log(searchItem);
+
+      //get json data,
+
+    } //getWaterData
+
+  }); //document.ready
   </script>
 </head>
 
 <body>
+  <!--Header with search prompt-->
+  <section id="s1">
+    <hgroup>
+      <h2>Keeping track of hydration with</h2>
+      <h1>Water Tracker</h1>
+    </hgroup>
+  </section>
+
+  <section id="s2">
+    <article>
+      <h1>Enter number of day (1-4) to track your water intake</h2>
+      <p>Type in a search keyword:</p>
+      <input type="text" id="searchText" value="search Item" />
+      <input type="button" value="Search!" id="searchButton" />
+      </p>
+    </article>
+  </section>
+
+  <section id="s3">
+		<!-- results go here -->
+	</section>
+
 </body>
 </html>
