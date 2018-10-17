@@ -9,7 +9,7 @@
   $(document).ready(function() {
 
     let section = $('#s3');
-    let loaded=false;
+
 
     //assign call back to click event
     $("#searchButton").click(getWaterData);
@@ -17,21 +17,18 @@
     //callback function for click
     function getWaterData() {
       $("#s3").empty();
-      if(loaded ===false){
+
         // success, get json data, callback displayResults
         $.getJSON('result.json', function(result) {
           console.log(result);
           displayResults(result);
-          loaded=true;
+
         })
         //fail
         .fail(function() {
           console.log( "error" );
         });
 
-      } else {
-        console.log("data was loaded");
-      } // if loaded
     } //getWaterData
 
       //call back function displayResults
@@ -73,6 +70,7 @@
           }
 
         } //for
+
       } //displayResults
 
   }); //document.ready
