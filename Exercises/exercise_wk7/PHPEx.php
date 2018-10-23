@@ -4,19 +4,28 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
     $sampleDataAsIfInAFile = array("smarties","twix","snickers","maltesers","flake","wunderbar","mars");
     $sampleDataAsIfInAFile2 = array("oranges","apples","peppers","carrots","grapes","grapefruits","kumquats");
+    $sampleDataAsIfInAFile3 = array('#00c770','#0c9e9e','#007b6a','#ffbf56','#dfa400','#5493ff','#2d39ec');
+
 // need to process -> we could save this data ...
  $xPos = $_POST['xpos'];
  $yPos = $_POST['ypos'];
  $action = $_POST['action'];
  //do some silly processing:
  $newPos = $xPos+$yPos;
+//circle data
+ $xPosC = $_POST['xposc'];
+ $yPosC = $_POST['yposc'];
+ $newPosC = $xPosC+$yPosC;
  //lets choose a word from our "data file" based on the sum of the x and y pos...
  //there are 2 possible actions choose the word depending on action...
  if($action =="theButton"){
  $dataToSend =  $sampleDataAsIfInAFile[$newPos%count($sampleDataAsIfInAFile)];
 }
+else if ($action == "theCircle"){
+    $dataToSend = $sampleDataAsIfInAFile3[$newPosC%count($sampleDataAsIfInAFile3)];;
+}
 else{
-  $dataToSend =$sampleDataAsIfInAFile2[$newPos%count($sampleDataAsIfInAFile2)];;
+  $dataToSend = $sampleDataAsIfInAFile2[$newPos%count($sampleDataAsIfInAFile2)];;
 }
 
     //package the data and echo back...
@@ -32,7 +41,7 @@ else{
 <!DOCTYPE html>
 <html>
 <head>
-<title>USING JQUERY AND AJAX AND CANVAS </title>
+<title>EX7: USING JQUERY AND AJAX AND CANVAS </title>
 <!-- get JQUERY -->
   <script src = "libs/jquery-3.3.1.min.js"></script>
 <style>
@@ -79,13 +88,21 @@ $(document).ready (function(){
       sendData("theCanvas");
     }
   });
-  // if we click on the button other stuff happens ...
+
+  //circle event listener
+  $('#myCanvas').on("mousedown",function(event){
+    let collided = checkCollisionCircle(event);
+    if(collided === true){
+      sendData("theCanvas");
+    }
+  });
+
+  // if we click on the purple button other stuff happens ...
     $( "#b" ).click(function( event ) {
       //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
        event.preventDefault();
        console.log("button clicked");
        sendData("theButton");
-
      });
 
      function sendData(typeOfClick){
@@ -93,6 +110,9 @@ $(document).ready (function(){
        data.append('action', typeOfClick);
        data.append('xpos', x);
        data.append('ypos', y);
+
+       data.append('xPosC',x);
+       data.append('yPosC',y);
 
        $.ajax({
              type: "POST",
@@ -143,7 +163,6 @@ $(document).ready (function(){
      canvasContext.font = "40px Arial";
      canvasContext.fillStyle = "#B533FF";
      canvasContext.fillText(theWord,canvas.width/2 - (theWord.length/2*20),canvas.height/2);
-
 
      canvasContext.fillStyle = "#FF9033";
      canvasContext.fillText(theWord2,canvas.width/2 - (theWord2.length/2*20),canvas.height/4);
