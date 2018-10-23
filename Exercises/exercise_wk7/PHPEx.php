@@ -132,7 +132,10 @@ $(document).ready (function(){
              if(typeOfClick ==="theButton"){
              theWord = parsedJSON.word;
            }
-           else {
+           else if(typeOfClick ==="theCircle"){
+           //change color of circle
+           theColor = parsedJSON.color;
+           } else {
               theWord2 = parsedJSON.word;
            }
 
@@ -160,6 +163,17 @@ $(document).ready (function(){
      canvasContext.fillRect(x,y,1,1);
      x+=0.2;
      y+=0.2;
+
+     //making circle
+     canvasContext.beginPath();
+     context.fillStyle = theColor; //how is it linked to ajax method?
+     context.strokeStyle = "#fff";
+     context.lineWidth = 2;
+     context.arc(x,y,15,0,2*Math.PI,true);
+     context.fill();
+     context.stroke();
+     context.closePath();
+
      canvasContext.font = "40px Arial";
      canvasContext.fillStyle = "#B533FF";
      canvasContext.fillText(theWord,canvas.width/2 - (theWord.length/2*20),canvas.height/2);
