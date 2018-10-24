@@ -54,6 +54,7 @@ canvas{
   margin:0;
   padding:0;
 }
+/* purple button */
 #b{
   background:purple;
   color:white;
@@ -149,7 +150,6 @@ $(document).ready (function(){
     function goAni(){
       let canvas = document.getElementById('myCanvas');
       let canvasContext = canvas.getContext('2d');
-
 
       requestAnimationFrame(runAni);
 
