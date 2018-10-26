@@ -38,6 +38,7 @@ else{
     //package the data and echo back...
     $myPackagedData=new stdClass();
     $myPackagedData->word = $dataToSend;
+    $myPackagedData->color = $dataToSend;
     // what we send : ex:
     //{"word": "snickers"}
      // Now we want to JSON encode these values to send them to $.ajax success. ***
@@ -87,6 +88,7 @@ $(document).ready (function(){
   let y =10;
   let theWord = "";
   let theWord2 = "";
+  let color = "";
   //start ani
   goAni();
   // when we click on the canvas somewhere and the collision detection returns true ...
@@ -152,8 +154,8 @@ $(document).ready (function(){
              theWord = parsedJSON.word;
            }
            else if(typeOfClick ==="theCircle"){
-           //change color of circle
-           theColor = parsedJSON.color;
+              //get color value from server
+              theColor = parsedJSON.color;
            } else {
               theWord2 = parsedJSON.word;
            }
@@ -182,17 +184,19 @@ $(document).ready (function(){
      x+=0.2;
      y+=0.2;
 
+     // THE X and Y COME FROM SENDDATA, DATA.APPEND!
      //rendering the circle
+     console.log("rendering circle");
      canvasContext.beginPath();
-     context.fillStyle = theColor; //how to link to ajax method?
+     context.fillStyle = theColor;
      context.strokeStyle = "#fff";
      context.lineWidth = 2;
-     context.arc(x,y,15,0,2*Math.PI,true);
+     context.arc(x2,y2,15,0,2*Math.PI,true);
      context.fill();
      context.stroke();
      context.closePath();
-     x+=0.1;
-     y+=0.1;
+     x2+=0.1;
+     y2+=0.1;
 
      canvasContext.font = "40px Arial";
      canvasContext.fillStyle = "#B533FF";
@@ -202,7 +206,7 @@ $(document).ready (function(){
      canvasContext.fillText(theWord2,canvas.width/2 - (theWord2.length/2*20),canvas.height/4);
      requestAnimationFrame(runAni);
    }
- } //en goAni
+ } //end goAni
 
   function checkCollision(event){
     let domRect = document.getElementById("myCanvas").getBoundingClientRect();
