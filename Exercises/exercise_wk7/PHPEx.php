@@ -6,6 +6,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     $sampleDataAsIfInAFile2 = array("oranges","apples","peppers","carrots","grapes","grapefruits","kumquats");
     $sampleDataAsIfInAFile3 = array('#00c770','#0c9e9e','#007b6a','#ffbf56','#dfa400','#5493ff','#2d39ec');
 
+// POSTED DATA is the following::
 // need to process -> we could save this data ...
  $xPos = $_POST['xpos'];
  $yPos = $_POST['ypos'];
@@ -13,11 +14,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
  //do some silly processing:
  $newPos = $xPos+$yPos;
 //circle data
- $xPosC = $_POST['xposc'];
- $yPosC = $_POST['yposc'];
+ $xPosC = $_POST['xPosC'];
+ $yPosC = $_POST['yPosC'];
  $newPosC = $xPosC+$yPosC;
  //lets choose a word from our "data file" based on the sum of the x and y pos...
  //there are 2 possible actions choose the word depending on action...
+ // DATA TO SEND WILL BE PACKAGED INTO A CLASS/OBJECT TO BE SENT TO CLIENT (JSON)*
  if($action =="theButton"){
  $dataToSend =  $sampleDataAsIfInAFile[$newPos%count($sampleDataAsIfInAFile)];
 }
@@ -28,11 +30,19 @@ else{
   $dataToSend = $sampleDataAsIfInAFile2[$newPos%count($sampleDataAsIfInAFile2)];;
 }
 
+//$myPackagedData package for client (javascript)
+// same as sendData and ajax package for server (php)
+
+  //DATA TO BE SENT TO CLIENT AS A JSON OBJECT AKA PACKAGED DATA*
+
     //package the data and echo back...
     $myPackagedData=new stdClass();
     $myPackagedData->word = $dataToSend;
-     // Now we want to JSON encode these values to send them to $.ajax success.
+    // what we send : ex:
+    //{"word": "snickers"}
+     // Now we want to JSON encode these values to send them to $.ajax success. ***
     $myJSONObj = json_encode($myPackagedData);
+    //ECHO IS THE
     echo $myJSONObj;
     exit;
 }//POST
@@ -54,7 +64,7 @@ canvas{
   margin:0;
   padding:0;
 }
-/* purple button */
+/* purple button, an html div */
 #b{
   background:purple;
   color:white;
@@ -98,6 +108,7 @@ $(document).ready (function(){
     }
   });
 
+  // you can only do this BECAUSE ITS NOT INSIDE THE CANVAS
   // if we click on the purple button other stuff happens ...
     $( "#b" ).click(function( event ) {
       //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
@@ -106,15 +117,22 @@ $(document).ready (function(){
        sendData("theButton");
      });
 
+     // sendData and ajax package for server (php)
+     // same as $myPackagedData package for client (javascript)
+
+     // apped is a method of the FormData class, *ADDS KEY-VALUE PAIRS*
+     // key-value that is taken from php (data.)
      function sendData(typeOfClick){
        let data = new FormData();
        data.append('action', typeOfClick);
        data.append('xpos', x);
        data.append('ypos', y);
 
-       data.append('xPosC',x);
-       data.append('yPosC',y);
+       data.append('xPosC',x2);
+       data.append('yPosC',y2);
 
+       // a jquery action (dot notation)
+       // ajax PARSES (is converting string of php) data into native JavaScript
        $.ajax({
              type: "POST",
              enctype: 'multipart/form-data',
@@ -164,15 +182,17 @@ $(document).ready (function(){
      x+=0.2;
      y+=0.2;
 
-     //making circle
+     //rendering the circle
      canvasContext.beginPath();
-     context.fillStyle = theColor; //how is it linked to ajax method?
+     context.fillStyle = theColor; //how to link to ajax method?
      context.strokeStyle = "#fff";
      context.lineWidth = 2;
      context.arc(x,y,15,0,2*Math.PI,true);
      context.fill();
      context.stroke();
      context.closePath();
+     x+=0.1;
+     y+=0.1;
 
      canvasContext.font = "40px Arial";
      canvasContext.fillStyle = "#B533FF";
@@ -182,8 +202,8 @@ $(document).ready (function(){
      canvasContext.fillText(theWord2,canvas.width/2 - (theWord2.length/2*20),canvas.height/4);
      requestAnimationFrame(runAni);
    }
+ } //en goAni
 
-  }
   function checkCollision(event){
     let domRect = document.getElementById("myCanvas").getBoundingClientRect();
      if(x>event.clientX-20 && x<event.clientX+20 && y >(event.clientY-domRect.top)-20 && y<((event.clientY-domRect.top)+20))
@@ -192,6 +212,15 @@ $(document).ready (function(){
     }
     return false;
   }
+
+  function checkCollisionCircle(event){
+    let circleArea = document.getElementById("myCanvas").getBoundingClientRect();
+    if(Math.sqrt(Math.pow((event.clientX-circleArea.xPos),2) + Math.pow((event.clientY - circleArea.yPos),2))< circleArea.radius){
+      console.log("circle"+ ${circleArea.ellipseID} +"was pressed");
+    }
+    return true;
+  } //end collisionCircle
+
 }); //document ready
 </script>
 </body>
