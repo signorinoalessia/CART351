@@ -1,0 +1,205 @@
+/* CSS RESET */
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
+* {
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+}
+
+/*parent elements have height of 100% so child will be able to*/
+html,body {
+	height:100%;
+}
+
+#s1 {
+	width:100%;
+	height:80%;
+	/* background:#1a1a1a; */
+	background:url(../images/bg1.jpg) no-repeat fixed center center;
+	background-size:cover;
+}
+
+#s1 hgroup {
+	color: #202020;
+	padding:20px;
+	width:40%;
+	position:absolute;
+	top:100px;
+	left:100px;
+
+}
+
+#s1 h2 {
+	font-family: 'Montserrat', sans-serif;
+	font-weight:300;
+	font-size:2vmin;
+  line-height:20px;
+	color:#202020;
+}
+
+#s1 h1 {
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 800;
+/*	font-size:72px; use instead something that will scale up&down*/
+	font-size:5vmax;
+	line-height:40px;
+	text-transform:uppercase;
+	color:#202020;
+	/*#090d3f  */
+	/* text-shadow: 0 0 30px #585fb2, 0 0 3px white; */
+}
+h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight:800;
+  padding-bottom: 30px;
+	font-size: 3vmax;
+}
+
+h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight:700;
+  padding-bottom: 30px;
+	font-size: 2vmax;
+  color: #D6F7FA;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	font-size:1.2vmax;
+	line-height: 1.6;
+	text-align: justify;
+	text-justify: inter-word;
+}
+h2 + p {
+    padding-bottom: 3%;
+}
+
+#s2 {
+/*	2 columns of information*/
+/*	instead of specifying fixed height (height:30%) */
+	/* background:#264573; */
+  background:url(../images/bg2.jpg) no-repeat fixed center center;
+	background-size:cover;
+	min-height:100%;
+	height:auto;
+	padding-top:40px;
+	padding-left:25%;
+	padding-right:25%;
+}
+
+#s2 article {
+	/* column-count:2;
+  column-gap: 26px; */
+}
+
+#s2 h1 {
+  /* color: #e4cdcd; */
+	color:#202020;
+	font-family: 'Montserrat', sans-serif;
+  font-weight:700;
+	padding-top: 6%;
+}
+
+#s2 p {
+	 color:#202020;
+}
+
+#s3 {
+	width:100%;
+	height:90%;
+	padding-top:5%;
+	background:url(../images/bg2.jpg) no-repeat fixed center center;
+	background-size:cover;
+	position:relative;
+	min-height:100%;
+	height:auto;
+/*	you need this so the parent demands that other child elements stay inside the parent container*/
+}
+
+#s3 article {
+	background:#D6F7FA;
+  opacity: 0.6;
+	padding:60px;
+	width:50%;
+  min-width:320px;
+	position:absolute;
+	top:30px;
+	left:25%;
+  font-size:1vmax;
+}
+
+#s3 p {
+   font-family: 'Montserrat', sans-serif;
+ 	 font-weight:400;
+   color: black;
+	 font-size:0.75vmax;
+   line-height: 1.2;
+	 text-align:left;
+}
+
+#s4 {
+	width:100%;
+	height:108%;
+	background:#1a1a1a;
+	padding-top:40px;
+	padding-left:5%;
+	padding-right:5%;
+}
+
+#s4 article {
+	color:#D6F7FA;
+}
+
+#s4 figure {
+	margin:20px;
+	height:38%;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+#s5 {
+  background:url(../images/bg1.jpg) no-repeat fixed center center;
+  background-size:cover;
+	height:auto;
+	padding-top:40px;
+	padding-left:5%;
+	padding-right:5%;
+	margin-top: 0;
+	margin-bottom: auto;
+	/* display: flex;
+	flex-flow: column wrap;
+  justify-content: center;
+	height: 100%; */
+}
+
+#s5 figure {
+	margin:10px;
+	width: 40%;
+	height:43%;
+}
+
+img {
+  width: 100%;
+  object-fit: contain;
+}
+
+#t1 {
+	background:url(../images/1.png) no-repeat center center;
+}
+#t2 {
+	background:url(../images/2.png) no-repeat center center;
+}
+#t3 {
+	background:url(../images/3.png) no-repeat center center;
+}
+#t4 {
+	background:url(../images/4.jpg) no-repeat center center;
+}
