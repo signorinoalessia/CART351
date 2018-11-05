@@ -1,0 +1,16 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+#scene3d {
+	width: 800px;
+	height: 600px;
+  background: #404040;
+}
+
+canvas {
+  min-width:100%;
+  min-height:100%;
+}
