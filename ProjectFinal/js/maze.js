@@ -1,6 +1,6 @@
 //Reference: https://threejs.org/docs/#manual/en/introduction/Creating-a-scene
 
-let scene3d = document.getElementById("scene3d");
+let scene3d = document.getElementById("scene");
 let CANVAS_WIDTH = 800;
 let CANVAS_HEIGHT = 600;
 
