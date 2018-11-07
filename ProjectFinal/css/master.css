@@ -4,13 +4,14 @@
   box-sizing: border-box;
 }
 
-#scene {
-	width: 800px;
-	height: 600px;
-  background: #404040;
-}
-
-canvas {
+html, body {
   min-width:100%;
   min-height:100%;
+}
+
+/* flexbox to fill screen */
+body {
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
