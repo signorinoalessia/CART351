@@ -1,49 +1,105 @@
-<!--References: w3schools.com for how to set image and side navigation menu layout -->
-
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <title>CART 351 A SIGNORINO</title>
-  <link rel="stylesheet" type="text/css" href="css/main.css">
+<meta charset="UTF-8">
+<title>CART351 Proposal</title>
+<link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
-<!-- <img src="mesh.jpg" alt="Water Mesh"> -->
+
 <body>
+<!-- emmet:	section#s$*3-->
+	<section id="s1">
+		<hgroup>
+			<h2>CART351 Proposal - Alessia Signorino</h2>
+			<h1>Walkthrough</h1>
+		</hgroup>
+	</section>
 
-  <!-- the main div -->
-  <main>
-    <ul>
-      <!-- Side navigation -->
-      <div class="sidenav">
-        <h2> </h2>
-        <li><a href="index.html"> HOME</a></li>
-        <li><a href="assignment2.html"> ASSIGNMENT 2</a></li>
-        <li><a href="assignment3.html"> ASSIGNMENT 3</a></li>
-        <li><a href="projectProposal.html"> PROJECT PROPOSAL</a> </li>
-        <li><a href="projectPrototype.html"> PROJECT PROTOTYPE</a></li>
-        <li><a href="finalProject.html"> FINAL PROJECT</a></li>
-        <li><a href="reflections.html"> REFLECTIONS</a></li>
-        <li><a href="presentation.html"> PRESENTATION</a></li>
-      </div>
+	<section id="s2">
+  	<h1>Research</h1>
+    <article>
+<!--		emmet: p*>lorem-->
+    <h2>Topic</h2>
+      <p>My starting topic is hidden homelessness in Canada. Hidden homelessness is defined as those who ever had to temporarily live with family, friends or in their car because they had nowhere else to live. This topic resonated with me personally because it is a situation that a close family member was in during her youth, which was not disclosed for a very long time even to her own partner and children. The stigma of having lived on the street exists despite having valid reasons for leaving a permanent dwelling. Additionally, very often, people that have temporarily lived without a permanent address do not consider themselves as having lived homelessness due to the duration of their experience, or because their case does not align to having slept on the streets. Nevertheless the Canadian Observatory on Homelessness categorizes the population in three states: the unsheltered, the emergency-sheltered, and the provisionally accommodated. Statistics Canada has published a study in 2014 in which it is stated that nearly 1 in 10 Canadians have experienced hidden homelessness , which is approximately 2.3 million Canadians. The data was created from self-declared respondents which has potentially resulted in an underrepresentation of the population with an experience of hidden homelessness, or if they are currently homeless. It is an extensive amount of people in a vulnerable situation, whether temporary or not.
+			</p>
 
-      <!-- Page content -->
-      <div class="content">
+    <h2>Space</h2>
+      <p>It’s important to create an explorable networked space on hidden homelessness because this specific medium is relatively accessible from a broader range of locations, with the assumption that said person has access to a machine connected to the Internet. The screen of a computer does not require the person to enter a building, and perhaps the person accessing it might even be in their own dwelling, bringing the immediacy of the topic to their own home, which would be a dynamic imbued with privilege to reflect upon as well. My intention in creating this space is the feeling of entrapment despite being in a space that is technically free. Childhood mistreatment, mental illness, learning disabilities, lower levels of social support as well as being from an Aboriginal community are all correlated factors that might lead to an individual to be forced to “choose” to leave. The users will have to navigate ways of being in a vulnerable three-dimensional space and think about what it might entail to survive in unstable conditions, without the option of going back to the home they came from. While the situation might be temporary, how sustainable is it at the moment being? What are the options for leaving it? What is the ideal path for improving the current living condition? Those are questions that I would like the user to experience, with the only certainty that leaving was imperative.
+			</p>
 
-        <!-- the header div -->
-        <header>
-          <h2>Project Proposal</h2>
-          <h3> Location: CART 351 / FALL 2018 </h3>
-          <h4> Website of: A. SIGNORINO </h4>
-          <hr></hr>
-        <header>
-        <p>The project proposal has not been published yet! Try again later. </p>
+  <h2>Why</h2>
+      <p>This space is to build a platform for awareness and empathy. The user is placed in a first-person situation where the factors are dictated by sources outside of their control. There are few elements at their disposal, which might feel unjust and frustrating, among these elements there is but the option to continue trying pursuing a better situation and being resourceful with very little. I hope that this environment might put the person experiencing this networked space in the same frame of mind as someone who has lived a form of hidden homelessness, if not but to try and be more empathetic and understanding if they encounter one of the 2.3 million individuals that has lived through unfortunate circumstances in lieu of judging them in a negative light, which exacerbates feelings of shame or guilt that someone having lived this might already have. The experience will therefore present outdoor conditions which are particularly impactful for homeless individuals in a Canadian environment and an spatial interface which will contribute to the feeling of uncertainty.
+			</p>
 
-    </main>
-      <!-- the footer div -->
-    <footer>
-    <p>  </p>
-    </footer>
+  <h2>How</h2>
+	  <p> This project will entail the sonification of data, in which a musical system is based from weather conditions data. The experience will be set in a virtual maze in which the person’s coordinates will be stored to generate the walls. Factors such as precipitation, such as snow and rain, and temperature will control the tempo, note duration and frequency rate. Spiegel describes generative music: “One of the big changes is that music is becoming a process that people can participate in - rather than a bunch of fixed, finite entities called pieces that you can listen to that are the same every time.” (Laurie Spiegel). The aforementioned climate data will be retrieved from a weather database whereas the user’s coordinates as they are moving in the “three-dimensional” space will be stored in order to affect the outcome of the generated walls, creating a corridor for every turn, reminiscent of walking in the streets or in an infinite house.
+		</p>
 
-      </div>
+  <h2>Similar Projects</h2>
+  <p>  Projects that use data as systems to generate music are Trams of Helsinki by Tero Parviainen, Music Eclipticalis by Brian Foo, and David Bowen’s Cloud Piano. An example of generative music that does not use external data is Brian Eno’s Reflection.
+  Trams of Helsinki uses real-time data to track where each tram is currently, and the trams are mapped to a pentatonic scale and to central Helsinki. While the music might be incidental, there will some inevitable general outlines of what the ensuing sound will be like due to the routines created by anthropocentric schedules. In a sense, the music is controlled by a random condition, since there is no telling if there is tram malfunction, maintenance or any other change in scheduling that will affect the musical composition. Conceptually, I find it very interesting because the author uses a source of data that is non correlated to what one might think of a traditional scale for music. The program connects to tram data feed, and pushes all incoming messages to the queue which will determine what the following rhythm pattern will be and plays the note once an intersection has been detected.
+  Music Eclipticalis on the other hand, uses stellar data from Astronomy Nexus and users' interactions to generate unique and continuous music. The 16 brightest stars represent musical notes whose positions can be adjusted by the user by simply dragging the background plane guided by a fixed musical staff. This project was inspired by John Cage’s Atlas Eclipticalis in which he superimposed star charts of Czech astronomer Antonin Becvar. This project is an excellent example of data-driven music, which has a guidelines of rules to create it, but whose product is generative and is generated every time the user moves the sky as they see fit. The interface is beautiful leaving the sky and the staff as only visual guides as to how one could interact with the piece. The produced sounds are plentiful cues to give initial clues as to how they can interact with the space, which is an aspect that I find personally successful. David Bowen’s work on the other hand grabs weather information in a more self-contained system, by implementing their own camera pointed at the sky to capture video of the movement and shape of the tracked clouds. The resulting sound is an organic way of creating key patterns that ebb and flow with the movement of the water particles mass in the air. This work was created with the help of the Visualization and Digital Imagining Lab and Weber Music Hall, University of Minnesota. Unfortunately, not much information was documented in regards to this project, but I was enthralled by the manifestation of data controlling a physical piano. No user input is requested from a human pair of hands. The piano seems content at following a symphony dictated by a natural order, uninterested in the ideas of a human composer.
+  </p>
+
+  <h2>Walkthrough</h2>
+  <p> John Cage’s approach was to ask questions instead of choosing answers, in order to set up a space for possibilities, to open options that weren’t considered. Similarly, in Walkthrough, I am not approaching an answer to how the experience of hidden homelessness is. Rather, I am setting up questions as to how certain conditions must have felt like. As an author, however, I am in a certain way cornered into making design choices that become the system that will control the experience that the user will have. As Nick Briz concisely explains,  “biases say a lot about politics and world views of their inventors. Technologies are not neutral, they are embedded with the biases of the people who have produced them.” The fact that I chose weather conditions, the feeling of walking through a seemingly never-ending dimension, and a navigation method that leads to a confusing layout of directions are all factors that I made a conscious choice to look at. I am aware that there are many personal contributing factors and reasons as to why at least 1 in 10 Canadians had to leave difficult environments at the peril of an uncertain future. This is exactly why I chose to abstain from providing answers, but focused on the leading questions of how the experience might have felt like, and how to reproduce in a certain way a similar frame of mind. The artworks that I have described above do not seem to tie to a distinct mission other than exploring the beautiful possibilities of how sound can be composed in a performative and dynamic way that the Internet allows it to be. The potential of creating a participatory space in the Internet inspires me to push beyond exploration of sound, into an exploration of navigating space and social realities. This participatory and networked  space is an interesting receptacle of statistical data that is related to humanities due to the potential of conveying the meaning of numbers and charts into something more intuitive and hopefully, visceral.
+  </p>
+
+
+    </article>
+	</section>
+
+	<section id="s3">
+		<article>
+			<h1>References</h1>
+			<p>Bowen, David. “Cloud Piano.” David Bowen, www.dwbowen.com/cloud-piano/.
+      </p>
+
+      <br><p>Briz, Nick. "How To / Why Make Internet Art". Youtube, 2016, https://www.youtube.com/watch?v=0DZ0wBjFKg4. Accessed 31 Oct 2018.
+      </p>
+
+      <br><p>“Canadian Observatory On Homelessness.” Canadian Observatory On Homelessness | The Homeless Hub, York University, homelesshub.ca/COH.
+      </p>
+
+      <br><p>Gladeye. “What-Is-Data-Science.” Thinkful, Thinkful, www.thinkful.com/blog/what-is-data-science/.
+      </p>
+
+      <br><p>Foo, Brian. “Music Eclipticalis.” Music Eclipticalis By Brian Foo, eclipticalis.com/#about.
+      </p>
+
+      <br><p>Rozendaal, Rafael. “Rafaël Rozendaal.” Rafael Rozendaal RSS, www.newrafael.com/.
+      </p>
+
+      <br><p>Statistics Canada. “Insights on Canadian SocietyHidden Homelessness in Canada Insights on Canadian SocietyHidden Homelessness in Canada.” Hidden Homelessness in Canada, 15 Nov. 2016, www150.statcan.gc.ca/n1/pub/75-006-x/2016001/article/14678-eng.htm.
+      </p>
+
+      <br><p>Statistics Canada.  Table  14-10-0353-01   Homeless shelter capacity, bed and shelter counts for emergency shelters, transitional housing and violence against women shelters for Canada and provinces, Employment and Social Development Canada annual (number)
+          https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1410035301.
+      </p>
+
+      <br><p>Tero Parviainen. “How Generative Music Works”. Teropa.info, 2018. https://teropa.info/loop/#/methodvsproduct Accessed 31 Oct 2018.
+      </p>
+
+
+    </article>
+	</section>
+
+  <section id="s4">
+		<article>
+			<h1>Storyboard</h1>
+			<figure>
+				<img src="images/storyboard.png" class="center">
+			</figure>
+	</section>
+
+
+  <section id="s5">
+		<h1>Similar Projects</h1>
+		<a href="https://codepen.io/teropa/pen/mBbPEe"><img src="images/1.png" class="center">
+    <a href="http://eclipticalis.com/"><img src="images/2.png" class="center">
+    <a href="http://www.dwbowen.com/cloud-piano/"><img src="images/3.png" class="center">
+    <a href="http://www.generativemusic.com/reflection.html"><img src="images/4.jpg" class="center">
+	</section>
 
 </body>
 </html>
