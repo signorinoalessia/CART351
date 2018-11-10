@@ -1,16 +1,26 @@
 <html>
   <head>
     <title>Final Project Cart351</title>
-    <link rel="stylesheet" href="/css/master.css">
+    <link rel="stylesheet" href="css/master.css">
+
     <script src="p5/p5.js"></script>
     <script src="p5/addons/p5.dom.js"></script>
-    <script src = "js/maze.js"></script>
-    <script src = "js/boxTest.js"></script>
-    <!-- <script src = "js/player.js"></script> -->
+    <script src = "js/room.js"></script>
+    <script src = "js/walkthrough.js"></script>
+
   </head>
 
   <body>
-    <div id="mazeContainer"></div>
-    <!-- <div id="boxTestContainer"></div> -->
+    <div id="walkthroughContainer"></canvas>
+    <!-- <canvas id="boxTestContainer"></canvas> -->
+
+    <!-- <script>
+      // get canvas context, make it browser window size, get audio context
+      var canvas = document.getElementById("walkthroughContainer");
+      var context = canvas.getContext("2d");
+      context.canvas.width  = window.innerWidth;
+      context.canvas.height = window.innerHeight;
+    </script> -->
+
   </body>
 </html>
