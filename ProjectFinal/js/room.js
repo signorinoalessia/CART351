@@ -10,6 +10,7 @@ function Room (x,y,rWidth,rHeight,rDepth) {
   /* grid coords and dimensions */
   this.x = x;
   this.y = y;
+  this.z = z;
   this.rWidth = rWidth;
   this.rHeight = rHeight;
   this.rDepth = rDepth;

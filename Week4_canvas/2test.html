@@ -100,7 +100,6 @@ function CustomShape(x,y,w,h,r,g,b,a,speedX,speedY,eid) {
       this.a -= 0.01;
     }
 
-
     context.fillRect(-this.w/2, -this.h/2, this.w, this.h); //we changed this.x into negative this.w/2 to put origin in center
     context.clearRect(-this.w/2+this.innerW/2,-this.h/2+this.innerH/2,this.innerW,this.innerH); //cut outs (origin @center as well)
     context.restore(); //restore coords for next time
