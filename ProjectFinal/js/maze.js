@@ -1,6 +1,7 @@
 //https://codepen.io/rzahniser/post/maze1
 //https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes
 //https://natureofcode.com/book/chapter-1-vectors/
+// https://evanw.github.io/lightgl.js/docs/vector.html
 
 function Vector(x,y) {
   this.x = x;

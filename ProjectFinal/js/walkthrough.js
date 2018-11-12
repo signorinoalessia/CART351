@@ -101,6 +101,24 @@ function draw(){
 
 }
 
+function walk() {
+  switch(direction) {
+    case 'RIGHT':
+    //go right, rotate camera right
+    //TRANSLATE?
+    break;
+    case 'LEFT':
+    // go left
+    break;
+    case 'UP':
+    //go up
+    break;
+    case 'DOWN'
+    //go down
+    break;
+  }
+}
+
 /* EVENT LISTENER */
 // canvas.addEventListener("mousemove", function(event){
 //   // if moving beyond threshold distance
