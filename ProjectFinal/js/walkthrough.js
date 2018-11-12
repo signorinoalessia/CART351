@@ -28,16 +28,16 @@ function setup(){
 
   let x = Math.floor((Math.random()*canvas.width));
   let y = Math.floor((Math.random()*canvas.height));
-  let z = Math.floor((Math.random()*canvas.height));
+  //let z = Math.floor((Math.random()*canvas.width));
   let rWidth = 50;
   let rHeight = 50;
-  let rDepth = Math.floor((Math.random()*canvas.width/10)+10);
+  let rDepth = 50;
 
   // room1 = new Room(x,y,rWidth,rHeight,rDepth);
   //dims divided by 2 to set origin point to top let corner instead of center (WebGL)
   room1 = new Room(width/2,height/2,0,50,50,50);
   room2 = new Room((width/2)+50,height/2,0,50,50,50);
-  room3 = new Room(width/2,(height/2)+10,0,50,50,50);
+  //room3 = new Room(width/2,(height/2)+10,0,50,50,50);
 
   /* GENERATE ROOMS */
   // generate rooms with these parameters (push into array)
@@ -87,7 +87,7 @@ function draw(){
 
   room1.display();
   room2.display();
-  room3.display();
+  //room3.display();
   //roomList.display();
 
 
