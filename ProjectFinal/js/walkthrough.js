@@ -1,6 +1,7 @@
 //Reference: https://p5js.org/reference/
 // Reference: https://github.com/processing/p5.js/wiki/Positioning-your-canvas
 // Reference: https://www.youtube.com/watch?v=BW3D9WwalQE&index=5&list=PLRqwX-V7Uu6bPhi8sS1hHJ77n3zRO9FR_
+// Ref: https://stackoverflow.com/questions/3245398/using-arrows-keys-to-navigate
 
 /* LINKING TO MAIN PROGRAM */
 canvas = document.getElementById("walkthroughContainer");
@@ -101,23 +102,53 @@ function draw(){
 
 }
 
-function walk() {
-  switch(direction) {
-    case 'RIGHT':
-    //go right, rotate camera right
-    //TRANSLATE?
-    break;
-    case 'LEFT':
-    // go left
-    break;
-    case 'UP':
-    //go up
-    break;
-    case 'DOWN'
-    //go down
-    break;
+//WALKING AROUND WITH KEYBOARD
+
+$(document).keydown(function(myKey) {
+  active = $(td.active).removeClass('active');
+  let currentCell = active.index(); //x
+  let currentRow = active.closest('tr').index(); //y
+
+  if (e.keyCode == 37) { //left
+     currentCell--;
   }
-}
+  if (e.keyCode == 38) { //up
+      currentRow--;
+  }
+  if (e.keyCode == 39) { //right
+      currentCell++;
+  }
+  if (e.keyCode == 40) {  //down
+      currentRow++;
+  }
+  active = $('tr').eq(currentRow).find('td').eq(currentCell).addClass('active');
+
+});
+
+// let currentRow = 0;
+// let currentCell = 0;
+// let active;
+
+// function walk(rightKey,leftKey,upKey,downKey) {
+//   switch(keyCode) {
+//     case 'RIGHT':
+//       currentCell++;
+//       changeCurrentCell();
+//       break;
+//     case 'LEFT':
+//       currentCell--;
+//       changeCurrentCell();
+//       break;
+//     case 'UP':
+//       currentRow--;
+//       changeCurrentCell();
+//       break;
+//     case 'DOWN'
+//       currentRow++;
+//       changeCurrentCell();
+//       break;
+//   }
+// }
 
 /* EVENT LISTENER */
 // canvas.addEventListener("mousemove", function(event){
