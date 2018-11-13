@@ -103,7 +103,6 @@ function draw(){
 }
 
 //===WALKING AROUND WITH KEYBOARD===
-
 $(document).keydown(function(myKey) {
   active = $(td.active).removeClass('active');
   let currentCell = active.index(); //x
