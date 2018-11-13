@@ -1,10 +1,20 @@
-/* LINKING TO MAIN PROGRAM */
-
-
-/*CANVAS VARIABLES */
 let CANVAS_WIDTH = 800;
 let CANVAS_HEIGHT = 600;
 let mazeModel;
+
+
+Array.matrix= function(numRows,numCols,total){
+  let rows = [];
+  for (let i=0;i<numRows;i++){
+    let columns = [];
+    for (let j=0;j<numCols;j++){
+      columns[j]=total;
+    }
+    rows[i]=columns;
+  }
+  return rows;
+}
+
 
 function preload() {
   mazeModel = loadModel('assets/hexMaze.obj',true,successFunc,failureFunc);
