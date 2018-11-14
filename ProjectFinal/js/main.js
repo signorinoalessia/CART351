@@ -26,19 +26,18 @@ function makeGrid (numRows,numCols,cellSize,cellSize){
     //let columns = [];
     for (let x=0;x<numRows;x++){
       matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,random(0,1),random(0,1),random(0,1),random(0,1));
-      //matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,cellProperties[i]);
+      //matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,cellProperties[i].l,cellProperties[i].r,cellProperties[i].t,cellProperties[i].b);
       count++;
     }
   }
   return matrix;
 }
 
-// grid[i].cellWallProps = cellProperties[i];
-
+/*
 // define l,r,t,b arguments:
-/*let cellProperties [] = [
+let cellProperties [] = [
   //FIRST ROW:
-  {1,0,1,1}, //0
+  {l:1,0,1,1}, //0
   {0,1,1,0}, //1
   {1,0,1,0}, //2
   {0,0,1,1}, //3
@@ -122,12 +121,15 @@ document.addEventListener('keydown', (event) => {
       grid[activeCell].cellColor = color(0,0,255);
       grid[activeCell].currentCell = false;
       //if grid[activeCell].rightWall = false ....
-      console.log(grid[activeCell].r);
-      //if (grid[activeCell].r == 0) {
+      console.log("INSIDE KEYCODE, RIGHT WALL IS: "+grid[activeCell].rightWall);
+      if (grid[activeCell].rightWall == 0) {
         activeCell++;
         grid[activeCell].cellColor = color(255,0,0);
         grid[activeCell].currentCell = true;
-      //}
+      }
+      else {
+        activeCell==activeCell;
+      }
     }
 
 /* DOWN KEY */
@@ -150,10 +152,10 @@ function preload() {
 
 /* CHECK FOR LOADING MODEL PRESENCE */
 function successFunc(){
-  console.log("success");
+  //console.log("success");
 }
 function failureFunc(){
-  console.log("failure");
+  //console.log("failure");
 }
 
 /* === A:: SETUP FUNCT === */
@@ -165,7 +167,8 @@ function setup(){
   grid[0].cellColor = color(255,0,0);
   grid[0].currentCell = true;
   //console.log(grid[0].cellColor);
-  console.log("MY RIGHT WALL IS:"+grid[activeCell].r);
+  console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
+  //console.log("GRID[0]:: "+grid[i].r);
 } // end of SETUP
 
 /* === B:: DRAW FUNCT === */
@@ -180,9 +183,9 @@ function draw() {
   }
 
  /* DRAW MODEL*/
-  translate(-49.3,50.9);
+  translate(-48.2,52.9);
   rotate(Math.PI/2);
-  scale(2.64);
+  scale(2.48);
   model(mazeModel);
 
 } //end of DRAW
