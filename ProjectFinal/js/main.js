@@ -5,8 +5,7 @@ let canvasHeight = 800;
 let mazeModel;
 
 let grid;
-//let cellSize = 50; //pixels
-let cellSize = 100;
+let cellSize = 100; // pixels (before 50)
 let gridSize = 5; //rows,columns
 let activeCell= 0; //x
 let cellQty = 25; //quantity
@@ -33,6 +32,41 @@ let count =0;
   }
   return matrix;
 }
+
+/*
+// define l,r,t,b arguments:
+//FIRST ROW:
+Cell 0: (1,0,1,1);
+Cell 1: (0,1,1,0);
+Cell 2: (1,0,1,0);
+Cell 3: (0,0,1,1);
+Cell 4: (0,1,1,0);
+//SECOND ROW:
+Cell 5: (1,1,1,0);
+Cell 6: (1,0,0,1);
+Cell 7: (0,1,0,1);
+Cell 8: (1,0,1,0);
+Cell 9: (0,1,0,1);
+// THIRD ROW:
+Cell 10: (1,1,0,0);
+Cell 11: (1,0,1,0);
+Cell 12: (0,1,1,0);
+Cell 13: (1,0,0,1);
+Cell 14: (0,1,1,0);
+// FOURTH ROW:
+Cell 15: (1,0,0,0);
+Cell 16: (0,1,0,1);
+Cell 17: (1,0,0,1);
+Cell 18: (0,0,1,1);
+Cell 19: (0,1,0,1);
+// FIFTH ROW:
+Cell 20: (1,0,0,1);
+Cell 21: (0,0,1,1);
+Cell 22: (0,0,1,1);
+Cell 23: (0,0,1,1);
+Cell 24: (0,1,1,1);
+*/
+
 
 /* CELL OBJECT */
 function Cell(x,y,w,l,r,t,b){
@@ -61,10 +95,14 @@ function Cell(x,y,w,l,r,t,b){
 -check left, walls of my left wall, update active
 */
 
+/* WALKING WITH KEYBOARD */
 document.addEventListener('keydown', (event) => {
 
 /* LEFT KEY */
   if (event.keyCode == 37) {
+    // if (this.l == 0) {
+    //
+    // }
     console.log("left");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
@@ -118,7 +156,7 @@ document.addEventListener('keydown', (event) => {
 
 }); //end of eventListener **
 
-/* LOAD THE MODEL FIRST */
+/* === LOAD THE MODEL FIRST === */
 function preload() {
   mazeModel = loadModel('assets/maze5.obj',true,successFunc,failureFunc);
 }
@@ -131,7 +169,7 @@ function failureFunc(){
   console.log("failure");
 }
 
-/* A:: SETUP FUNCT */
+/* === A:: SETUP FUNCT === */
 function setup(){
   maze = document.getElementById("maze");
   let canvas = createCanvas(canvasWidth,canvasHeight,WEBGL);
@@ -146,9 +184,9 @@ function setup(){
   grid[0].cellColor = color(255,0,0);
   grid[0].currentCell = true;
   console.log(grid[0].cellColor);
-}
+} // end of SETUP
 
-/* B:: DRAW FUNCT */
+/* === B:: DRAW FUNCT === */
 function draw() {
   background(200);
  let count =0;
@@ -165,4 +203,5 @@ function draw() {
   rotate(Math.PI/2);
   scale(2.8);
   model(mazeModel);
-}
+
+} //end of DRAW
