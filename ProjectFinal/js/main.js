@@ -22,20 +22,19 @@ function makeGrid (numRows,numCols,cellSize,cellSize){
   let matrix = [];
   let count =0;
   for (let y=0;y<numCols;y++){
-
     //let columns = [];
     for (let x=0;x<numRows;x++){
       //matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,random(0,1),random(0,1),random(0,1),random(0,1));
-      matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,cellProperties[i].l,cellProperties[i].r,cellProperties[i].t,cellProperties[i].b);
+      matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,cellProperties[count].l,cellProperties[count].r,cellProperties[count].t,cellProperties[count].b);
       count++;
     }
   }
   return matrix;
 }
 
-/*OBJECTS AS ASSOCIATIVE ARRAY (key-value) --> define l,r,t,b properties: */
+/*ASSOCIATIVE ARRAY of OBJECTS (which are in {}) --> define l,r,t,b properties: */
 
-let cellProperties  = {
+let cellProperties = [
   //FIRST ROW:
   {l:1,r:0,t:1,b:1}, //0
   {l:0,r:1,t:1,b:0}, //1
@@ -43,30 +42,30 @@ let cellProperties  = {
   {l:0,r:0,t:1,b:1}, //3
   {l:0,r:1,t:1,b:0}, //4
   //SECOND ROW:
-  {1,1,1,0}, //5
-  {1,0,0,1}, //6
-  {0,1,0,1}, //7
-  {1,0,1,0}, //8
-  {0,1,0,1}, //9
+  {l:1,r:1,t:1,b:0}, //5
+  {l:1,r:0,t:0,b:1}, //6
+  {l:0,r:1,t:0,b:1}, //7
+  {l:1,r:0,t:1,b:0}, //8
+  {l:0,r:1,t:0,b:1}, //9
   //THIRD ROW:
-  {1,1,0,0}, //10
-  {1,0,1,0}, //11
-  {0,1,1,0}, //12
-  {1,0,0,1}, //13
-  {0,1,1,0}, //14
+  {l:1,r:1,t:0,b:0}, //10
+  {l:1,r:0,t:1,b:0}, //11
+  {l:0,r:1,t:1,b:0}, //12
+  {l:1,r:0,t:0,b:1}, //13
+  {l:0,r:1,t:1,b:0}, //14
   //FOURTH ROW:
-  {1,0,0,0}, //15
-  {0,1,0,1}, //16
-  {1,0,0,1}, //17
-  {0,0,1,1}, //18
-  {0,1,0,1}, //19
+  {l:1,r:0,t:0,b:0}, //15
+  {l:0,r:1,t:0,b:1}, //16
+  {l:1,r:0,t:0,b:1}, //17
+  {l:0,r:0,t:1,b:1}, //18
+  {l:0,r:1,t:0,b:1}, //19
   //FIFTH ROW:
-  {1,0,0,1}, //20
-  {0,0,1,1}, //21
-  {0,0,1,1}, //22
-  {0,0,1,1}, //23
-  {0,1,1,1}, //24
-};
+  {l:1,r:0,t:0,b:1}, //20
+  {l:0,r:0,t:1,b:1}, //21
+  {l:0,r:0,t:1,b:1}, //22
+  {l:0,r:0,t:1,b:1}, //23
+  {l:0,r:1,t:1,b:1}, //24
+];
 
 
 /* CELL OBJECT */
@@ -92,7 +91,7 @@ function Cell(x,y,w,l,r,t,b){
 
 /* WALKING WITH KEYBOARD */
 document.addEventListener('keydown', (event) => {
-
+  console.log(grid[activeCell]);
 /* LEFT KEY */
   if (event.keyCode == 37) {
     console.log("left");
