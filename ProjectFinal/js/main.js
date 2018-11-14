@@ -1,93 +1,167 @@
-let CANVAS_WIDTH = 800;
-let CANVAS_HEIGHT = 600;
+/* VARIABLES */
+let canvasWidth = 800;
+let canvasHeight = 600;
+
 let mazeModel;
-let cellSize =50;
+
 let grid;
-let active;
+let cellSize = 50; //pixels
+let gridSize = 5; //rows,columns
+let activeCell= 0; //x
+let cellQty = 25; //quantity
 
-function makeGrid (numRows,numCols,total){
+/* RETURN A RANDOM VALUE */
+let random = function(min,max){
+  let rand = min + Math.random()*(max+1-min);
+  rand = rand^0;
+  return rand;
+}
+
+/* TWO-DIM ARRAY FOR GRID */
+function makeGrid (numRows,numCols,cellSize,cellSize){
   let matrix = [];
+let count =0;
+  for (let y=0;y<numCols;y++){
 
-
-  for (let x=0;x<numRows;x++){
-    let columns = [];
-    for (let y=0;y<numCols;y++){
-      columns[y]=new Cell(x*cellSize,y*cellSize,cellSize,//rdm 0,);
-
+    //let columns = [];
+    for (let x=0;x<numRows;x++){
+      matrix[count]=new Cell(x*cellSize,y*cellSize,cellSize,random(0,1),random(0,1),random(0,1),random(0,1));
+    count++;
     }
-    matrix[x]=columns;
+    //matrix[x]=columns;
+
   }
   return matrix;
 }
 
+/* CELL OBJECT */
 function Cell(x,y,w,l,r,t,b){
   this.x = x;
   this.y = y;
   this.w = w;
   this.leftWall=l;
+  this.rightWall=r;
+  this.topWall=t;
+  this.bottomWall=b;
+  this.cellColor = color(0,0,255);
+  this.currentCell = false;
 
   this.display =function(){
-    fill(255,0,0);
+    //console.log(this.cellColor);
+    fill(this.cellColor);
     rect(this.x,this.y,this.w,this.w);
   }
 }
 
-/*===WALKING AROUND WITH KEYBOARD===
-$(document).keydown(function(myKey) {
-  active = $(td.active).removeClass('active');
-  let currentCell = active.index(); //x
-  let currentRow = active.closest('tr').index(); //y
+/*
+-active = inside x,y
+-is leftwall of myself, free? y/n, go leftWall
+-up is ***minus 5*** using within row
+-vb which cell am in (active)
+-check left, walls of my left wall, update active
+*/
 
-// vb which cell am in (active)
-// check left, walls of my left wall, update active
-  if (e.keyCode == 37) { //left
-     currentCell--;
-  }
-  if (e.keyCode == 38) { //up
-      currentRow--;
-  }
-  if (e.keyCode == 39) { //right
-      currentCell++;
-  }
-  if (e.keyCode == 40) {  //down
-      currentRow++;
-  }
-  active = $('tr').eq(currentRow).find('td').eq(currentCell).addClass('active');
+document.addEventListener('keydown', (event) => {
 
-});*/
+/* LEFT KEY */
+  if (event.keyCode == 37) {
+    console.log("left");
 
-// inside x,y
-// is leftwall of myself, free? y/n, go leftWall
-//up is minus 5 using within row
+    // for every single cell
+    //for (let x=0;x<cellQty;x++){
+      //check nearby cell, if no wall, advance
+      //if (this.leftWall === false) {
+      //  console.log(activeCell);
+      //  activeCell--;
+        //rect(this.x,this.y,50,50);
+      //  fill(255,0,0);
+      //}
+    //}
+  }
 
+/* UP KEY */
+  if (event.keyCode == 38) {
+    for (let x=0;x<cellQty;x++){
+      //check nearby cell, if no wall, advance
+      if (this.topWall === false) {
+        console.log(activeCell);
+        activeCell=-5;
+        rect(this.x,this.y,50,50);
+        fill(255,0,0);
+      }
+    }
+  }
+  /* RIGHT KEY */
+  if (event.keyCode == 39) {
+      console.log("right");
+      grid[activeCell].cellColor = color(0,0,255);
+      grid[activeCell].currentCell = false;
+      //if grid.activeCell.rightWall = false ....
+      activeCell++;
+      grid[activeCell].cellColor = color(255,0,0);
+      grid[activeCell].currentCell = true;
+    //for (let x=0;x<cellQty;x++){
+      //check nearby cell, if no wall, advance
+      //if (this.rightWall === false) {
+      //  console.log(activeCell);
+        //activeCell++;
+        //rect(this.x,this.y,50,50);
+        //fill(255,0,0);
+    //  }
+    //}
+  }
+
+/* DOWN KEY */
+  if (event.keyCode == 40) {
+    for (let x=0;x<cellQty;x++){
+      //check nearby cell, if no wall, advance
+      if (this.bottomWall === false) {
+        console.log(activeCell);
+        activeCell=+5;
+        rect(this.x,this.y,50,50);
+        fill(255,0,0);
+      }
+    }
+  }
+
+}); //end of eventListener **
+
+/* LOAD THE MODEL FIRST */
 function preload() {
   //mazeModel = loadModel('assets/hexMaze.obj',true,successFunc,failureFunc);
 }
 
+/* CHECK FOR LOADING MODEL PRESENCE */
 function successFunc(){
-  console.log("success")
+  console.log("success");
 }
 function failureFunc(){
-  console.log("failure")
+  console.log("failure");
 }
 
+/* A:: SETUP FUNCT */
 function setup(){
   maze = document.getElementById("maze");
-  let canvas = createCanvas(CANVAS_WIDTH,CANVAS_HEIGHT,WEBGL);
-  grid = makeGrid(5,5,50,50);
+  let canvas = createCanvas(canvasWidth,canvasHeight,WEBGL);
+  grid = makeGrid(gridSize,gridSize,cellSize,cellSize);
   //canvas.parent('maze');
+  grid[0].cellColor = color(255,0,0);
+  grid[0].currentCell = true;
+  console.log(grid[0].cellColor);
 }
 
+/* B:: DRAW FUNCT */
 function draw() {
   background(200);
-
-  for (let x=0;x<5;x++){
-    let rowOfCells = grid[x];
-    for (let y=0;y<5;y++){
-      rowOfCells[y].display();
+ let count =0;
+  for (let x=0;x<gridSize;x++){
+    //let rowOfCells = grid[x];
+    for (let y=0;y<gridSize;y++){
+      grid[count].display();
+      count++;
     }
-
   }
 
+ /* DRAW MODEL*/
   //model(mazeModel);
 }
