@@ -99,10 +99,17 @@ document.addEventListener('keydown', (event) => {
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
     //if grid[activeCell].leftWall = false ....
+    console.log("LEFT WALL IS: "+grid[activeCell].leftWall);
+    if (grid[activeCell].leftWall == 0) {
       activeCell--;
       grid[activeCell].cellColor = color(255,0,0);
       grid[activeCell].currentCell = true;
+    } else {
+      activeCell=activeCell;
+      grid[activeCell].cellColor = color(255,0,0);
+      grid[activeCell].currentCell = true;
     }
+  }
 
 /* UP KEY */
   if (event.keyCode == 38) {
@@ -110,9 +117,16 @@ document.addEventListener('keydown', (event) => {
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
     //if grid[activeCell].topWall = false ....
-    activeCell-=5;
-    grid[activeCell].cellColor = color(255,0,0);
-    grid[activeCell].currentCell = true;
+    console.log("TOP WALL IS: "+grid[activeCell].topWall);
+    if (grid[activeCell].topWall == 0) {
+      activeCell-=5;
+      grid[activeCell].cellColor = color(255,0,0);
+      grid[activeCell].currentCell = true;
+    } else {
+      activeCell=activeCell;
+      grid[activeCell].cellColor = color(255,0,0);
+      grid[activeCell].currentCell = true;
+    }
   }
 
   /* RIGHT KEY */
@@ -121,14 +135,15 @@ document.addEventListener('keydown', (event) => {
       grid[activeCell].cellColor = color(0,0,255);
       grid[activeCell].currentCell = false;
       //if grid[activeCell].rightWall = false ....
-      console.log("INSIDE KEYCODE, RIGHT WALL IS: "+grid[activeCell].rightWall);
+      console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
       if (grid[activeCell].rightWall == 0) {
         activeCell++;
         grid[activeCell].cellColor = color(255,0,0);
         grid[activeCell].currentCell = true;
-      }
-      else {
-        activeCell==activeCell;
+      } else {
+        activeCell=activeCell;
+        grid[activeCell].cellColor = color(255,0,0);
+        grid[activeCell].currentCell = true;
       }
     }
 
@@ -138,9 +153,16 @@ document.addEventListener('keydown', (event) => {
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
     //if grid[activeCell].bottomWall = false ....
-    activeCell+=5;
-    grid[activeCell].cellColor = color(255,0,0);
-    grid[activeCell].currentCell = true;
+    console.log("BOTTOM WALL IS: "+grid[activeCell].bottomWall);
+    if (grid[activeCell].bottomWall == 0) {
+      activeCell+=5;
+      grid[activeCell].cellColor = color(255,0,0);
+      grid[activeCell].currentCell = true;
+    } else {
+      activeCell=activeCell;
+      grid[activeCell].cellColor = color(255,0,0);
+      grid[activeCell].currentCell = true;
+    }
   }
 
 }); //end of eventListener **
@@ -167,7 +189,7 @@ function setup(){
   grid[0].cellColor = color(255,0,0);
   grid[0].currentCell = true;
   //console.log(grid[0].cellColor);
-  console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
+  // console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
   //console.log("GRID[0]:: "+grid[i].r);
 } // end of SETUP
 
