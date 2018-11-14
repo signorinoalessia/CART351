@@ -25,23 +25,23 @@ function makeGrid (numRows,numCols,cellSize,cellSize){
 
     //let columns = [];
     for (let x=0;x<numRows;x++){
-      matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,random(0,1),random(0,1),random(0,1),random(0,1));
-      //matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,cellProperties[i].l,cellProperties[i].r,cellProperties[i].t,cellProperties[i].b);
+      //matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,random(0,1),random(0,1),random(0,1),random(0,1));
+      matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,cellProperties[i].l,cellProperties[i].r,cellProperties[i].t,cellProperties[i].b);
       count++;
     }
   }
   return matrix;
 }
 
-/*
-// define l,r,t,b arguments:
-let cellProperties [] = [
+/*OBJECTS AS ASSOCIATIVE ARRAY (key-value) --> define l,r,t,b properties: */
+
+let cellProperties  = {
   //FIRST ROW:
-  {l:1,0,1,1}, //0
-  {0,1,1,0}, //1
-  {1,0,1,0}, //2
-  {0,0,1,1}, //3
-  {0,1,1,0}, //4
+  {l:1,r:0,t:1,b:1}, //0
+  {l:0,r:1,t:1,b:0}, //1
+  {l:1,r:0,t:1,b:0}, //2
+  {l:0,r:0,t:1,b:1}, //3
+  {l:0,r:1,t:1,b:0}, //4
   //SECOND ROW:
   {1,1,1,0}, //5
   {1,0,0,1}, //6
@@ -66,8 +66,8 @@ let cellProperties [] = [
   {0,0,1,1}, //22
   {0,0,1,1}, //23
   {0,1,1,1}, //24
-];
-*/
+};
+
 
 /* CELL OBJECT */
 function Cell(x,y,w,l,r,t,b){
