@@ -5,8 +5,8 @@
 }
 
 html, body {
-  min-width:100%;
-  min-height:100%;
+  width:100%;
+  height:100%;
 }
 
 /* flexbox to fill screen */
@@ -16,6 +16,8 @@ body {
   align-items:center;*/
 }
 
-td.active{
-    background: red;
+#maze{
+  position:absolute;
+  top:0;
+  left:0;
 }

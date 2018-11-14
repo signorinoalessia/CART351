@@ -1,11 +1,12 @@
 /* VARIABLES */
-let canvasWidth = 800;
-let canvasHeight = 600;
+let canvasWidth = 1200;
+let canvasHeight = 800;
 
 let mazeModel;
 
 let grid;
-let cellSize = 50; //pixels
+//let cellSize = 50; //pixels
+let cellSize = 100;
 let gridSize = 5; //rows,columns
 let activeCell= 0; //x
 let cellQty = 25; //quantity
@@ -25,11 +26,10 @@ let count =0;
 
     //let columns = [];
     for (let x=0;x<numRows;x++){
-      matrix[count]=new Cell(x*cellSize,y*cellSize,cellSize,random(0,1),random(0,1),random(0,1),random(0,1));
+      matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,random(0,1),random(0,1),random(0,1),random(0,1));
     count++;
     }
     //matrix[x]=columns;
-
   }
   return matrix;
 }
@@ -66,31 +66,25 @@ document.addEventListener('keydown', (event) => {
 /* LEFT KEY */
   if (event.keyCode == 37) {
     console.log("left");
-
-    // for every single cell
-    //for (let x=0;x<cellQty;x++){
-      //check nearby cell, if no wall, advance
-      //if (this.leftWall === false) {
-      //  console.log(activeCell);
-      //  activeCell--;
-        //rect(this.x,this.y,50,50);
-      //  fill(255,0,0);
-      //}
-    //}
+    grid[activeCell].cellColor = color(0,0,255);
+    grid[activeCell].currentCell = false;
+    //if grid.activeCell.rightWall = false ....
+    activeCell--;
+    grid[activeCell].cellColor = color(255,0,0);
+    grid[activeCell].currentCell = true;
   }
 
 /* UP KEY */
   if (event.keyCode == 38) {
-    for (let x=0;x<cellQty;x++){
-      //check nearby cell, if no wall, advance
-      if (this.topWall === false) {
-        console.log(activeCell);
-        activeCell=-5;
-        rect(this.x,this.y,50,50);
-        fill(255,0,0);
-      }
-    }
+    console.log("up");
+    grid[activeCell].cellColor = color(0,0,255);
+    grid[activeCell].currentCell = false;
+    //if grid.activeCell.rightWall = false ....
+    activeCell-=5;
+    grid[activeCell].cellColor = color(255,0,0);
+    grid[activeCell].currentCell = true;
   }
+
   /* RIGHT KEY */
   if (event.keyCode == 39) {
       console.log("right");
@@ -113,22 +107,20 @@ document.addEventListener('keydown', (event) => {
 
 /* DOWN KEY */
   if (event.keyCode == 40) {
-    for (let x=0;x<cellQty;x++){
-      //check nearby cell, if no wall, advance
-      if (this.bottomWall === false) {
-        console.log(activeCell);
-        activeCell=+5;
-        rect(this.x,this.y,50,50);
-        fill(255,0,0);
-      }
-    }
+    console.log("down");
+    grid[activeCell].cellColor = color(0,0,255);
+    grid[activeCell].currentCell = false;
+    //if grid.activeCell.rightWall = false ....
+    activeCell+=5;
+    grid[activeCell].cellColor = color(255,0,0);
+    grid[activeCell].currentCell = true;
   }
 
 }); //end of eventListener **
 
 /* LOAD THE MODEL FIRST */
 function preload() {
-  //mazeModel = loadModel('assets/hexMaze.obj',true,successFunc,failureFunc);
+  mazeModel = loadModel('assets/maze5.obj',true,successFunc,failureFunc);
 }
 
 /* CHECK FOR LOADING MODEL PRESENCE */
@@ -143,6 +135,12 @@ function failureFunc(){
 function setup(){
   maze = document.getElementById("maze");
   let canvas = createCanvas(canvasWidth,canvasHeight,WEBGL);
+
+  // let context = canvas.getContext('2d');
+  // let transX = canvas.width * 0.5;
+  // let transY = canvas.height * 0.5;
+  // context.translate(transX, transY);
+
   grid = makeGrid(gridSize,gridSize,cellSize,cellSize);
   //canvas.parent('maze');
   grid[0].cellColor = color(255,0,0);
@@ -163,5 +161,8 @@ function draw() {
   }
 
  /* DRAW MODEL*/
-  //model(mazeModel);
+  translate(-40,51);
+  rotate(Math.PI/2);
+  scale(2.8);
+  model(mazeModel);
 }
