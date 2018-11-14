@@ -2,13 +2,64 @@
   <head>
     <title>Final Project Cart351</title>
     <link rel="stylesheet" href="css/master.css">
+    <!-- get JQUERY -->
+      <script src = "libs/jquery-3.3.1.min.js"></script>
     <script src="p5/p5.js"></script>
     <script src="p5/addons/p5.dom.js"></script>
     <script src = "js/main.js"></script>
   </head>
 
   <body>
-    <!-- MAZE JS CONTAINER  -->
+    <!-- ===== MAZE JS CONTAINER ===== -->
     <div id="maze"></div>
+
+    <!-- ===== FORM AND AJAX FUNCT ===== -->
+    <div class= "formContainer">
+    <!--form done using more current tags... -->
+    <form id="insertUser" action="" enctype ="multipart/form-data">
+    <!-- group the related elements in a form -->
+    <h3> SUBMIT AN ART WORK :::</h3>
+    <fieldset>
+    <p><label>Username</label><input type="text" size="24" maxlength = "40" name = "u_name" required></p>
+
+    <p class = "sub"><input type = "submit" name = "submit" value = "submit my info" id ="buttonS" /></p>
+     </fieldset>
+    </form>
+    </div>
+
+    <script>
+    let user = ""; //you will insert that user
+      $(document).ready (function(){
+        $("#insertUser").submit(function(event) {
+          //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
+          event.preventDefault(); // to ensure that it doesnt send anything, just click
+          console.log("button clicked");
+          let form = $('#insertUser')[0]; //get form data, put into right format
+          let data = new FormData(form); //it will turn it into an html form, will make key values for me automatically
+
+          // NEW::::: .ajax, like get json function, .ajax, more general, but more options!
+          $.ajax({
+                  type: "POST",
+                  enctype: 'multipart/form-data',
+                  url: "php/insertIntoDB.php",
+                  data: data,
+                  processData: false,//prevents from converting into a query string
+                  contentType: false,
+                  cache: false,
+                  timeout: 600000,
+                  success: function (response) {
+                  console.log(response);
+                  user = response;
+                 },
+                 error:function(){
+                console.log("error occurred");
+              }
+            }); // end ajax
+
+          }); //insert gallery submit end
+
+      }); //document ready end
+    </script>
+
   </body>
 </html>

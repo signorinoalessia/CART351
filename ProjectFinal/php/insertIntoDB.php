@@ -42,6 +42,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   while($row = $result->fetchArray(SQLITE3_ASSOC))
   {
     foreach ($row as $entry) {
+      // $entry COUNTS how many times it has been entered
       //echo($entry);
       if ($entry == 0) {
         // insert user into database SQL execute (INSERT) -- modifying table!
@@ -68,95 +69,3 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   exit;
 }//POST
 ?>
-
-<!DOCTYPE html>
-<!-- Ok – so this is very similar to the previous example EXCEPT:
-We left the action attribute of the form empty
-We took out the method attribute of the form
-We added an id called “insertGallery” to the form
-We added a div with id called “result” in order to hold the results…. -->
-
-<!-- php at top! -->
-<html>
-<head>
-<title>Sample Insert into Gallery Form USING JQUERY AND AJAX </title>
-<!-- get JQUERY -->
-  <script src = "../libs/jquery-3.3.1.min.js"></script>
-  <!-- //css goes here -->
-<!--set some style properties::: -->
-</head>
-<body>
-
-<div class= "formContainer">
-<!--form done using more current tags... -->
-<form id="insertUser" action="" enctype ="multipart/form-data">
-<!-- group the related elements in a form -->
-<h3> SUBMIT AN ART WORK :::</h3>
-<fieldset>
-<p><label>Username</label><input type="text" size="24" maxlength = "40" name = "u_name" required></p>
-
-<p class = "sub"><input type = "submit" name = "submit" value = "submit my info" id ="buttonS" /></p>
- </fieldset>
-</form>
-</div>
-<script>
-let user = ""; //you will insrt that user
-  $(document).ready (function(){
-    $("#insertUser").submit(function(event) {
-      //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
-      event.preventDefault(); // to ensure that it doesnt send anything, just click
-      console.log("button clicked");
-      let form = $('#insertUser')[0]; //get form data, put into right format
-      let data = new FormData(form); //it will turn it into an html form, will make key values for me automatically
-
-      // NEW::::: .ajax, like get json function, .ajax, more general, but more options!
-      $.ajax({
-              type: "POST",
-              enctype: 'multipart/form-data',
-              url: "insertIntoDB.php",
-              data: data,
-              processData: false,//prevents from converting into a query string
-              contentType: false,
-              cache: false,
-              timeout: 600000,
-              success: function (response) {
-              console.log(response);
-              user = response;
-             },
-             error:function(){
-            console.log("error occurred");
-          }
-        });
-
-          }); //insert gallery submit end
-
-    // validate and process form here
-        function displayResponse(theResult){
-          let container = $('<div>').addClass("outer");
-          let title = $('<h3>');
-          $(title).text("Results from user");
-          $(title).appendTo(container);
-          let contentContainer = $('<div>').addClass("content");
-          for (let property in theResult) {
-            console.log(property);
-            if(property ==="fileName"){
-              let img = $("<img>");
-              $(img).attr('src','images/'+theResult[property]);
-
-              $(img).appendTo(contentContainer);
-            }
-            else{
-              let para = $('<p>');
-              $(para).text(property+"::" +theResult[property]);
-                $(para).appendTo(contentContainer);
-            }
-
-          }
-          $(contentContainer).appendTo(container);
-          $(container).appendTo("#result");
-        }
-
-  }); //document ready end
-</script>
-</body>
-</html>
