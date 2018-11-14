@@ -20,53 +20,55 @@ let random = function(min,max){
 /* TWO-DIM ARRAY FOR GRID */
 function makeGrid (numRows,numCols,cellSize,cellSize){
   let matrix = [];
-let count =0;
+  let count =0;
   for (let y=0;y<numCols;y++){
 
     //let columns = [];
     for (let x=0;x<numRows;x++){
       matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,random(0,1),random(0,1),random(0,1),random(0,1));
-    count++;
+      //matrix[count]=new Cell((x*cellSize)-canvasWidth/4,(y*cellSize)-canvasHeight/4,cellSize,cellProperties[i]);
+      count++;
     }
-    //matrix[x]=columns;
   }
   return matrix;
 }
 
-/*
-// define l,r,t,b arguments:
-//FIRST ROW:
-Cell 0: (1,0,1,1);
-Cell 1: (0,1,1,0);
-Cell 2: (1,0,1,0);
-Cell 3: (0,0,1,1);
-Cell 4: (0,1,1,0);
-//SECOND ROW:
-Cell 5: (1,1,1,0);
-Cell 6: (1,0,0,1);
-Cell 7: (0,1,0,1);
-Cell 8: (1,0,1,0);
-Cell 9: (0,1,0,1);
-// THIRD ROW:
-Cell 10: (1,1,0,0);
-Cell 11: (1,0,1,0);
-Cell 12: (0,1,1,0);
-Cell 13: (1,0,0,1);
-Cell 14: (0,1,1,0);
-// FOURTH ROW:
-Cell 15: (1,0,0,0);
-Cell 16: (0,1,0,1);
-Cell 17: (1,0,0,1);
-Cell 18: (0,0,1,1);
-Cell 19: (0,1,0,1);
-// FIFTH ROW:
-Cell 20: (1,0,0,1);
-Cell 21: (0,0,1,1);
-Cell 22: (0,0,1,1);
-Cell 23: (0,0,1,1);
-Cell 24: (0,1,1,1);
-*/
+// grid[i].cellWallProps = cellProperties[i];
 
+// define l,r,t,b arguments:
+/*let cellProperties [] = [
+  //FIRST ROW:
+  {1,0,1,1}, //0
+  {0,1,1,0}, //1
+  {1,0,1,0}, //2
+  {0,0,1,1}, //3
+  {0,1,1,0}, //4
+  //SECOND ROW:
+  {1,1,1,0}, //5
+  {1,0,0,1}, //6
+  {0,1,0,1}, //7
+  {1,0,1,0}, //8
+  {0,1,0,1}, //9
+  //THIRD ROW:
+  {1,1,0,0}, //10
+  {1,0,1,0}, //11
+  {0,1,1,0}, //12
+  {1,0,0,1}, //13
+  {0,1,1,0}, //14
+  //FOURTH ROW:
+  {1,0,0,0}, //15
+  {0,1,0,1}, //16
+  {1,0,0,1}, //17
+  {0,0,1,1}, //18
+  {0,1,0,1}, //19
+  //FIFTH ROW:
+  {1,0,0,1}, //20
+  {0,0,1,1}, //21
+  {0,0,1,1}, //22
+  {0,0,1,1}, //23
+  {0,1,1,1}, //24
+];
+*/
 
 /* CELL OBJECT */
 function Cell(x,y,w,l,r,t,b){
@@ -81,43 +83,34 @@ function Cell(x,y,w,l,r,t,b){
   this.currentCell = false;
 
   this.display =function(){
-    //console.log(this.cellColor);
     fill(this.cellColor);
     rect(this.x,this.y,this.w,this.w);
   }
 }
 
-/*
--active = inside x,y
--is leftwall of myself, free? y/n, go leftWall
--up is ***minus 5*** using within row
--vb which cell am in (active)
--check left, walls of my left wall, update active
-*/
+/* Nota bene: User is active, if leftwall of myself is free Y/N (0/1), proceed ahead
+  Up/Down in/decrements of 5 cells because we're using same counter, update active */
 
 /* WALKING WITH KEYBOARD */
 document.addEventListener('keydown', (event) => {
 
 /* LEFT KEY */
   if (event.keyCode == 37) {
-    // if (this.l == 0) {
-    //
-    // }
     console.log("left");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
-    //if grid.activeCell.rightWall = false ....
-    activeCell--;
-    grid[activeCell].cellColor = color(255,0,0);
-    grid[activeCell].currentCell = true;
-  }
+    //if grid[activeCell].leftWall = false ....
+      activeCell--;
+      grid[activeCell].cellColor = color(255,0,0);
+      grid[activeCell].currentCell = true;
+    }
 
 /* UP KEY */
   if (event.keyCode == 38) {
     console.log("up");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
-    //if grid.activeCell.rightWall = false ....
+    //if grid[activeCell].topWall = false ....
     activeCell-=5;
     grid[activeCell].cellColor = color(255,0,0);
     grid[activeCell].currentCell = true;
@@ -128,27 +121,21 @@ document.addEventListener('keydown', (event) => {
       console.log("right");
       grid[activeCell].cellColor = color(0,0,255);
       grid[activeCell].currentCell = false;
-      //if grid.activeCell.rightWall = false ....
-      activeCell++;
-      grid[activeCell].cellColor = color(255,0,0);
-      grid[activeCell].currentCell = true;
-    //for (let x=0;x<cellQty;x++){
-      //check nearby cell, if no wall, advance
-      //if (this.rightWall === false) {
-      //  console.log(activeCell);
-        //activeCell++;
-        //rect(this.x,this.y,50,50);
-        //fill(255,0,0);
-    //  }
-    //}
-  }
+      //if grid[activeCell].rightWall = false ....
+      console.log(grid[activeCell].r);
+      //if (grid[activeCell].r == 0) {
+        activeCell++;
+        grid[activeCell].cellColor = color(255,0,0);
+        grid[activeCell].currentCell = true;
+      //}
+    }
 
 /* DOWN KEY */
   if (event.keyCode == 40) {
     console.log("down");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
-    //if grid.activeCell.rightWall = false ....
+    //if grid[activeCell].bottomWall = false ....
     activeCell+=5;
     grid[activeCell].cellColor = color(255,0,0);
     grid[activeCell].currentCell = true;
@@ -173,17 +160,12 @@ function failureFunc(){
 function setup(){
   maze = document.getElementById("maze");
   let canvas = createCanvas(canvasWidth,canvasHeight,WEBGL);
-
-  // let context = canvas.getContext('2d');
-  // let transX = canvas.width * 0.5;
-  // let transY = canvas.height * 0.5;
-  // context.translate(transX, transY);
-
   grid = makeGrid(gridSize,gridSize,cellSize,cellSize);
   //canvas.parent('maze');
   grid[0].cellColor = color(255,0,0);
   grid[0].currentCell = true;
-  console.log(grid[0].cellColor);
+  //console.log(grid[0].cellColor);
+  console.log("MY RIGHT WALL IS:"+grid[activeCell].r);
 } // end of SETUP
 
 /* === B:: DRAW FUNCT === */
@@ -191,7 +173,6 @@ function draw() {
   background(200);
  let count =0;
   for (let x=0;x<gridSize;x++){
-    //let rowOfCells = grid[x];
     for (let y=0;y<gridSize;y++){
       grid[count].display();
       count++;
@@ -199,9 +180,9 @@ function draw() {
   }
 
  /* DRAW MODEL*/
-  translate(-40,51);
+  translate(-49.3,50.9);
   rotate(Math.PI/2);
-  scale(2.8);
+  scale(2.64);
   model(mazeModel);
 
 } //end of DRAW
