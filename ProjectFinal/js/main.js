@@ -210,7 +210,18 @@ document.addEventListener('keydown', (event) => {
      console.log(weatherMat);
    }
 
+/*
+https://openweathermap.org/weather-conditions
+"clear sky", "few clouds", "scattered clouds", "broken clouds", "shower rain", "rain", "thunderstorm", "snow", "mist"
+thunderstorm = 200-232
+drizzle = 300-321
+rain = 500-531
+snow = 600-622
+mist = 701-781
+clear = 800
+clouds = 801-804
 
+*/
 
 /* ============ LOAD THE MODEL FIRST ============= */
 function preload() {
@@ -234,9 +245,10 @@ function setup(){
   grid[0].cellColor = color(255,0,0);
   grid[0].currentCell = true;
 
-  let fov = PI/3;
-  let cameraZ = height / 2.0 / tan((PI/3) / 2.0);
-    perspective(fov,width/height,cameraZ/10,cameraZ*10);
+  img = loadImage("assets/mat2.png");
+
+  frameRate(30);
+
   //console.log(grid[0].cellColor);
   // console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
   //console.log("GRID[0]:: "+grid[i].r);
@@ -249,7 +261,7 @@ function draw() {
 
   for (let x=0;x<gridSize;x++){
     for (let y=0;y<gridSize;y++){
-      grid[count].display();
+      //grid[count].display(); // NOT DISPLAYED BECAUSE ORIENTATION IS DIFF **
       count++;
     }
   }
@@ -268,15 +280,34 @@ function draw() {
 
   //set material from weather API here ****
   // map all possible main. parameters, ex: clear,snow,heavy snow, etc to value ranges *** TO DO
-  // ambientMaterial(weatherMat);
-
+  //noStroke();
+  stroke(0,50,230);
+  //ambientMaterial(0,50,180);
+  //specularMaterial(250);
   normalMaterial();
+  // strokeWeight(2);
+  // stroke(255);
+  //
+  // texture(img);
+  //fill(0,0,255);
+  //noStroke();
+  //colorMode(RGB, 255, 255, 255, 1);
+  // strokeWeight(1);
+  // stroke(20, 0, 120, 0.1);
+
+  //stroke('rgba(0,255,0,0.55)');
+  //strokeWeight(2);
+  //colorMode(HSB, 100);
+  //specularMaterial(100,0,0);
 
   model(mazeModel);
   pop();
 
   /* CAMERA */
-  //camera(x,y,z,centerX,centerY,centerZ,upZ,upY,upZ);
+
+  //camera(x,y,z, ----> the camera position
+  //centerX,centerY,centerZ, ----> the point to look at
+  //upX,upY,upZ); ----> the 'up' vector for the camera
 
   // camera(0, 0, mouseX, 0, 0, 0, 0, 1, 0);
   // console.log(mouseX);
@@ -284,14 +315,58 @@ function draw() {
   //camera(grid[activeCell].x, mouseY, 285, 0, 0, 0, 0, 1, 0);
   //camera(grid[activeCell].x, 1,285,0,0,0,0,1,0);
   //camera(grid[activeCell].x, 1,grid[activeCell].x,0,0,0,0,1,0);
-  camera(grid[activeCell].x, 1,grid[activeCell].y,0,0,0,0,1,0);
 
+  // camera(mouseX,55,210,
+  // 0,60,0,
+  // 0,1,0);
+
+  //IDEAL CAMERA POSITION: *****
+  camera(0,55,210,
+    0,60,0,
+    0,1,0);
+
+  //  https://medium.com/@behreajj/cameras-in-processing-2d-and-3d-dc45fd03662c
+
+  console.log(mouseX);
+  console.log(mouseY);
+
+  let camX = 0;
+  let camY = 0;
+  let camRot = 0;
+  let camRotIncr = 0.5;
+  let camMoveSpeed = 30;
+
+
+document.addEventListener('keydown', (event) => {
+    /* LEFT KEY */
+    if (event.keyCode == 37) {
+      camRot -= camRotIncr;
+    }
+
+  /* UP KEY */
+    if (event.keyCode == 38) {
+      camX = camX + cos(camRot) * camMoveSpeed;
+      camY = camY + sin(camRot) * camMoveSpeed;
+    }
+
+    /* RIGHT KEY */
+    if (event.keyCode == 39) {
+      camRot += camRotIncr;
+    }
+
+    /* DOWN KEY */
+    if (event.keyCode == 40) {
+      camX = camX - cos(camRot) * camMoveSpeed;
+      camY = camY - sin(camRot) * camMoveSpeed;
+    }
+  }
+
+    camera(camX,55,camY,
+    0,camRot,0,
+    0,camMoveSpeed,0);
 
   // push();
   // pop();
-
-
-
 
 
 } //end of DRAW
