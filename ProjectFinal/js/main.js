@@ -86,10 +86,12 @@ function Cell(x,y,w,l,r,t,b){
   }
 }
 
+
+/* ============ WALKING WITH KEYBOARD ============ */
+
 /* Nota bene: User is active, if leftwall of myself is free Y/N (0/1), proceed ahead
   Up/Down in/decrements of 5 cells because we're using same counter, update active */
 
-/* WALKING WITH KEYBOARD */
 document.addEventListener('keydown', (event) => {
   console.log(grid[activeCell]);
 /* LEFT KEY */
@@ -166,7 +168,50 @@ document.addEventListener('keydown', (event) => {
 
 }); //end of eventListener **
 
-/* === LOAD THE MODEL FIRST === */
+/* =============== WEATHER DATA =================== */
+// ref class example week 5
+
+
+  let myKey = "0bef928982350078b0d564afdd383f25"; //get from e-mail
+
+  // HTML built-in geo-loc
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(usePosition);
+  } else {
+      console.log( "Geolocation is not supported by this browser.");
+  }
+
+  // Use position from latitude and longitude
+  function usePosition(position) {
+    console.log("Latitude: " + position.coords.latitude +
+    " Longitude: " + position.coords.longitude);
+
+    //ONCE position is valid
+    $("#ResWeather").empty();
+    //api.openweathermap.org/data/2.5/weather?lat=35&lon=139
+
+    let urlLoc = "api.openweathermap.org/data/2.5/weather?lat="+position.coords.latitude+"&lon="+ position.coords.longitude;
+    let urlToSend = "https:"+urlLoc +"&APPID="+myKey;
+    // url and callback
+    $.getJSON(urlToSend,function(results){displayResults(results,results.name);})
+
+       //fail
+       .fail(function() {
+         console.log( "error" );
+       });
+       // getJSON
+   }//function usePosition
+
+   // display as wall hues
+   function displayResults(results,position){
+     console.log(results);
+     let weatherMat = results.weather; //PART OF THE JSON OBJECT;
+
+   }
+
+
+
+/* ============ LOAD THE MODEL FIRST ============= */
 function preload() {
   mazeModel = loadModel('assets/maze5.obj',true,successFunc,failureFunc);
 }
@@ -179,7 +224,7 @@ function failureFunc(){
   //console.log("failure");
 }
 
-/* === A:: SETUP FUNCT === */
+/* ============== A:: SETUP FUNCT =============== */
 function setup(){
   maze = document.getElementById("maze");
   let canvas = createCanvas(canvasWidth,canvasHeight,WEBGL);
@@ -192,7 +237,7 @@ function setup(){
   //console.log("GRID[0]:: "+grid[i].r);
 } // end of SETUP
 
-/* === B:: DRAW FUNCT === */
+/* ============== B:: DRAW FUNCT =============== */
 function draw() {
   background(200);
  let count =0;
@@ -203,10 +248,32 @@ function draw() {
     }
   }
 
- /* DRAW MODEL*/
+ /* DRAW MODEL */
+  push();
   translate(-48.2,52.9);
   rotate(Math.PI/2);
   scale(2.48);
+  //set material from weather API here ****
+  //ambientMaterial(weatherMat);
+  normalMaterial();
   model(mazeModel);
+  pop();
+
+  /* CAMERA */
+  //camera(x,y,z,centerX,centerY,centerZ,upZ,upY,upZ);
+  //camera(0,0,(canvasHeight/2)/tan(PI/6),0,0,0,0,1,0);
+  translate(width/2+30, height/2, 0);
+  //rotateX(-PI/6);
+  //rotateY/(PI/3 + mouseY/height * PI);
+  rotateX(Math.PI/2);
+  rotateY(Math.PI/2);
+  rotate(Math.PI/2);
+  //let fov = 60 / 180 * PI;
+  let fov = PI/3;
+  let cameraZ = height / 2.0 / tan((PI/3) / 2.0);
+  //perspective([field-of-view-for-vertical], [ratio-aspect], [near], [far])
+  //perspective(fov, width / height, cameraZ * 0.1, cameraZ * 10);
+  perspective(fov,width/height,cameraZ/10,cameraZ*10);
+
 
 } //end of DRAW
