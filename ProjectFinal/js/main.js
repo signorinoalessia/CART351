@@ -184,7 +184,7 @@ document.addEventListener('keydown', (event) => {
   // Use position from latitude and longitude
   function usePosition(position) {
     console.log("Latitude: " + position.coords.latitude +
-    " Longitude: " + position.coords.longitude);
+    " + Longitude: " + position.coords.longitude);
 
     //ONCE position is valid
     $("#ResWeather").empty();
@@ -205,8 +205,9 @@ document.addEventListener('keydown', (event) => {
    // display as wall hues
    function displayResults(results,position){
      console.log(results);
-     let weatherMat = results.weather; //PART OF THE JSON OBJECT;
 
+     let weatherMat = results.weather[0].main; //PART OF THE JSON OBJECT;
+     console.log(weatherMat);
    }
 
 
@@ -232,6 +233,10 @@ function setup(){
   //canvas.parent('maze');
   grid[0].cellColor = color(255,0,0);
   grid[0].currentCell = true;
+
+  let fov = PI/3;
+  let cameraZ = height / 2.0 / tan((PI/3) / 2.0);
+    perspective(fov,width/height,cameraZ/10,cameraZ*10);
   //console.log(grid[0].cellColor);
   // console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
   //console.log("GRID[0]:: "+grid[i].r);
@@ -241,6 +246,7 @@ function setup(){
 function draw() {
   background(200);
  let count =0;
+
   for (let x=0;x<gridSize;x++){
     for (let y=0;y<gridSize;y++){
       grid[count].display();
@@ -249,31 +255,43 @@ function draw() {
   }
 
  /* DRAW MODEL */
+    // orbitControl();
   push();
+
   translate(-48.2,52.9);
   rotate(Math.PI/2);
+
+  rotate(Math.PI/2);
+  rotateX(Math.PI/2);
+
   scale(2.48);
+
   //set material from weather API here ****
-  //ambientMaterial(weatherMat);
+  // map all possible main. parameters, ex: clear,snow,heavy snow, etc to value ranges *** TO DO
+  // ambientMaterial(weatherMat);
+
   normalMaterial();
+
   model(mazeModel);
   pop();
 
   /* CAMERA */
   //camera(x,y,z,centerX,centerY,centerZ,upZ,upY,upZ);
-  //camera(0,0,(canvasHeight/2)/tan(PI/6),0,0,0,0,1,0);
-  translate(width/2+30, height/2, 0);
-  //rotateX(-PI/6);
-  //rotateY/(PI/3 + mouseY/height * PI);
-  rotateX(Math.PI/2);
-  rotateY(Math.PI/2);
-  rotate(Math.PI/2);
-  //let fov = 60 / 180 * PI;
-  let fov = PI/3;
-  let cameraZ = height / 2.0 / tan((PI/3) / 2.0);
-  //perspective([field-of-view-for-vertical], [ratio-aspect], [near], [far])
-  //perspective(fov, width / height, cameraZ * 0.1, cameraZ * 10);
-  perspective(fov,width/height,cameraZ/10,cameraZ*10);
+
+  // camera(0, 0, mouseX, 0, 0, 0, 0, 1, 0);
+  // console.log(mouseX);
+
+  //camera(grid[activeCell].x, mouseY, 285, 0, 0, 0, 0, 1, 0);
+  //camera(grid[activeCell].x, 1,285,0,0,0,0,1,0);
+  //camera(grid[activeCell].x, 1,grid[activeCell].x,0,0,0,0,1,0);
+  camera(grid[activeCell].x, 1,grid[activeCell].y,0,0,0,0,1,0);
+
+
+  // push();
+  // pop();
+
+
+
 
 
 } //end of DRAW
