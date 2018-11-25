@@ -110,7 +110,6 @@ function keyPressed(){
  if(key =="r"){
    keys[2] = true;
  }
-
  if(key =="l"){
   keys[3] = true;
 }
