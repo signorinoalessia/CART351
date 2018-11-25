@@ -101,16 +101,16 @@ if (keys[2]==true)
 function keyPressed(){
   if(key =="f"){
     keys[0] = true;
-
   }
+
   if(key =="b"){
    keys[1] = true;
  }
 
  if(key =="r"){
    keys[2] = true;
-
  }
+
  if(key =="l"){
   keys[3] = true;
 }
@@ -119,17 +119,16 @@ function keyPressed(){
 function keyReleased(){
   if(key =="f"){
     keys[0] = false;
-
   }
 
   if(key =="b"){
     keys[1] = false;
-
   }
+
   if(key =="r"){
     keys[2] = false;
-
   }
+
   if(key =="l"){
    keys[3] = false;
  }

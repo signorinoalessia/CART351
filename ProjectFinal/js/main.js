@@ -93,7 +93,6 @@ function Cell(x,y,w,l,r,t,b){
 }
 
 
-
 /* ============ WALKING WITH KEYBOARD ============ */
 
 /* Nota bene: User is active, if leftwall of myself is free Y/N (0/1), proceed ahead
@@ -106,7 +105,7 @@ document.addEventListener('keydown', (event) => {
     console.log("left");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
-    keys[3] = true;
+    //keys[3] = true;
     //if grid[activeCell].leftWall = false ....
     console.log("LEFT WALL IS: "+grid[activeCell].leftWall);
     if (grid[activeCell].leftWall == 0) {
@@ -125,7 +124,7 @@ document.addEventListener('keydown', (event) => {
     console.log("up");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
-    keys[0] = true;
+    //keys[0] = true;
     //if grid[activeCell].topWall = false ....
     console.log("TOP WALL IS: "+grid[activeCell].topWall);
     if (grid[activeCell].topWall == 0) {
@@ -144,7 +143,7 @@ document.addEventListener('keydown', (event) => {
       console.log("right");
       grid[activeCell].cellColor = color(0,0,255);
       grid[activeCell].currentCell = false;
-      keys[2] = false;
+      //keys[2] = false;
       //if grid[activeCell].rightWall = false ....
       console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
       if (grid[activeCell].rightWall == 0) {
@@ -163,7 +162,7 @@ document.addEventListener('keydown', (event) => {
     console.log("down");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
-    keys[1] = true;
+    //keys[1] = true;
     //if grid[activeCell].bottomWall = false ....
     console.log("BOTTOM WALL IS: "+grid[activeCell].bottomWall);
     if (grid[activeCell].bottomWall == 0) {
@@ -264,7 +263,7 @@ function setup(){
 // camera pos and direction
   x=0.0;
   y=0.0;
-  z=100.0;
+  z=-100.0;
   lx=0.0;
   ly=0.0;
   lz=-1.0;
@@ -287,7 +286,7 @@ function setup(){
 
 /* ============== B:: DRAW FUNCT =============== */
 function draw() {
-  background(200);
+  background(0);
  let count =0;
 
   for (let x=0;x<gridSize;x++){
@@ -340,7 +339,6 @@ function draw() {
      x += lx * forwardBackwardSpeed;
      z += lz * forwardBackwardSpeed;
   }
-
   //backward
   if(keys[1] == true){
     console.log("testB");
@@ -353,8 +351,6 @@ function draw() {
       leftRightAngle -= leftRightRotSpeed;
       lx = sin(radians(leftRightAngle));
       lz = -cos(radians(leftRightAngle));
-    //  y -= ly * forwardBackwardSpeed;
-    //  x -= lx * forwardBackwardSpeed;
     }
     //left
     if (keys[3]==true){
@@ -363,6 +359,50 @@ function draw() {
       lx = sin(radians(leftRightAngle));
       lz = -cos(radians(leftRightAngle));
     }
+
+    function keyPressed(){
+      if(keyCode == LEFT_ARROW){
+        keys[3] = true;
+      }
+      if(keyCode == RIGHT_ARROW){
+        keys[2] = true;
+      }
+      if(keyCode == UP_ARROW){
+        keys[0] = true;
+      }
+      if(keyCode == DOWN_ARROW){
+        keys[1] = true;
+      }
+    }
+
+    function keyReleased(){
+      if(keyCode == LEFT_ARROW){
+        keys[3] = false;
+      }
+      if(keyCode == RIGHT_ARROW){
+        keys[2] = false;
+      }
+      if(keyCode == UP_ARROW){
+        keys[0] = false;
+      }
+      if(keyCode == DOWN_ARROW){
+        keys[1] = false;
+      }
+    }
+
+    // if (keyIsDown(UP_ARROW)) {
+    //   keys[0] = true;
+    // }
+    // if (keyIsDown(DOWN_ARROW)) {
+    //   keys[1] = true;
+    // }
+    // if (keyIsDown(RIGHT_ARROW)) {
+    //   keys[2] = true;
+    // }
+    // if (keyIsDown(LEFT_ARROW)) {
+    //   keys[3] = true;
+    // }
+
 
   /*let camX = 0;
   let camY = 0;
