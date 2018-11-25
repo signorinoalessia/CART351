@@ -1,14 +1,21 @@
-/* VARIABLES */
+/* CANVAS VARIABLES */
 let canvasWidth = 1200;
 let canvasHeight = 800;
 
+/* MAZE */
 let mazeModel;
-
 let grid;
 let cellSize = 100; // pixels (before 50)
 let gridSize = 5; //rows,columns
 let activeCell= 0; //x
 let cellQty = 25; //quantity
+
+/* CAMERA DIRECTION */
+let x,y,z,lx,ly,lz;
+let forwardBackwardSpeed = 2;
+let keys = [false,false,false,false];
+let leftRightRotSpeed = 0.5;
+let leftRightAngle = 0.0;
 
 /* RETURN A RANDOM VALUE */
 let random = function(min,max){
@@ -67,7 +74,6 @@ let cellProperties = [
   {l:0,r:1,t:1,b:1}, //24
 ];
 
-
 /* CELL OBJECT */
 function Cell(x,y,w,l,r,t,b){
   this.x = x;
@@ -87,6 +93,7 @@ function Cell(x,y,w,l,r,t,b){
 }
 
 
+
 /* ============ WALKING WITH KEYBOARD ============ */
 
 /* Nota bene: User is active, if leftwall of myself is free Y/N (0/1), proceed ahead
@@ -99,6 +106,7 @@ document.addEventListener('keydown', (event) => {
     console.log("left");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
+    keys[3] = true;
     //if grid[activeCell].leftWall = false ....
     console.log("LEFT WALL IS: "+grid[activeCell].leftWall);
     if (grid[activeCell].leftWall == 0) {
@@ -117,6 +125,7 @@ document.addEventListener('keydown', (event) => {
     console.log("up");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
+    keys[0] = true;
     //if grid[activeCell].topWall = false ....
     console.log("TOP WALL IS: "+grid[activeCell].topWall);
     if (grid[activeCell].topWall == 0) {
@@ -135,6 +144,7 @@ document.addEventListener('keydown', (event) => {
       console.log("right");
       grid[activeCell].cellColor = color(0,0,255);
       grid[activeCell].currentCell = false;
+      keys[2] = false;
       //if grid[activeCell].rightWall = false ....
       console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
       if (grid[activeCell].rightWall == 0) {
@@ -153,6 +163,7 @@ document.addEventListener('keydown', (event) => {
     console.log("down");
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
+    keys[1] = true;
     //if grid[activeCell].bottomWall = false ....
     console.log("BOTTOM WALL IS: "+grid[activeCell].bottomWall);
     if (grid[activeCell].bottomWall == 0) {
@@ -168,10 +179,17 @@ document.addEventListener('keydown', (event) => {
 
 }); //end of eventListener **
 
+// document.addEventListener('keyup', (event) => {
+//   keys[0] = false;
+//   keys[1] = false;
+//   keys[2] = false;
+//   keys[3] = false;
+// }
+
 /* =============== WEATHER DATA =================== */
 // ref class example week 5
 
-
+/*
   let myKey = "0bef928982350078b0d564afdd383f25"; //get from e-mail
 
   // HTML built-in geo-loc
@@ -209,6 +227,7 @@ document.addEventListener('keydown', (event) => {
      let weatherMat = results.weather[0].main; //PART OF THE JSON OBJECT;
      console.log(weatherMat);
    }
+   */
 
 /*
 https://openweathermap.org/weather-conditions
@@ -238,20 +257,32 @@ function failureFunc(){
 
 /* ============== A:: SETUP FUNCT =============== */
 function setup(){
+
   maze = document.getElementById("maze");
   let canvas = createCanvas(canvasWidth,canvasHeight,WEBGL);
+
+// camera pos and direction
+  x=0.0;
+  y=0.0;
+  z=100.0;
+  lx=0.0;
+  ly=0.0;
+  lz=-1.0;
+
+  moveX = width/2;
+  background(0);
+
   grid = makeGrid(gridSize,gridSize,cellSize,cellSize);
-  //canvas.parent('maze');
   grid[0].cellColor = color(255,0,0);
   grid[0].currentCell = true;
 
-  img = loadImage("assets/mat2.png");
-
+  //img = loadImage("assets/mat2.png");
   frameRate(30);
 
   //console.log(grid[0].cellColor);
-  // console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
+  //console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
   //console.log("GRID[0]:: "+grid[i].r);
+
 } // end of SETUP
 
 /* ============== B:: DRAW FUNCT =============== */
@@ -267,103 +298,109 @@ function draw() {
   }
 
  /* DRAW MODEL */
-    // orbitControl();
-  push();
 
+  push();
   translate(-48.2,52.9);
   rotate(Math.PI/2);
-
   rotate(Math.PI/2);
   rotateX(Math.PI/2);
-
   scale(2.48);
 
   //set material from weather API here ****
-  // map all possible main. parameters, ex: clear,snow,heavy snow, etc to value ranges *** TO DO
-  //noStroke();
-  stroke(0,50,230);
-  //ambientMaterial(0,50,180);
-  //specularMaterial(250);
-  normalMaterial();
-  // strokeWeight(2);
-  // stroke(255);
-  //
-  // texture(img);
-  //fill(0,0,255);
-  //noStroke();
-  //colorMode(RGB, 255, 255, 255, 1);
+  // map all possible main. parameters, ex:snow to value ranges
   // strokeWeight(1);
   // stroke(20, 0, 120, 0.1);
+  //ambientMaterial(0,50,180);
 
-  //stroke('rgba(0,255,0,0.55)');
-  //strokeWeight(2);
-  //colorMode(HSB, 100);
-  //specularMaterial(100,0,0);
-
+  stroke(0,50,230);
+  normalMaterial();
   model(mazeModel);
   pop();
 
-  /* CAMERA */
+  /* ========= CAMERA ========*/
+
+  //  https://medium.com/@behreajj/cameras-in-processing-2d-and-3d-dc45fd03662c
 
   //camera(x,y,z, ----> the camera position
   //centerX,centerY,centerZ, ----> the point to look at
   //upX,upY,upZ); ----> the 'up' vector for the camera
 
-  // camera(0, 0, mouseX, 0, 0, 0, 0, 1, 0);
-  // console.log(mouseX);
-
-  //camera(grid[activeCell].x, mouseY, 285, 0, 0, 0, 0, 1, 0);
-  //camera(grid[activeCell].x, 1,285,0,0,0,0,1,0);
-  //camera(grid[activeCell].x, 1,grid[activeCell].x,0,0,0,0,1,0);
-
-  // camera(mouseX,55,210,
-  // 0,60,0,
-  // 0,1,0);
-
   //IDEAL CAMERA POSITION: *****
-  camera(0,55,210,
-    0,60,0,
-    0,1,0);
+  // camera(0,55,210,
+  //   0,60,0,
+  //   0,1,0);
 
-  //  https://medium.com/@behreajj/cameras-in-processing-2d-and-3d-dc45fd03662c
+  camera(x, y, z,
+  x+lx, y+ly, z+lz,
+  0.0, 1.0, 0.0);
 
-  console.log(mouseX);
-  console.log(mouseY);
+  //forward
+  if(keys[0] == true){
+    console.log("testF");
+     x += lx * forwardBackwardSpeed;
+     z += lz * forwardBackwardSpeed;
+  }
 
-  let camX = 0;
+  //backward
+  if(keys[1] == true){
+    console.log("testB");
+     x -= lx * forwardBackwardSpeed;
+     z -= lz * forwardBackwardSpeed;
+  }
+  //right
+  if (keys[2]==true){
+      console.log("testR");
+      leftRightAngle -= leftRightRotSpeed;
+      lx = sin(radians(leftRightAngle));
+      lz = -cos(radians(leftRightAngle));
+    //  y -= ly * forwardBackwardSpeed;
+    //  x -= lx * forwardBackwardSpeed;
+    }
+    //left
+    if (keys[3]==true){
+      console.log("testL");
+      leftRightAngle += leftRightRotSpeed;
+      lx = sin(radians(leftRightAngle));
+      lz = -cos(radians(leftRightAngle));
+    }
+
+  /*let camX = 0;
   let camY = 0;
   let camRot = 0;
   let camRotIncr = 0.5;
-  let camMoveSpeed = 30;
+  let camMoveSpeed = 30;*/
 
+// document.addEventListener('keydown', (event) => {
+//     /* LEFT KEY */
+//     if (event.keyCode == 37) {
+//       keys[3] = true;
+//       //camRot -= camRotIncr;
+//     }
+//
+//   /* UP KEY */
+//     if (event.keyCode == 38) {
+//       keys[0] = true;
+//       // camX = camX + cos(camRot) * camMoveSpeed;
+//       // camY = camY + sin(camRot) * camMoveSpeed;
+//     }
+//
+//     /* RIGHT KEY */
+//     if (event.keyCode == 39) {
+//       keys[2] = true;
+//       //camRot += camRotIncr;
+//     }
+//
+//     /* DOWN KEY */
+//     if (event.keyCode == 40) {
+//       keys[1] = true;
+      // camX = camX - cos(camRot) * camMoveSpeed;
+      // camY = camY - sin(camRot) * camMoveSpeed;
+  //   }
+  // }
 
-document.addEventListener('keydown', (event) => {
-    /* LEFT KEY */
-    if (event.keyCode == 37) {
-      camRot -= camRotIncr;
-    }
-
-  /* UP KEY */
-    if (event.keyCode == 38) {
-      camX = camX + cos(camRot) * camMoveSpeed;
-      camY = camY + sin(camRot) * camMoveSpeed;
-    }
-
-    /* RIGHT KEY */
-    if (event.keyCode == 39) {
-      camRot += camRotIncr;
-    }
-
-    /* DOWN KEY */
-    if (event.keyCode == 40) {
-      camX = camX - cos(camRot) * camMoveSpeed;
-      camY = camY - sin(camRot) * camMoveSpeed;
-    }
-  }
-
-    camera(camX,55,camY,
-    0,camRot,0,
-    0,camMoveSpeed,0);
+    // camera(camX,55,camY,
+    // 0,camRot,0,
+    // 0,camMoveSpeed,0);
 
   // push();
   // pop();

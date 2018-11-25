@@ -64,9 +64,6 @@ for(let i=0; i<grid.length;i++){
 }
 pop();*/
 
-
-
-
 //forward
 if(keys[0] == true){
   console.log("testF");
