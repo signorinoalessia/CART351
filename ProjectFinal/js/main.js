@@ -325,6 +325,7 @@ function draw() {
       lx = sin(radians(leftRightAngle));
       lz = -cos(radians(leftRightAngle));
       console.log(leftRightAngle);
+      
 
       //  what degree am i?
       //console.log(a);
