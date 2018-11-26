@@ -5,7 +5,7 @@ let canvasHeight = 800;
 /* MAZE */
 let mazeModel;
 let grid;
-let cellSize = 100; // pixels (before 50)
+let cellSize = 100; // pixels
 let gridSize = 5; //rows,columns
 let activeCell= 0; //x
 let cellQty = 25; //quantity
@@ -106,17 +106,18 @@ document.addEventListener('keydown', (event) => {
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
     keys[3] = true;
+
     //if grid[activeCell].leftWall = false ....
-    console.log("LEFT WALL IS: "+grid[activeCell].leftWall);
-    if (grid[activeCell].leftWall == 0) {
-      activeCell--;
-      grid[activeCell].cellColor = color(255,0,0);
-      grid[activeCell].currentCell = true;
-    } else {
-      activeCell=activeCell;
-      grid[activeCell].cellColor = color(255,0,0);
-      grid[activeCell].currentCell = true;
-    }
+    // console.log("LEFT WALL IS: "+grid[activeCell].leftWall);
+    // if (grid[activeCell].leftWall == 0) {
+    //   activeCell--;
+    //   grid[activeCell].cellColor = color(255,0,0);
+    //   grid[activeCell].currentCell = true;
+    // } else {
+    //   activeCell=activeCell;
+    //   grid[activeCell].cellColor = color(255,0,0);
+    //   grid[activeCell].currentCell = true;
+    // }
   }
 
 /* UP KEY */
@@ -125,17 +126,18 @@ document.addEventListener('keydown', (event) => {
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
     keys[0] = true;
+
     //if grid[activeCell].topWall = false ....
-    console.log("TOP WALL IS: "+grid[activeCell].topWall);
-    if (grid[activeCell].topWall == 0) {
-      activeCell-=5;
-      grid[activeCell].cellColor = color(255,0,0);
-      grid[activeCell].currentCell = true;
-    } else {
-      activeCell=activeCell;
-      grid[activeCell].cellColor = color(255,0,0);
-      grid[activeCell].currentCell = true;
-    }
+    //console.log("TOP WALL IS: "+grid[activeCell].topWall);
+    // if (grid[activeCell].topWall == 0) {
+    //   activeCell-=5;
+    //   grid[activeCell].cellColor = color(255,0,0);
+    //   grid[activeCell].currentCell = true;
+    // } else {
+    //   activeCell=activeCell;
+    //   grid[activeCell].cellColor = color(255,0,0);
+    //   grid[activeCell].currentCell = true;
+    // }
   }
 
   /* RIGHT KEY */
@@ -144,17 +146,18 @@ document.addEventListener('keydown', (event) => {
       grid[activeCell].cellColor = color(0,0,255);
       grid[activeCell].currentCell = false;
       keys[2] = true;
+
       //if grid[activeCell].rightWall = false ....
-      console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
-      if (grid[activeCell].rightWall == 0) {
-        activeCell++;
-        grid[activeCell].cellColor = color(255,0,0);
-        grid[activeCell].currentCell = true;
-      } else {
-        activeCell=activeCell;
-        grid[activeCell].cellColor = color(255,0,0);
-        grid[activeCell].currentCell = true;
-      }
+      // console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
+      // if (grid[activeCell].rightWall == 0) {
+      //   activeCell++;
+      //   grid[activeCell].cellColor = color(255,0,0);
+      //   grid[activeCell].currentCell = true;
+      // } else {
+      //   activeCell=activeCell;
+      //   grid[activeCell].cellColor = color(255,0,0);
+      //   grid[activeCell].currentCell = true;
+      // }
     }
 
 /* DOWN KEY */
@@ -163,17 +166,18 @@ document.addEventListener('keydown', (event) => {
     grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
     keys[1] = true;
+
     //if grid[activeCell].bottomWall = false ....
-    console.log("BOTTOM WALL IS: "+grid[activeCell].bottomWall);
-    if (grid[activeCell].bottomWall == 0) {
-      activeCell+=5;
-      grid[activeCell].cellColor = color(255,0,0);
-      grid[activeCell].currentCell = true;
-    } else {
-      activeCell=activeCell;
-      grid[activeCell].cellColor = color(255,0,0);
-      grid[activeCell].currentCell = true;
-    }
+    // console.log("BOTTOM WALL IS: "+grid[activeCell].bottomWall);
+    // if (grid[activeCell].bottomWall == 0) {
+    //   activeCell+=5;
+    //   grid[activeCell].cellColor = color(255,0,0);
+    //   grid[activeCell].currentCell = true;
+    // } else {
+    //   activeCell=activeCell;
+    //   grid[activeCell].cellColor = color(255,0,0);
+    //   grid[activeCell].currentCell = true;
+    // }
   }
 
 }); //end of eventListener **
@@ -194,12 +198,162 @@ document.addEventListener('keyup', (event) => {
   }
 });
 
-// document.addEventListener('keyup', (event) => {
-//   keys[0] = false;
-//   keys[1] = false;
-//   keys[2] = false;
-//   keys[3] = false;
-// }
+/* ============ LOAD THE MODEL FIRST ============= */
+function preload() {
+  mazeModel = loadModel('assets/maze5.obj',true,successFunc,failureFunc);
+}
+
+/* CHECK FOR LOADING MODEL PRESENCE */
+function successFunc(){
+  //console.log("success");
+}
+function failureFunc(){
+  //console.log("failure");
+}
+
+/* ============== A:: SETUP FUNCT =============== */
+function setup(){
+
+  maze = document.getElementById("maze");
+  let canvas = createCanvas(canvasWidth,canvasHeight,WEBGL);
+
+// camera pos and direction
+  x=0.0;
+  y=0.0;
+  z=-100.0;
+  lx=0.0;
+  ly=0.0;
+  lz=-1.0;
+
+  moveX = width/2;
+  background(0);
+
+  grid = makeGrid(gridSize,gridSize,cellSize,cellSize);
+  grid[0].cellColor = color(255,0,0);
+  grid[0].currentCell = true;
+  frameRate(30);
+
+  //img = loadImage("assets/mat2.png");
+  //console.log(grid[0].cellColor);
+  //console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
+  //console.log("GRID[0]:: "+grid[i].r);
+  console.log(grid[activeCell]);
+
+} // end of SETUP
+
+/* ============== B:: DRAW FUNCT =============== */
+function draw() {
+  background(0);
+ let count =0;
+
+  for (let x=0;x<gridSize;x++){
+    for (let y=0;y<gridSize;y++){
+      //grid[count].display(); // NOT DISPLAYED BECAUSE ORIENTATION IS DIFF **
+      count++;
+    }
+  }
+
+  // angleMode(DEGREES);
+  // var a = atan(lx);
+
+ /* DRAW MODEL */
+
+  push();
+  translate(-48.2,52.9);
+  rotate(Math.PI/2);
+  rotate(Math.PI/2);
+  rotateX(Math.PI/2);
+  scale(2.48);
+  // ambientMaterial(0,10,40);
+  // stroke(100,20,20,0.1);
+  normalMaterial();
+  model(mazeModel);
+  pop();
+
+  /* ========= CAMERA ========*/
+
+  /* camera(x,y,z, ----> the camera position
+  centerX,centerY,centerZ, ----> the point to look at
+  upX,upY,upZ); ----> the 'up' vector for the camera
+
+  IDEAL CAMERA POSITION:
+  camera(0,55,210,
+    0,60,0,
+    0,1,0); */
+
+  camera(x, y, z,
+  x+lx, y+ly, z+lz,
+  0.0, 1.0, 0.0);
+
+  //forward
+  if(keys[0] == true){
+    console.log("keysF");
+
+     console.log("MY TOP WALL IS: "+grid[activeCell].topWall);
+     if (grid[activeCell].topWall == 0) {
+      // if im turning
+      //  what degree am i?
+      //    angle of rotation to know which wall im at
+      //    which wall do I care about?
+
+       activeCell-=5;
+
+       x += lx * forwardBackwardSpeed;
+       z += lz * forwardBackwardSpeed;
+     } else {
+       activeCell=activeCell;
+     }
+  }
+  //backward
+  if(keys[1] == true){
+    console.log("keysB");
+
+     console.log("BOTTOM WALL IS: "+grid[activeCell].bottomWall);
+     if (grid[activeCell].bottomWall == 0) {
+       activeCell+=5;
+
+       x -= lx * forwardBackwardSpeed;
+       z -= lz * forwardBackwardSpeed;
+     } else {
+       activeCell=activeCell;
+     }
+  }
+  //right
+  if (keys[2]==true){
+      console.log("keysR");
+      leftRightAngle += leftRightRotSpeed;
+      lx = sin(radians(leftRightAngle));
+      lz = -cos(radians(leftRightAngle));
+      console.log(leftRightAngle);
+
+      //  what degree am i?
+      //console.log(a);
+
+      console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
+      if (grid[activeCell].rightWall == 0) {
+        //activeCell++;
+       } else {
+      //   activeCell=activeCell;
+      }
+    }
+    //left
+    if (keys[3]==true){
+      console.log("keysL");
+      console.log(leftRightAngle);
+      leftRightAngle -= leftRightRotSpeed;
+      lx = sin(radians(leftRightAngle));
+      lz = -cos(radians(leftRightAngle));
+
+      console.log("LEFT WALL IS: "+grid[activeCell].leftWall);
+      if (grid[activeCell].leftWall == 0) {
+        //activeCell--;
+
+      } else {
+        // activeCell=activeCell;
+      }
+    }
+
+} //end of DRAW
 
 /* =============== WEATHER DATA =================== */
 // ref class example week 5
@@ -256,123 +410,3 @@ clear = 800
 clouds = 801-804
 
 */
-
-/* ============ LOAD THE MODEL FIRST ============= */
-function preload() {
-  mazeModel = loadModel('assets/maze5.obj',true,successFunc,failureFunc);
-}
-
-/* CHECK FOR LOADING MODEL PRESENCE */
-function successFunc(){
-  //console.log("success");
-}
-function failureFunc(){
-  //console.log("failure");
-}
-
-/* ============== A:: SETUP FUNCT =============== */
-function setup(){
-
-  maze = document.getElementById("maze");
-  let canvas = createCanvas(canvasWidth,canvasHeight,WEBGL);
-
-// camera pos and direction
-  x=0.0;
-  y=0.0;
-  z=-100.0;
-  lx=0.0;
-  ly=0.0;
-  lz=-1.0;
-
-  moveX = width/2;
-  background(0);
-
-  grid = makeGrid(gridSize,gridSize,cellSize,cellSize);
-  grid[0].cellColor = color(255,0,0);
-  grid[0].currentCell = true;
-
-  //img = loadImage("assets/mat2.png");
-  frameRate(30);
-
-  //console.log(grid[0].cellColor);
-  //console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
-  //console.log("GRID[0]:: "+grid[i].r);
-
-} // end of SETUP
-
-/* ============== B:: DRAW FUNCT =============== */
-function draw() {
-  background(0);
- let count =0;
-
-  for (let x=0;x<gridSize;x++){
-    for (let y=0;y<gridSize;y++){
-      //grid[count].display(); // NOT DISPLAYED BECAUSE ORIENTATION IS DIFF **
-      count++;
-    }
-  }
-
- /* DRAW MODEL */
-
-  push();
-  translate(-48.2,52.9);
-  rotate(Math.PI/2);
-  rotate(Math.PI/2);
-  rotateX(Math.PI/2);
-  scale(2.48);
-
-  //set material from weather API here ****
-  // map all possible main. parameters, ex:snow to value ranges
-  // strokeWeight(1);
-  // stroke(20, 0, 120, 0.1);
-  //ambientMaterial(0,50,180);
-
-  stroke(0,50,230);
-  normalMaterial();
-  model(mazeModel);
-  pop();
-
-  /* ========= CAMERA ========*/
-
-  /* camera(x,y,z, ----> the camera position
-  centerX,centerY,centerZ, ----> the point to look at
-  upX,upY,upZ); ----> the 'up' vector for the camera
-
-  IDEAL CAMERA POSITION:
-  camera(0,55,210,
-    0,60,0,
-    0,1,0); */
-
-  camera(x, y, z,
-  x+lx, y+ly, z+lz,
-  0.0, 1.0, 0.0);
-
-  //forward
-  if(keys[0] == true){
-    console.log("testF");
-     x += lx * forwardBackwardSpeed;
-     z += lz * forwardBackwardSpeed;
-  }
-  //backward
-  if(keys[1] == true){
-    console.log("testB");
-     x -= lx * forwardBackwardSpeed;
-     z -= lz * forwardBackwardSpeed;
-  }
-  //right
-  if (keys[2]==true){
-      console.log("testR");
-      leftRightAngle += leftRightRotSpeed;
-      lx = sin(radians(leftRightAngle));
-      lz = -cos(radians(leftRightAngle));
-    }
-    //left
-    if (keys[3]==true){
-      console.log("testL");
-      leftRightAngle -= leftRightRotSpeed;
-      lx = sin(radians(leftRightAngle));
-      lz = -cos(radians(leftRightAngle));
-    }
-
-
-} //end of DRAW

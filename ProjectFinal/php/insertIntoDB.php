@@ -46,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
       //echo($entry);
       if ($entry == 0) {
         // insert user into database SQL execute (INSERT) -- modifying table!
-        $queryInsert ="INSERT INTO usersTable(username)VALUES ('$user_es')";
+        $queryInsert ="INSERT INTO usersTable(username,activeCell)VALUES ('$user_es',0)";
         // again we do error checking when we try to execute our SQL statement on the db
         //execute, changing statment ()
         $ok1 = $db->exec($queryInsert);
@@ -57,15 +57,41 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           }
           //send back success...
           //echo "success";
-          echo ($user_es);
-          exit;
+          //echo ($user_es);
+          session_start();
+          $_SESSION["user"] = $user_es;
+
+        //  exit;
         } //if entry
         else {
-          echo ($user_es);
+        //  echo ($user_es);
+          session_start();
+          $_SESSION["user"] = $user_es;
           //echo "User already in the database";
         }
     }
   }//end while
-  exit;
+  $sql_select='SELECT * FROM usersTable';
+  $result = $db->query($sql_select);
+  // if no query, die
+  if (!$result) die("Cannot execute query.");
+  // get a row... (a 2D array back!)
+  // MAKE AN ARRAY::
+  $res = array();
+  // counter
+  $i=0;
+  // associative because I want column names
+  while($row = $result->fetchArray(SQLITE3_ASSOC))
+  {
+    // note the result from SQL is ALREADy ASSOCIATIVE
+   $res[$i] = $row;
+   $i++;
+  }//end while
+  // encode the resulting array as JSON (JAVASCRIPT DOES NOT UNDERSTAND PHP, JSON YES)
+  $myJSONObj = json_encode($res);
+  // echo from PHP, ajax is waititng for response, ajax picks it up as soon as smthg is echoed!
+  // ECHO happens, go below to .ajax(); !!!
+  echo $myJSONObj;
+exit;
 }//POST
 ?>
