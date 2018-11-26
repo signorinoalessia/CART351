@@ -95,7 +95,7 @@ function Cell(x,y,w,l,r,t,b){
 
 /* ============ WALKING WITH KEYBOARD ============ */
 
-/* Nota bene: User is active, if leftwall of myself is free Y/N (0/1), proceed ahead
+/* N.B: User is active, if leftwall of myself is free Y/N (0/1), proceed ahead
   Up/Down in/decrements of 5 cells because we're using same counter, update active */
 
 document.addEventListener('keydown', (event) => {
@@ -334,16 +334,14 @@ function draw() {
 
   /* ========= CAMERA ========*/
 
-  //  https://medium.com/@behreajj/cameras-in-processing-2d-and-3d-dc45fd03662c
+  /* camera(x,y,z, ----> the camera position
+  centerX,centerY,centerZ, ----> the point to look at
+  upX,upY,upZ); ----> the 'up' vector for the camera
 
-  //camera(x,y,z, ----> the camera position
-  //centerX,centerY,centerZ, ----> the point to look at
-  //upX,upY,upZ); ----> the 'up' vector for the camera
-
-  //IDEAL CAMERA POSITION: *****
-  // camera(0,55,210,
-  //   0,60,0,
-  //   0,1,0);
+  IDEAL CAMERA POSITION:
+  camera(0,55,210,
+    0,60,0,
+    0,1,0); */
 
   camera(x, y, z,
   x+lx, y+ly, z+lz,
@@ -375,91 +373,6 @@ function draw() {
       lx = sin(radians(leftRightAngle));
       lz = -cos(radians(leftRightAngle));
     }
-
-    // function keyPressed(){
-    //   if(keyCode == LEFT_ARROW){
-    //     keys[3] = true;
-    //   }
-    //   if(keyCode == RIGHT_ARROW){
-    //     keys[2] = true;
-    //   }
-    //   if(keyCode == UP_ARROW){
-    //     keys[0] = true;
-    //   }
-    //   if(keyCode == DOWN_ARROW){
-    //     keys[1] = true;
-    //   }
-    // }
-
-    // function keyReleased(){
-    //   if(keyCode == LEFT_ARROW){
-    //     keys[3] = false;
-    //   }
-    //   if(keyCode == RIGHT_ARROW){
-    //     keys[2] = false;
-    //   }
-    //   if(keyCode == UP_ARROW){
-    //     keys[0] = false;
-    //   }
-    //   if(keyCode == DOWN_ARROW){
-    //     keys[1] = false;
-    //   }
-    // }
-
-    // if (keyIsDown(UP_ARROW)) {
-    //   keys[0] = true;
-    // }
-    // if (keyIsDown(DOWN_ARROW)) {
-    //   keys[1] = true;
-    // }
-    // if (keyIsDown(RIGHT_ARROW)) {
-    //   keys[2] = true;
-    // }
-    // if (keyIsDown(LEFT_ARROW)) {
-    //   keys[3] = true;
-    // }
-
-
-  /*let camX = 0;
-  let camY = 0;
-  let camRot = 0;
-  let camRotIncr = 0.5;
-  let camMoveSpeed = 30;*/
-
-// document.addEventListener('keydown', (event) => {
-//     /* LEFT KEY */
-//     if (event.keyCode == 37) {
-//       keys[3] = true;
-//       //camRot -= camRotIncr;
-//     }
-//
-//   /* UP KEY */
-//     if (event.keyCode == 38) {
-//       keys[0] = true;
-//       // camX = camX + cos(camRot) * camMoveSpeed;
-//       // camY = camY + sin(camRot) * camMoveSpeed;
-//     }
-//
-//     /* RIGHT KEY */
-//     if (event.keyCode == 39) {
-//       keys[2] = true;
-//       //camRot += camRotIncr;
-//     }
-//
-//     /* DOWN KEY */
-//     if (event.keyCode == 40) {
-//       keys[1] = true;
-      // camX = camX - cos(camRot) * camMoveSpeed;
-      // camY = camY - sin(camRot) * camMoveSpeed;
-  //   }
-  // }
-
-    // camera(camX,55,camY,
-    // 0,camRot,0,
-    // 0,camMoveSpeed,0);
-
-  // push();
-  // pop();
 
 
 } //end of DRAW
