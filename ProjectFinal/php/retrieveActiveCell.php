@@ -55,7 +55,7 @@
         function displayResponse(userResult){
           for(let i=0;i<userResult.length;i++){ //array of result objects
             let currentObject = userResult[i];
-            let container =
+            let container = $('<div>').addClass()
           }
         }
 
