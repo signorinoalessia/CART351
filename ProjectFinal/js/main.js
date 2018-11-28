@@ -14,8 +14,11 @@ let cellQty = 25; //quantity
 let x,y,z,lx,ly,lz;
 let forwardBackwardSpeed = 2;
 let keys = [false,false,false,false];
-let leftRightRotSpeed = 0.5;
+let leftRightRotSpeed = 0.7;
 let leftRightAngle = 0.0;
+let testLeftRightAngle = 0.0;
+let range = 35;
+let amTurned = false;
 
 /* RETURN A RANDOM VALUE */
 let random = function(min,max){
@@ -86,6 +89,14 @@ function Cell(x,y,w,l,r,t,b){
   this.cellColor = color(0,0,255);
   this.currentCell = false;
 
+  //mapped to a single array (each cell has own array)
+  this.walls = [];
+  this.walls.push(this.topWall);
+  this.walls.push(this.rightWall);
+  this.walls.push(this.bottomWall);
+  this.walls.push(this.leftWall);
+
+
   this.display =function(){
     fill(this.cellColor);
     rect(this.x,this.y,this.w,this.w);
@@ -99,88 +110,31 @@ function Cell(x,y,w,l,r,t,b){
   Up/Down in/decrements of 5 cells because we're using same counter, update active */
 
 document.addEventListener('keydown', (event) => {
-  console.log(grid[activeCell]);
 /* LEFT KEY */
   if (event.keyCode == 37) {
-    console.log("left");
-    grid[activeCell].cellColor = color(0,0,255);
+    //grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
     keys[3] = true;
-
-    //if grid[activeCell].leftWall = false ....
-    // console.log("LEFT WALL IS: "+grid[activeCell].leftWall);
-    // if (grid[activeCell].leftWall == 0) {
-    //   activeCell--;
-    //   grid[activeCell].cellColor = color(255,0,0);
-    //   grid[activeCell].currentCell = true;
-    // } else {
-    //   activeCell=activeCell;
-    //   grid[activeCell].cellColor = color(255,0,0);
-    //   grid[activeCell].currentCell = true;
-    // }
   }
-
 /* UP KEY */
   if (event.keyCode == 38) {
-    console.log("up");
-    grid[activeCell].cellColor = color(0,0,255);
+    //grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
     keys[0] = true;
-
-    //if grid[activeCell].topWall = false ....
-    //console.log("TOP WALL IS: "+grid[activeCell].topWall);
-    // if (grid[activeCell].topWall == 0) {
-    //   activeCell-=5;
-    //   grid[activeCell].cellColor = color(255,0,0);
-    //   grid[activeCell].currentCell = true;
-    // } else {
-    //   activeCell=activeCell;
-    //   grid[activeCell].cellColor = color(255,0,0);
-    //   grid[activeCell].currentCell = true;
-    // }
   }
-
   /* RIGHT KEY */
   if (event.keyCode == 39) {
-      console.log("right");
-      grid[activeCell].cellColor = color(0,0,255);
+      //grid[activeCell].cellColor = color(0,0,255);
       grid[activeCell].currentCell = false;
       keys[2] = true;
-
-      //if grid[activeCell].rightWall = false ....
-      // console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
-      // if (grid[activeCell].rightWall == 0) {
-      //   activeCell++;
-      //   grid[activeCell].cellColor = color(255,0,0);
-      //   grid[activeCell].currentCell = true;
-      // } else {
-      //   activeCell=activeCell;
-      //   grid[activeCell].cellColor = color(255,0,0);
-      //   grid[activeCell].currentCell = true;
-      // }
-    }
-
+  }
 /* DOWN KEY */
   if (event.keyCode == 40) {
-    console.log("down");
-    grid[activeCell].cellColor = color(0,0,255);
+    //grid[activeCell].cellColor = color(0,0,255);
     grid[activeCell].currentCell = false;
     keys[1] = true;
-
-    //if grid[activeCell].bottomWall = false ....
-    // console.log("BOTTOM WALL IS: "+grid[activeCell].bottomWall);
-    // if (grid[activeCell].bottomWall == 0) {
-    //   activeCell+=5;
-    //   grid[activeCell].cellColor = color(255,0,0);
-    //   grid[activeCell].currentCell = true;
-    // } else {
-    //   activeCell=activeCell;
-    //   grid[activeCell].cellColor = color(255,0,0);
-    //   grid[activeCell].currentCell = true;
-    // }
   }
-
-}); //end of eventListener **
+}); //end of eventListener
 
 document.addEventListener('keyup', (event) => {
 /* LEFT KEY */
@@ -235,7 +189,6 @@ function setup(){
 
   //img = loadImage("assets/mat2.png");
   //console.log(grid[0].cellColor);
-  //console.log("MY RIGHT WALL IS: "+grid[activeCell].rightWall);
   //console.log("GRID[0]:: "+grid[i].r);
   console.log(grid[activeCell]);
 
@@ -252,9 +205,6 @@ function draw() {
       count++;
     }
   }
-
-  // angleMode(DEGREES);
-  // var a = atan(lx);
 
  /* DRAW MODEL */
 
@@ -285,19 +235,44 @@ function draw() {
   x+lx, y+ly, z+lz,
   0.0, 1.0, 0.0);
 
+
+    /* ========= KEYBOARD CONTROLS ======== */
+
+  // function angleTurn(leftRightAngle,testLeftRightAngle,range){
+  //   return leftRightAngle < testLeftRightAngle + range && leftRightAngle > testLeftRightAngle - range;
+  // }
+
+  let currentGridCellWalls = grid[activeCell].walls;
+
+
+
+// //Recursive setTimeout
+  // let pressingKey setTimeOut(function keyTimer() {
+  //   //update current angle!
+  //
+  //   pressingKey = setTimeout(keyTimer,1000);
+  // }, 1000);
+
+
   //forward
   if(keys[0] == true){
     console.log("keysF");
 
-     console.log("MY TOP WALL IS: "+grid[activeCell].topWall);
-     if (grid[activeCell].topWall == 0) {
-      // if im turning
-      //  what degree am i?
-      //    angle of rotation to know which wall im at
-      //    which wall do I care about?
+     //console.log("MY TOP WALL IS: "+grid[activeCell].topWall);
+     // if (grid[activeCell].topWall == 0) {
+    if (amTurned == true) {
+    // ** if im turning which wall do I care about? **
+      console.log("INSIDE FWD turned:: "+amTurned);
 
-       activeCell-=5;
+      // l,t,r,b
+      // *** if previous turn was right, check gridActiveCellWalls[i]+1
+      grid
 
+      //*** if previous turn was left, check c
+    //  grid[activeCell].
+
+
+       activeCell-=5; // WILL DEPEND!! ****
        x += lx * forwardBackwardSpeed;
        z += lz * forwardBackwardSpeed;
      } else {
@@ -318,40 +293,66 @@ function draw() {
        activeCell=activeCell;
      }
   }
+
   //right
   if (keys[2]==true){
-      console.log("keysR");
       leftRightAngle += leftRightRotSpeed;
+
       lx = sin(radians(leftRightAngle));
       lz = -cos(radians(leftRightAngle));
-      console.log(leftRightAngle);
-      
 
-      //  what degree am i?
-      //console.log(a);
-
+      console.log("keysR");
       console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
-      if (grid[activeCell].rightWall == 0) {
-        //activeCell++;
-       } else {
-      //   activeCell=activeCell;
-      }
+      console.log(leftRightAngle);
+
+
+    if ((leftRightAngle > testLeftRightAngle + range)){
+        console.log("testANGLE: "+testLeftRightAngle);
+        amTurned = true;
+        console.log("Am I TURNED??? "+amTurned);
+       testLeftRightAngle=leftRightAngle;
     }
+
+
+
+    // if ((leftRightAngle > 32.0)&&(leftRightAngle < 45.0)) {
+    //   console.log("COME THRUUUU RIGHT "+grid[activeCell].rightWall);
+    //   amTurned = true;
+    //   console.log("AM I TURNED?::: "+amTurned);
+    // }
+
+
+      //
+      // if (grid[activeCell].rightWall == 0) {
+      //   //activeCell++;
+      //  } else {
+      // //   activeCell=activeCell;
+      // }
+
+    } //end right
+
     //left
     if (keys[3]==true){
       console.log("keysL");
+      console.log("LEFT WALL IS: "+grid[activeCell].leftWall);
       console.log(leftRightAngle);
       leftRightAngle -= leftRightRotSpeed;
       lx = sin(radians(leftRightAngle));
       lz = -cos(radians(leftRightAngle));
 
-      console.log("LEFT WALL IS: "+grid[activeCell].leftWall);
-      if (grid[activeCell].leftWall == 0) {
-        //activeCell--;
-
-      } else {
-        // activeCell=activeCell;
+      if ((leftRightAngle < -32.0)&&(leftRightAngle > -45.0)) {
+        console.log("COME THRUUUU LEFT "+grid[activeCell].leftWall);
+        amTurned = true;
       }
+
+
+      // if (grid[activeCell].leftWall == 0) {
+      //   //activeCell--;
+      //
+      // } else {
+      //   // activeCell=activeCell;
+      // }
+      //
     }
 
 } //end of DRAW
