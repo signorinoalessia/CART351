@@ -1,3 +1,6 @@
+
+let px = 0.0;
+
 /* CANVAS VARIABLES */
 let canvasWidth = 1200;
 let canvasHeight = 800;
@@ -19,7 +22,7 @@ let leftRightAngle = 0.0;
 let testLeftRightAngle = 0.0;
 let range = 35;
 let amTurned = false;
-let lastDirection = [{0,1}];
+//let lastDirection = [{0,1}];
 
 /* RETURN A RANDOM VALUE */
 let random = function(min,max){
@@ -96,7 +99,6 @@ function Cell(x,y,w,l,r,t,b){
   this.walls.push(this.rightWall);
   this.walls.push(this.bottomWall);
   this.walls.push(this.leftWall);
-
 
   this.display =function(){
     fill(this.cellColor);
@@ -240,30 +242,37 @@ function draw() {
     /* ========= KEYBOARD CONTROLS ======== */
 
   let currentGridCellWalls = grid[activeCell].walls;
-
-
-
+  console.log(activeCell+ "ACTIVECELL");
   //forward
   if(keys[0] == true){
+
+    if(abs(px - x)>100){
+      activeCell += 1;
+      px = x;
+    } 
     console.log("keysF");
 
+    console.log("z: "+z);
+    console.log("x: "+x);
      //console.log("MY TOP WALL IS: "+grid[activeCell].topWall);
      // if (grid[activeCell].topWall == 0) {
+
     if (amTurned == true) {
     // ** if im turning which wall do I care about? **
       console.log("INSIDE FWD turned:: "+amTurned);
-
       // t,r,b,l
-      // *** if previous turn was right, check gridActiveCellWalls[i] clockwise
-      if grid[activeCell] {
-        gridActiveCellWalls[i]+1
-      }
+      // *** if previous turn was right, check currentGridCellWalls clockwise
+      // if grid[activeCell].right {
+       //gridActiveCellWalls[i] += 1;
+       // currentGridCellWalls[i] += 1;
+       //console.log(currentGridCellWalls[i]);
+      // }
 
-      //*** if previous turn was left, gridActiveCellWalls[i] anticlockwise
-    //  gridActiveCellWalls[i]-1
+      //*** if previous turn was left, currentGridCellWalls[i] anticlockwise
+    //  gridActiveCellWalls[i] -= 1
 
-
-       activeCell-=5; // WILL DEPEND!! ****
+      // each cell is 100px
+      // activeCell+=1; // NO, DEPENDS ON OTHER ARRAY INSTEAD
        x += lx * forwardBackwardSpeed;
        z += lz * forwardBackwardSpeed;
      } else {
@@ -276,7 +285,7 @@ function draw() {
 
      console.log("BOTTOM WALL IS: "+grid[activeCell].bottomWall);
      if (grid[activeCell].bottomWall == 0) {
-       activeCell+=5;
+       activeCell-=5;
 
        x -= lx * forwardBackwardSpeed;
        z -= lz * forwardBackwardSpeed;
@@ -293,16 +302,16 @@ function draw() {
       lz = -cos(radians(leftRightAngle));
 
       console.log("keysR");
-      console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
+      //console.log("RIGHT WALL IS: "+grid[activeCell].rightWall);
+      console.log("currentGridCellWalls: "+currentGridCellWalls);
       console.log(leftRightAngle);
-
 
     if ((leftRightAngle > testLeftRightAngle + range)){
         console.log("testANGLE: "+testLeftRightAngle);
         amTurned = true;
         console.log("Am I TURNED??? "+amTurned);
        testLeftRightAngle=leftRightAngle;
-       lastDirection = 2;
+       //lastDirection = 2;
     }
 
 
