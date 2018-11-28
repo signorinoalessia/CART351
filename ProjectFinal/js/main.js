@@ -19,6 +19,7 @@ let leftRightAngle = 0.0;
 let testLeftRightAngle = 0.0;
 let range = 35;
 let amTurned = false;
+let lastDirection = [{0,1}];
 
 /* RETURN A RANDOM VALUE */
 let random = function(min,max){
@@ -214,8 +215,8 @@ function draw() {
   rotate(Math.PI/2);
   rotateX(Math.PI/2);
   scale(2.48);
-  // ambientMaterial(0,10,40);
-  // stroke(100,20,20,0.1);
+  //ambientMaterial(0,40,100);
+  //stroke(180,50,20,0.5);
   normalMaterial();
   model(mazeModel);
   pop();
@@ -238,20 +239,8 @@ function draw() {
 
     /* ========= KEYBOARD CONTROLS ======== */
 
-  // function angleTurn(leftRightAngle,testLeftRightAngle,range){
-  //   return leftRightAngle < testLeftRightAngle + range && leftRightAngle > testLeftRightAngle - range;
-  // }
-
   let currentGridCellWalls = grid[activeCell].walls;
 
-
-
-// //Recursive setTimeout
-  // let pressingKey setTimeOut(function keyTimer() {
-  //   //update current angle!
-  //
-  //   pressingKey = setTimeout(keyTimer,1000);
-  // }, 1000);
 
 
   //forward
@@ -264,12 +253,14 @@ function draw() {
     // ** if im turning which wall do I care about? **
       console.log("INSIDE FWD turned:: "+amTurned);
 
-      // l,t,r,b
-      // *** if previous turn was right, check gridActiveCellWalls[i]+1
-      grid
+      // t,r,b,l
+      // *** if previous turn was right, check gridActiveCellWalls[i] clockwise
+      if grid[activeCell] {
+        gridActiveCellWalls[i]+1
+      }
 
-      //*** if previous turn was left, check c
-    //  grid[activeCell].
+      //*** if previous turn was left, gridActiveCellWalls[i] anticlockwise
+    //  gridActiveCellWalls[i]-1
 
 
        activeCell-=5; // WILL DEPEND!! ****
@@ -311,6 +302,7 @@ function draw() {
         amTurned = true;
         console.log("Am I TURNED??? "+amTurned);
        testLeftRightAngle=leftRightAngle;
+       lastDirection = 2;
     }
 
 
