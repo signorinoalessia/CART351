@@ -157,9 +157,9 @@ document.addEventListener('keyup', (event) => {
 
 /* ============ LOAD THE MODEL FIRST ============= */
 function preload() {
-  mazeModel = loadModel('assets/maze5.obj',true,successFunc,failureFunc);
+  mazeModel = loadModel('assets/maze5b.obj',true,successFunc,failureFunc);
 }
-
+console.log(mazeModel);
 /* CHECK FOR LOADING MODEL PRESENCE */
 function successFunc(){
   //console.log("success");
@@ -210,7 +210,7 @@ function draw() {
   }
 
  /* DRAW MODEL */
-  directionalLight(255);
+  //directionalLight(255);
 
   push();
   translate(-48.2,52.9);
