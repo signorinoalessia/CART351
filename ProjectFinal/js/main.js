@@ -17,7 +17,7 @@ let cellQty = 25; //quantity
 let x,y,z,lx,ly,lz;
 let forwardBackwardSpeed = 2;
 let keys = [false,false,false,false];
-let leftRightRotSpeed = 0.7;
+let leftRightRotSpeed = 0.9;
 let leftRightAngle = 0.0;
 let testLeftRightAngle = 0.0;
 let range = 35;
@@ -210,6 +210,7 @@ function draw() {
   }
 
  /* DRAW MODEL */
+  directionalLight(255);
 
   push();
   translate(-48.2,52.9);
@@ -217,11 +218,16 @@ function draw() {
   rotate(Math.PI/2);
   rotateX(Math.PI/2);
   scale(2.48);
-  //ambientMaterial(0,40,100);
+  ambientMaterial(0,40,100);
   //stroke(180,50,20,0.5);
-  normalMaterial();
+  //normalMaterial();
+  //fill(0,40,100);
+  stroke(180,50,20,0.5);
   model(mazeModel);
   pop();
+
+
+
 
   /* ========= CAMERA ========*/
 
@@ -249,7 +255,7 @@ function draw() {
     if(abs(px - x)>100){
       activeCell += 1;
       px = x;
-    } 
+    }
     console.log("keysF");
 
     console.log("z: "+z);
