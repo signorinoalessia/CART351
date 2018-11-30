@@ -18,7 +18,7 @@
     <!--form done using more current tags... -->
     <form id="insertUser" action="" enctype ="multipart/form-data">
     <!-- group the related elements in a form -->
-    <h3> WELCOME, WHO ARE YOU? ::: </h3>
+    <h3> WELCOME, WHO ARE YOU?  </h3>
     <fieldset>
     <p><label>Username</label><input id = "uName" type="text" size="24" maxlength = "40" name = "u_name" required></p>
 
@@ -29,6 +29,7 @@
 
     <script>
     let user = ""; //you will insert that user
+    let activeCell= 0; //x
       $(document).ready (function(){
         $("#insertUser").submit(function(event) {
           //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
@@ -52,7 +53,7 @@
                   //user = response;
                  let parsedJSON = JSON.parse(response);
                  console.log(parsedJSON);
-                 console.log(document.getElementById("uName").value);
+                 user = document.getElementById("uName").value;
                  },
                  error:function(){
                 console.log("error occurred");
@@ -63,6 +64,58 @@
 
       }); //document ready end
     </script>
+
+
+  <!--======= LEAVE AND STORE LAST ACTIVE CELL  -->
+    <div class= "exitFormContainer">
+    <!--form done using more current tags... -->
+    <form id="exitUser" action="" enctype ="multipart/form-data">
+    <!-- group the related elements in a form -->
+    <h3> I've had enough! I want to leave. </h3>
+    <fieldset>
+    <p class = "sub"><input type = "submit" name = "submit" value = "Exit" id ="buttonE" /></p>
+     </fieldset>
+    </form>
+    </div>
+
+  <script>
+    //let lastActiveCell = "";
+    $("#exitUser").submit(function(event) {
+    event.preventDefault();
+    console.log("exit button clicked"+ activeCell);
+      let data = new FormData();
+      data.append("user",user);
+      data.append("activeCell",activeCell);
+
+
+    //let form = $('#exitUser')[0]; //get form data, put into right format
+    //let data = new FormData(form);
+
+    $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "php/updateDB.php",
+            data: data,
+            processData: false,//prevents from converting into a query string
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function (response) {
+            console.log(response);
+            //user = response;
+
+           //console.log(document.getElementById("activeCell").value);
+           },
+           error:function(){
+          console.log("error occurred");
+        }
+      }); // end ajax
+
+    });
+
+
+  </script>
+
 
   </body>
 </html>

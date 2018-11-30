@@ -9,7 +9,7 @@ let mazeModel;
 let grid;
 let cellSize = 100; // pixels
 let gridSize = 5; //rows,columns
-let activeCell= 0; //x
+
 let cellQty = 25; //quantity
 
 /* CAMERA DIRECTION */
@@ -382,6 +382,8 @@ function draw() {
     }
 
 } //end of DRAW
+
+
 
 /* =============== WEATHER DATA =================== */
 // ref class example week 5

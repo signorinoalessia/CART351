@@ -21,3 +21,24 @@ body {
   top:0;
   left:0;
 }
+
+.formContainer {
+  position:absolute;
+  padding-left: 40px;
+  padding-top: 20px;
+  z-index: 99;
+  font-family: Arial;
+  /* background:lightblue; */
+}
+.exitFormContainer{
+  position:absolute;
+  padding-left: 880px;
+  padding-top: 20px;
+  z-index: 99;
+  font-family: Helvetica,Arial;
+  /* background:lightblue; */
+}
+
+#buttonS{
+  background color: lightblue;
+  font-family: Arial,sans-serif;

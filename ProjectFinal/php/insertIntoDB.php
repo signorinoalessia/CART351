@@ -60,7 +60,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
           //echo ($user_es);
           session_start();
           $_SESSION["user"] = $user_es;
-
         //  exit;
         } //if entry
         else {
