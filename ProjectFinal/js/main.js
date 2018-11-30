@@ -1,5 +1,4 @@
 
-let px = 0.0;
 
 /* CANVAS VARIABLES */
 let canvasWidth = 1200;
@@ -22,7 +21,8 @@ let leftRightAngle = 0.0;
 let testLeftRightAngle = 0.0;
 let range = 35;
 let amTurned = false;
-//let lastDirection = [{0,1}];
+
+let px = 0.0;
 
 /* RETURN A RANDOM VALUE */
 let random = function(min,max){
@@ -303,9 +303,15 @@ function draw() {
     console.log("keysB");
 
      console.log("BOTTOM WALL IS: "+grid[activeCell].bottomWall);
-     if (grid[activeCell].bottomWall == 0) {
-       activeCell-=5;
+     // if (grid[activeCell].bottomWall == 0) {
+     //   activeCell-=5;
 
+     if(abs(px - x)>100){
+       activeCell -= 1;
+       px = x;
+     }
+
+     if (amTurned == true) {
        x -= lx * forwardBackwardSpeed;
        z -= lz * forwardBackwardSpeed;
      } else {
