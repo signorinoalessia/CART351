@@ -17,7 +17,7 @@ let cellQty = 25; //quantity
 let x,y,z,lx,ly,lz;
 let forwardBackwardSpeed = 2;
 let keys = [false,false,false,false];
-let leftRightRotSpeed = 0.9;
+let leftRightRotSpeed = 1.2;
 let leftRightAngle = 0.0;
 let testLeftRightAngle = 0.0;
 let range = 35;
@@ -158,6 +158,7 @@ document.addEventListener('keyup', (event) => {
 /* ============ LOAD THE MODEL FIRST ============= */
 function preload() {
   mazeModel = loadModel('assets/maze5b.obj',true,successFunc,failureFunc);
+  girlModel = loadModel('assets/girl.obj',true,successFunc,failureFunc);
 }
 console.log(mazeModel);
 /* CHECK FOR LOADING MODEL PRESENCE */
@@ -190,7 +191,8 @@ function setup(){
   grid[0].currentCell = true;
   frameRate(30);
 
-  //img = loadImage("assets/mat2.png");
+  img = loadImage("assets/mat3.png");
+  imgGray = loadImage("assets/mat4.png");
   //console.log(grid[0].cellColor);
   //console.log("GRID[0]:: "+grid[i].r);
   console.log(grid[activeCell]);
@@ -218,14 +220,25 @@ function draw() {
   rotate(Math.PI/2);
   rotateX(Math.PI/2);
   scale(2.48);
-  ambientMaterial(0,40,100);
+  //ambientMaterial(0,40,100);
   //stroke(180,50,20,0.5);
   //normalMaterial();
+  texture(img);
   //fill(0,40,100);
-  stroke(180,50,20,0.5);
+  //stroke(180,50,20,0.5);
   model(mazeModel);
   pop();
 
+  push();
+  translate(50,52.9,0);
+  rotate(Math.PI/2);
+  rotateX(Math.PI/2);
+  rotateY(-Math.PI/2);
+  scale(0.6);
+  //normalMaterial();
+  texture(imgGray);
+  model(girlModel);
+  pop();
 
 
 
