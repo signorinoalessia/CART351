@@ -383,6 +383,11 @@ function draw() {
 
 } //end of DRAW
 
+$(document).ready(function() {
+  
+)};
+
+
 
 
 /* =============== WEATHER DATA =================== */
