@@ -383,9 +383,9 @@ function draw() {
 
 } //end of DRAW
 
-$(document).ready(function() {
-  
-)};
+// $(document).ready(function() {
+//
+// )};
 
 
 
