@@ -22,23 +22,108 @@ body {
   left:0;
 }
 
+#display_me {
+	/* width: 1120px; */
+  width:70%;
+  min-height:560px;
+  height:auto;
+	border-radius: 10px;
+	background: rgba(255,255,255,0.8);
+	padding: 20px;
+	font-size: 2vmin;
+	font-family: 'Quicksand', sans-serif;
+	color: #333;
+	position:absolute;
+	top:260px;
+	/* left:40px; */
+  left: 15%;
+	opacity: 1;
+  z-index: 90;
+	transition: all .5s;
+}
+
+#display_me p{
+  padding-top:20px;
+  line-height: 1.6;
+}
+
+#close {
+	background: #333;
+	padding: 10px;
+	font-size: 18px;
+	font-family: 'Quicksand', sans-serif;
+	color: #fff;
+	position:absolute;
+	top:0px;
+	right: 0px;
+	cursor: pointer;
+/*	border:2px solid #333;*/
+}
+#close:hover {
+	background: #fff;
+	color: #333;
+}
+
 .formContainer {
   position:absolute;
   padding-left: 40px;
   padding-top: 20px;
   z-index: 99;
-  font-family: Arial;
+  font-family: Helvetica,Arial,sans-serif;
   /* background:lightblue; */
 }
 .exitFormContainer{
   position:absolute;
-  padding-left: 880px;
+  padding-left: 84%;
   padding-top: 20px;
   z-index: 99;
-  font-family: Helvetica,Arial;
+  font-family: Helvetica,Arial,sans-serif;
   /* background:lightblue; */
 }
 
+#insertUser{
+  background-color: rgba(173,216,230,0.7);
+  padding:10px;
+  border-radius: 10px 10px 10px 10px;
+  border: 2px solid #8aacb8;
+}
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border-radius: 8px 8px 8px 8px;
+    border: none;
+    background-color: #e8f4f8;
+    color: #333;
+}
+fieldset{
+  border:none;
+}
+
 #buttonS{
-  background color: lightblue;
-  font-family: Arial,sans-serif;
+  /* background-color: #8aacb8; */
+  background: #333;
+  padding:6px 10px;
+  margin:8px 0px;
+  font-family: Helvetica,Arial,sans-serif;
+  font-weight:bold;
+  font-size:1.6vmin;
+  color:#fff;
+}
+
+#exitUser {
+  background-color: rgba(173,216,230,0.7);
+  padding:10px;
+  border-radius: 10px 10px 10px 10px;
+  border: 2px solid #8aacb8;
+}
+
+#buttonE{
+  background-color: #ff9966;
+  padding:6px 10px;
+  margin:8px 0px;
+  font-family: Helvetica,Arial,sans-serif;
+  font-weight:bold;
+  font-size:1.6vmin;
+  color:#333;
+}
