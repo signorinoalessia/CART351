@@ -200,7 +200,7 @@ function setup(){
   frameRate(30);
 
   img = loadImage("assets/mat3.png");
-  imgGray = loadImage("assets/mat4.png");
+  imgGray = loadImage("assets/mat6.png");
   //console.log(grid[0].cellColor);
   //console.log("GRID[0]:: "+grid[i].r);
   console.log(grid[activeCell]);

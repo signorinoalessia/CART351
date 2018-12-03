@@ -35,10 +35,15 @@
       document.getElementById("display_me").style.opacity = 0;
     }
 
-    function showFunction(){
-      document.getElementById("hide_me").style.opacity = 1;
+    function hideBackground(){
+      document.getElementById("hide_me").style.opacity = 0;
+      console.log("hiding background");
     }
+    // function showFunction(){
+    //   document.getElementById("hide_me").style.opacity = 1;
+    // }
     </script>
+
 
     <!-- ===== MAZE JS CONTAINER ===== -->
     <div id="maze"></div>
@@ -53,7 +58,7 @@
     <fieldset>
     <p><label>Username</label><input id = "uName" type="text" size="24" maxlength = "40" name = "u_name" required></p>
 
-    <p class = "sub"><input type = "submit" name = "submit" value = "submit my info" id ="buttonS" onclick = "hideFunction()" /></p>
+    <p class = "sub"><input type = "submit" name = "submit" value = "submit my info" id ="buttonS" onclick = "hideBackground()"></p>
      </fieldset>
     </form>
     </div>
@@ -147,6 +152,10 @@
     });
 
   </script>
+
+  <video src="assets/street.mp4" autoplay poster="assets/street.png" id = "hide_me">
+
+  </video>
 
 <!-- ======  RETRIEVE SHADOWS ====== -->
 <!-- <script>
