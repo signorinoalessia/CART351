@@ -70,7 +70,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         }
     }
   }//end while
-  $sql_select='SELECT * FROM usersTable';
+  $sql_select='SELECT activeCell FROM usersTable';
   $result = $db->query($sql_select);
   // if no query, die
   if (!$result) die("Cannot execute query.");

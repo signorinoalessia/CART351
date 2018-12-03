@@ -1,4 +1,4 @@
-// to bypass autoplay prevent on chrome
+// AUDIO - bypassing autoplay prevention on chrome
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
    if(!isChrome){
      $('#iframeAudio').remove()
@@ -209,6 +209,7 @@ function setup(){
 
 /* ============== B:: DRAW FUNCT =============== */
 function draw() {
+  if(start ===true){
   background(0);
  let count =0;
 
@@ -237,16 +238,18 @@ function draw() {
   model(mazeModel);
   pop();
 
-  push();
-  translate(50,52.9,0);
-  rotate(Math.PI/2);
-  rotateX(Math.PI/2);
-  rotateY(-Math.PI/2);
-  scale(0.6);
-  //normalMaterial();
-  texture(imgGray);
-  model(girlModel);
-  pop();
+  displayShadows();
+
+  // push();
+  // translate(50,52.9,0);
+  // rotate(Math.PI/2);
+  // rotateX(Math.PI/2);
+  // rotateY(-Math.PI/2);
+  // scale(0.6);
+  // //normalMaterial();
+  // texture(imgGray);
+  // model(girlModel);
+  // pop();
 
 
 
@@ -375,7 +378,7 @@ function draw() {
       lz = -cos(radians(leftRightAngle));
 
       if ((leftRightAngle < -32.0)&&(leftRightAngle > -45.0)) {
-        console.log("COME THRUUUU LEFT "+grid[activeCell].leftWall);
+        console.log("COME THRU FROM LEFT "+grid[activeCell].leftWall);
         amTurned = true;
       }
 
@@ -388,9 +391,34 @@ function draw() {
       // }
       //
     }
-
+  }
 } //end of DRAW
 
+
+function displayShadows(){
+  //let currentObject = theResult[i];
+//  let addCell = theResult[i].activeCell*100;
+
+// what about draw loop? * ask Sabine
+
+  for (let i=0;i<theResult.length;i++){
+
+    let addCell = (theResult[i].activeCell)*100;
+    console.log(addCell);
+
+    push();
+    translate(50+addCell,52.9+addCell,0);
+    // add 100 to x and y per activeCell count
+    rotate(Math.PI/2);
+    rotateX(Math.PI/2);
+    rotateY(-Math.PI/2);
+    scale(0.6);
+    texture(imgGray);
+    model(girlModel);
+    pop();
+    console.log(theResult[i].activeCell);
+  }
+}
 
 
 // window.setTimeout(updateActiveCell, 60000);

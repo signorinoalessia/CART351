@@ -30,7 +30,9 @@ class MyDB extends SQLite3
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
 $activeCell = $_POST['activeCell'];
-$sql_select = "SELECT activeCell FROM usersTable WHERE activeCell >=0";
+//$sql_select = "SELECT activeCell FROM usersTable WHERE activeCell >=0"; //select column (activeCell)
+$sql_select = "SELECT activeCell FROM userTable";
+echo $sql_select;
 //$sql_select = "SELECT * FROM usersTable WHERE activeCell >= 0";
 //$sql_select = "SELECT COUNT(*) FROM usersTable WHERE activeCell >=0";
 

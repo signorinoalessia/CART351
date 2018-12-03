@@ -57,6 +57,8 @@
     <script>
     let user = ""; //you will insert that user
     let activeCell= 0; //x
+    let start =false;
+    let theResult;
       $(document).ready (function(){
         $("#insertUser").submit(function(event) {
           //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
@@ -81,6 +83,9 @@
                  let parsedJSON = JSON.parse(response);
                  console.log(parsedJSON);
                  user = document.getElementById("uName").value;
+                // displayShadows(parsedJSON);
+                theResult = parsedJSON;
+                 start =true;
                  },
                  error:function(){
                 console.log("error occurred");
@@ -139,12 +144,15 @@
   </script>
 
 <!-- ======  RETRIEVE SHADOWS ====== -->
-<script>
-$(document).ready (function(){
+<!-- <script>
+ $(document).ready (function(){
+//$(window).load(function() {
+    console.log("window load occurred!");
     $("#retrieveShadows").submit(function(event) {
       event.preventDefault();
       let data = new FormData();
       data.append("activeCell",activeCell);
+      console.log("DATA:"+data);
 
       $.ajax({
              type: "POST",
@@ -170,29 +178,29 @@ $(document).ready (function(){
        });
     });
 
-    function displayShadows(theResult){
-      let currentObject = theResult[i];
-      let addCell = theResult[i]*100;
+    // function displayShadows(theResult){
+    //   let currentObject = theResult[i];
+    //   let addCell = theResult[i]*100;
+    //
+    // // what about draw loop? * ask Sabine
+    //
+    //   for (let i=0;i<theResult.length;i++){
+    //     push();
+    //     translate(50+addCell,52.9+addCell,0);
+    //     // add 100 to x and y per activeCell count
+    //     rotate(Math.PI/2);
+    //     rotateX(Math.PI/2);
+    //     rotateY(-Math.PI/2);
+    //     scale(0.6);
+    //     texture(imgGray);
+    //     model(girlModel);
+    //     pop();
+    //   }
+    // }
 
-    // what about draw loop? * ask Sabine
+  }); //end windows ready
 
-      for (let i=0;i<theResult.length;i++){
-        push();
-        translate(50+addCell,52.9+addCell,0);
-        // add 100 to x and y per activeCell count
-        rotate(Math.PI/2);
-        rotateX(Math.PI/2);
-        rotateY(-Math.PI/2);
-        scale(0.6);
-        texture(imgGray);
-        model(girlModel);
-        pop();
-      }
-    }
-
-  });
-
-</script>
+</script> -->
 
 
   </body>
