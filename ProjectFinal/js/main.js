@@ -229,12 +229,7 @@ function draw() {
   rotate(Math.PI/2);
   rotateX(Math.PI/2);
   scale(2.48);
-  //ambientMaterial(0,40,100);
-  //stroke(180,50,20,0.5);
-  //normalMaterial();
   texture(img);
-  //fill(0,40,100);
-  //stroke(180,50,20,0.5);
   model(mazeModel);
   pop();
 
@@ -394,6 +389,14 @@ function draw() {
   }
 } //end of DRAW
 
+//random range for shadows --  so they're not stacked on top of each other
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
 
 function displayShadows(){
   //let currentObject = theResult[i];
@@ -407,13 +410,16 @@ function displayShadows(){
     console.log(addCell);
 
     push();
-    translate(50+addCell,52.9+addCell,0);
     // add 100 to x and y per activeCell count
+    // translate(50+addCell,52.9+addCell,0);
+    translate(getRandomInt(40,70)+addCell,getRandomInt(40,70)+addCell,0);
+    translate(x,y);   
     rotate(Math.PI/2);
     rotateX(Math.PI/2);
     rotateY(-Math.PI/2);
     scale(0.6);
     texture(imgGray);
+    //opacity(0.5);
     model(girlModel);
     pop();
     console.log(theResult[i].activeCell);

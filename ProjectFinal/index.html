@@ -80,12 +80,12 @@
                   success: function (response) {
                   console.log(response);
                   //user = response;
-                 let parsedJSON = JSON.parse(response);
-                 console.log(parsedJSON);
-                 user = document.getElementById("uName").value;
-                // displayShadows(parsedJSON);
-                theResult = parsedJSON;
-                 start =true;
+                  let parsedJSON = JSON.parse(response);
+                  console.log(parsedJSON);
+                  user = document.getElementById("uName").value;
+                  // displayShadows(parsedJSON);
+                  theResult = parsedJSON;
+                  start =true;
                  },
                  error:function(){
                 console.log("error occurred");
@@ -114,6 +114,7 @@
     //let lastActiveCell = "";
     $("#exitUser").submit(function(event) {
     event.preventDefault();
+    alert("Have you been helped by someone?");
     console.log("exit button clicked"+ activeCell);
       let data = new FormData();
       data.append("user",user);
