@@ -413,7 +413,7 @@ function displayShadows(){
     // add 100 to x and y per activeCell count
     // translate(50+addCell,52.9+addCell,0);
     translate(getRandomInt(40,70)+addCell,getRandomInt(40,70)+addCell,0);
-    translate(x,y);   
+    translate(lx,ly);
     rotate(Math.PI/2);
     rotateX(Math.PI/2);
     rotateY(-Math.PI/2);
