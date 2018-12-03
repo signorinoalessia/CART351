@@ -383,6 +383,12 @@ function draw() {
 
 } //end of DRAW
 
+// window.setTimeout(updateActiveCell, 60000);
+//
+// function updateActiveCell() {
+//
+// }
+
 // $(document).ready(function() {
 //
 // )};

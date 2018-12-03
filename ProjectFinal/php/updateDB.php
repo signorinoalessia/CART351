@@ -17,7 +17,7 @@ catch(Exception $e)
 }
 
 // http://clab.concordia.ca/intro-to-sql-lite/
-//timer on client side
+// timer on client side
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
@@ -27,7 +27,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
  $user_es =$db->escapeString($user);
  $activeCell_es =$db->escapeString($activeCell);
 
-$sql_update="UPDATE usersTable SET activeCell = '$activeCell_es' WHERE username='$user_es'"; 
+$sql_update="UPDATE usersTable SET activeCell = '$activeCell_es' WHERE username='$user_es'";
    // again we do error checking when we try to execute our SQL statements on the db
    $ok1 = $db ->exec($sql_update);
    if (!$ok1) die("Cannot execute statement.");

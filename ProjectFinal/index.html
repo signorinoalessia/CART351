@@ -66,7 +66,7 @@
     </script>
 
 
-  <!--======= LEAVE AND STORE LAST ACTIVE CELL  -->
+  <!--======= LEAVE AND STORE LAST ACTIVE CELL ===== -->
     <div class= "exitFormContainer">
     <!--form done using more current tags... -->
     <form id="exitUser" action="" enctype ="multipart/form-data">
@@ -86,7 +86,6 @@
       let data = new FormData();
       data.append("user",user);
       data.append("activeCell",activeCell);
-
 
     //let form = $('#exitUser')[0]; //get form data, put into right format
     //let data = new FormData(form);
@@ -110,9 +109,63 @@
 
     });
 
-
   </script>
 
+<!-- ======  Retrieve shadows ====== -->
+<script>
+$(document).ready (function(){
+    $("#retrieveShadows").submit(function(event) {
+      event.preventDefault();
+      let data = new FormData();
+      data.append("activeCell",activeCell);
+
+      $.ajax({
+             type: "POST",
+             enctype: 'text/plain',
+             // needs to be SAME NAME AS PAGE!
+             url: "viewShadows.php",
+             data: data,
+             processData: false,//prevents from converting into a query string
+             contentType: false,
+             cache: false,
+             timeout: 600000,
+             // !SUCCESS! When data posted to php. when result is sent back, THIS is the time callback is going to occur (wont be triggered before that)
+             success: function (response) {
+             console.log(response);
+             //use the JSON .parse function to convert the JSON string into a Javascript object
+             let parsedJSON = JSON.parse(response);
+             console.log(parsedJSON);
+             displayShadows(parsedJSON);
+            },
+            error:function(){
+           console.log("error occurred");
+         }
+       });
+    });
+
+    function displayShadows(theResult){
+      let currentObject = theResult[i];
+      let addCell = theResult[i]*100;
+
+    // what about draw loop? * ask Sabine
+
+      for (let i=0;i<theResult.length;i++){
+        push();
+        translate(50+addCell,52.9+addCell,0);
+        // add 100 to x and y per activeCell count
+        rotate(Math.PI/2);
+        rotateX(Math.PI/2);
+        rotateY(-Math.PI/2);
+        scale(0.6);
+        texture(imgGray);
+        model(girlModel);
+        pop();
+      }
+    }
+
+  });
+
+</script>
 
   </body>
 </html>
