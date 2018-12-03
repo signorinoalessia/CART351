@@ -10,6 +10,12 @@
   </head>
 
   <body>
+    <!-- BACKGROUND MUSIC  -->
+    <!-- https://stackoverflow.com/questions/50490304/audio-autoplay-not-working-in-chrome -->
+    <iframe src="audio/humanphobia.mp3" allow="autoplay" style="display:none" id="iframeAudio">
+    </iframe>
+
+    <!-- INTRO DIALOG WINDOW -->
     <article id="display_me">
   		<h1>Walkthrough</h1>
   		<p>Nearly 1 in 10 Canadians have experienced hidden homelessness, which is approximately 2.3 million Canadians.</p>
@@ -17,7 +23,7 @@
       <p>Very often, people that have temporarily lived without a permanent address do not consider themselves as having lived homelessness due to the duration of their experience, or because their case does not align to having slept on the streets.</p>
       <p>Childhood mistreatment, mental illness, learning disabilities, lower levels of social support as well as being from an Aboriginal community are all correlated factors that might lead to an individual to be forced to “choose” to leave.</p>
       <p> The data was created from self-declared respondents which has potentially resulted in an underrepresentation of the population with an experience of hidden homelessness, or if they are currently homeless. </p>
-      <p>Music by Humanphobia - Wrong Password</p>
+      <p>Music by Humanphobia - Pesadillas y Pastillas (freemusicarchive.org)</p>
       <br>
       <b><p>What is your name? Navigate by using the arrow keys.</p></b>
   		<span id="close" onclick = "hideFunction()">X</span>
@@ -34,7 +40,7 @@
     <div id="maze"></div>
 
 
-    <!-- ===== FORM AND AJAX FUNCT ===== -->
+    <!-- ===== FORM AND AJAX FUNCT USERNAME ===== -->
     <div class= "formContainer">
     <!--form done using more current tags... -->
     <form id="insertUser" action="" enctype ="multipart/form-data">
@@ -132,7 +138,7 @@
 
   </script>
 
-<!-- ======  Retrieve shadows ====== -->
+<!-- ======  RETRIEVE SHADOWS ====== -->
 <script>
 $(document).ready (function(){
     $("#retrieveShadows").submit(function(event) {
@@ -188,14 +194,6 @@ $(document).ready (function(){
 
 </script>
 
-<!-- <audio autoplay>
-  <source src= "audio/humanphobia.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio> -->
-<!-- https://stackoverflow.com/questions/50490304/audio-autoplay-not-working-in-chrome -->
-
-<iframe src="audio/humanphobia.mp3" allow="autoplay" style="display:none" id="iframeAudio">
-</iframe>
 
   </body>
 </html>

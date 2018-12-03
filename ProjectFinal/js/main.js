@@ -1,4 +1,11 @@
-
+// to bypass autoplay prevent on chrome
+var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+   if(!isChrome){
+     $('#iframeAudio').remove()
+   }
+ else{
+    $('#playAudio').remove() //just to make sure that it will not have 2x audio in the background
+ }
 
 /* CANVAS VARIABLES */
 //full window
@@ -384,15 +391,8 @@ function draw() {
 
 } //end of DRAW
 
-//audioContext = new (window.AudioContext || window.webkitAudioContext)();
-// to bypass autoplay prevent on chrome
-var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-   if(!isChrome){
-     $('#iframeAudio').remove()
-   }
- else{
-    $('#playAudio').remove() //just to make sure that it will not have 2x audio in the background
- }
+
+
 // window.setTimeout(updateActiveCell, 60000);
 //
 // function updateActiveCell() {
