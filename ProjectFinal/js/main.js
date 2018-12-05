@@ -17,7 +17,6 @@ let mazeModel;
 let grid;
 let cellSize = 100; // pixels
 let gridSize = 5; //rows,columns
-
 let cellQty = 25; //quantity
 
 /* CAMERA DIRECTION */
@@ -402,8 +401,6 @@ function displayShadows(){
   //let currentObject = theResult[i];
 //  let addCell = theResult[i].activeCell*100;
 
-// what about draw loop? * ask Sabine
-
   for (let i=0;i<theResult.length;i++){
 
     let addCell = (theResult[i].activeCell)*100;
@@ -412,17 +409,24 @@ function displayShadows(){
     push();
     // add 100 to x and y per activeCell count
     // translate(50+addCell,52.9+addCell,0);
-    translate(getRandomInt(40,70)+addCell,getRandomInt(40,70)+addCell,0);
-    translate(lx,ly);
+    //translate(x,y);
+
+    translate(getRandomInt(40,70)+addCell,addCell,0);
+    translate(activeCell*100,activeCell*100)
+
     rotate(Math.PI/2);
     rotateX(Math.PI/2);
     rotateY(-Math.PI/2);
+    //rotate(radians(frameCount));
+    //rotateX(radians(getRandomInt(20,40)));
+    var tx = 200 * noise(0.01*frameCount);
+		translate(tx, tx);
     scale(0.6);
     texture(imgGray);
     //opacity(0.5);
     model(girlModel);
     pop();
-    console.log(theResult[i].activeCell);
+    console.log("Active Cell = "+theResult[i].activeCell);
   }
 }
 
