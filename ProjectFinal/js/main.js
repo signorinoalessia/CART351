@@ -398,32 +398,38 @@ function getRandomInt(min, max) {
 }
 
 function displayShadows(){
-  //let currentObject = theResult[i];
-//  let addCell = theResult[i].activeCell*100;
+//  let currentObject = theResult[i];
+ // let addCell = theResult[i].activeCell*100;
 
   for (let i=0;i<theResult.length;i++){
 
     let addCell = (theResult[i].activeCell)*100;
-    console.log(addCell);
+    console.log("addCell = "+addCell);
 
     push();
     // add 100 to x and y per activeCell count
-    // translate(50+addCell,52.9+addCell,0);
-    //translate(x,y);
 
-    translate(getRandomInt(40,70)+addCell,addCell,0);
-    translate(activeCell*100,activeCell*100)
+
+    // let addCell = (theResult[i].activeCell)*100;
+    // console.log("addCell = "+addCell);
+
+    //var tx = 200 * noise(0.01*frameCount);
+    //translate(tx, tx);
+
+    //translate(getRandomInt(40,70)+addCell,0,addCell);
+     //translate(50+addCell,52.9+addCell,0);
+     translate(getRandomInt(40,55)+addCell,getRandomInt(40,55)+addCell,0);
+    //translate(x,y);
+    //translate(activeCell*100,activeCell*100)
 
     rotate(Math.PI/2);
     rotateX(Math.PI/2);
     rotateY(-Math.PI/2);
     //rotate(radians(frameCount));
     //rotateX(radians(getRandomInt(20,40)));
-    var tx = 200 * noise(0.01*frameCount);
-		translate(tx, tx);
+
     scale(0.6);
     texture(imgGray);
-    //opacity(0.5);
     model(girlModel);
     pop();
     console.log("Active Cell = "+theResult[i].activeCell);
