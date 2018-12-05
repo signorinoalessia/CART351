@@ -161,11 +161,68 @@ document.addEventListener('keyup', (event) => {
     keys[1] = false;
   }
 });
+//random range for shadows --  so they're not stacked on top of each other
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function displayShadows(){
+//  let currentObject = theResult[i];
+ // let addCell = theResult[i].activeCell*100;
+
+  for (let i=0;i<theResult.length;i++){
+
+    let addCell = (theResult[i].activeCell)*100;
+    console.log("addCell = "+addCell);
+
+    push();
+    // add 100 to x and y per activeCell count
+
+
+    // let addCell = (theResult[i].activeCell)*100;
+    // console.log("addCell = "+addCell);
+
+    //var tx = 200 * noise(0.01*frameCount);
+    //translate(tx, tx);
+
+    //translate(getRandomInt(40,70)+addCell,0,addCell);
+     //translate(50+addCell,52.9+addCell,0);
+     translate(getRandomInt(40,55)+addCell,getRandomInt(40,55)+addCell,getRandomInt(0,2)); //easing*****
+     //displayNames();
+    //translate(x,y);
+    //translate(activeCell*100,activeCell*100)
+
+    rotate(Math.PI/2);
+    rotateX(Math.PI/2);
+    rotateY(-Math.PI/2);
+    //rotate(radians(frameCount));
+    //rotateX(radians(getRandomInt(20,40)));
+
+    scale(0.6);
+    texture(imgGray);
+    model(girlModel);
+    pop();
+    console.log("Active Cell = "+theResult[i].activeCell);
+  }
+}
+
+// function displayNames() {
+//   fill(65);
+//   text(theResult[i].u_name);
+//   console.log("Username = "+theResult[i].u_name);
+// }
+
+//https://p5js.org/examples/dom-modifying-the-dom.html
 
 /* ============ LOAD THE MODEL FIRST ============= */
 function preload() {
   mazeModel = loadModel('assets/maze5b.obj',true,successFunc,failureFunc);
   girlModel = loadModel('assets/girl.obj',true,successFunc,failureFunc);
+  font = loadFont('assets/SourceSansPro-Regular.ttf');
 }
 console.log(mazeModel);
 /* CHECK FOR LOADING MODEL PRESENCE */
@@ -175,6 +232,7 @@ function successFunc(){
 function failureFunc(){
   //console.log("failure");
 }
+
 
 /* ============== A:: SETUP FUNCT =============== */
 function setup(){
@@ -203,6 +261,9 @@ function setup(){
   //console.log(grid[0].cellColor);
   //console.log("GRID[0]:: "+grid[i].r);
   console.log(grid[activeCell]);
+
+  // textFont(font);
+  // textSize(20);
 
 } // end of SETUP
 
@@ -388,53 +449,11 @@ function draw() {
   }
 } //end of DRAW
 
-//random range for shadows --  so they're not stacked on top of each other
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
-
-function displayShadows(){
-//  let currentObject = theResult[i];
- // let addCell = theResult[i].activeCell*100;
-
-  for (let i=0;i<theResult.length;i++){
-
-    let addCell = (theResult[i].activeCell)*100;
-    console.log("addCell = "+addCell);
-
-    push();
-    // add 100 to x and y per activeCell count
 
 
-    // let addCell = (theResult[i].activeCell)*100;
-    // console.log("addCell = "+addCell);
 
-    //var tx = 200 * noise(0.01*frameCount);
-    //translate(tx, tx);
 
-    //translate(getRandomInt(40,70)+addCell,0,addCell);
-     //translate(50+addCell,52.9+addCell,0);
-     translate(getRandomInt(40,55)+addCell,getRandomInt(40,55)+addCell,0);
-    //translate(x,y);
-    //translate(activeCell*100,activeCell*100)
 
-    rotate(Math.PI/2);
-    rotateX(Math.PI/2);
-    rotateY(-Math.PI/2);
-    //rotate(radians(frameCount));
-    //rotateX(radians(getRandomInt(20,40)));
-
-    scale(0.6);
-    texture(imgGray);
-    model(girlModel);
-    pop();
-    console.log("Active Cell = "+theResult[i].activeCell);
-  }
-}
 
 
 // window.setTimeout(updateActiveCell, 60000);
